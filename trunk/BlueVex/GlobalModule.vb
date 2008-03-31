@@ -69,157 +69,188 @@ End Module
 
 Public Module GameHelpers
 
-    'Public Function isUseless(ByVal type As NPCType) As Boolean
-    '    Select Case type
-    '        Case NPCType.Gorgon : Return True      ' Unused
-    '        Case NPCType.Gorgon2 : Return True  ' Unused
-    '        Case NPCType.Gorgon3 : Return True  ' Unused
-    '        Case NPCType.Gorgon4 : Return True  ' Unused
-    '        Case NPCType.ChaosHorde : Return True  ' Unused
-    '        Case NPCType.ChaosHorde2 : Return True  ' Unused
-    '        Case NPCType.ChaosHorde3 : Return True  ' Unused
-    '        Case NPCType.ChaosHorde4 : Return True  ' Unused
-    '        Case NPCType.DarkGuard : Return True  ' Unused
-    '        Case NPCType.DarkGuard2 : Return True  ' Unused
-    '        Case NPCType.DarkGuard3 : Return True  ' Unused
-    '        Case NPCType.DarkGuard4 : Return True  ' Unused
-    '        Case NPCType.DarkGuard5 : Return True  ' Unused
-    '        Case NPCType.BloodMage : Return True  ' Unused
-    '        Case NPCType.BloodMage2 : Return True  ' Unused
-    '        Case NPCType.BloodMage3 : Return True  ' Unused
-    '        Case NPCType.BloodMage4 : Return True  ' Unused
-    '        Case NPCType.BloodMage5 : Return True  ' Unused
-    '        Case NPCType.FireBeast : Return True  ' Unused
-    '        Case NPCType.IceGlobe : Return True  ' Unused
-    '        Case NPCType.LightningBeast : Return True  ' Unused
-    '        Case NPCType.PoisonOrb : Return True  ' Unused
-    '        Case NPCType.Chicken : Return True  ' Dummy
-    '        Case NPCType.Rat : Return True  ' Dummy
-    '        Case NPCType.Rogue : Return True  ' Dummy
-    '        Case NPCType.HellMeteor : Return True  ' Dummy
-    '        Case NPCType.Bird : Return True  ' Dummy
-    '        Case NPCType.Bird2 : Return True  ' Dummy
-    '        Case NPCType.Bat : Return True  ' Dummy
-    '        Case NPCType.Cow : Return True  ' Dummy
-    '        Case NPCType.Camel : Return True  ' Dummy
-    '        Case NPCType.Act2Male : Return True  ' Dummy
-    '        Case NPCType.Act2Female : Return True  ' Dummy
-    '        Case NPCType.Act2Child : Return True  ' Dummy
-    '        Case NPCType.Act2Guard : Return True  ' Dummy
-    '        Case NPCType.Act2Vendor : Return True  ' Dummy
-    '        Case NPCType.Act2Vendor2 : Return True  ' Dummy
-    '        Case NPCType.Bug : Return True  ' Dummy
-    '        Case NPCType.Scorpion : Return True  ' Dummy
-    '        Case NPCType.Rogue2 : Return True  ' Dummy
-    '        Case NPCType.Rogue3 : Return True  ' Dummy
-    '        Case NPCType.Familiar : Return True  ' Dummy
-    '        Case NPCType.Act3Male : Return True  ' Dummy
-    '        Case NPCType.Act3Female : Return True  ' Dummy
-    '        Case NPCType.Snake : Return True  ' Dummy
-    '        Case NPCType.Parrot : Return True  ' Dummy
-    '        Case NPCType.Fish : Return True  ' Dummy
-    '        Case NPCType.EvilHole : Return True  ' Dummy
-    '        Case NPCType.EvilHole2 : Return True  ' Dummy
-    '        Case NPCType.EvilHole3 : Return True  ' Dummy
-    '        Case NPCType.EvilHole4 : Return True  ' Dummy
-    '        Case NPCType.EvilHole5 : Return True  ' Dummy
-    '        Case NPCType.InvisoSpawner : Return True  ' Dummy
-    '        Case NPCType.MiniSpider : Return True  ' Dummy
-    '        Case NPCType.BoneWall : Return True  ' Dummy
-    '        Case NPCType.SevenTombs : Return True  ' Dummy
-    '        Case NPCType.SpiritMummy : Return True  ' Dummy
-    '        Case NPCType.Act2Guard4 : Return True  ' Dummy
-    '        Case NPCType.Act2Guard5 : Return True  ' Dummy
-    '        Case NPCType.Window : Return True  ' Dummy
-    '        Case NPCType.Window2 : Return True  ' Dummy
-    '        Case NPCType.MephistoSpirit : Return True  ' Dummy
-    '        Case NPCType.InvisiblePet : Return True  ' Dummy
-    '        Case NPCType.DemonHole : Return True  ' Dummy
-    '        Case NPCType.FireboltTrap : Return True  ' A trap
-    '        Case NPCType.HorzMissileTrap : Return True  ' A trap
-    '        Case NPCType.VertMissileTrap : Return True  ' A trap
-    '        Case NPCType.PoisonCloudTrap : Return True  ' A trap
-    '        Case NPCType.LightningTrap : Return True  ' A trap
-    '        Case NPCType.MeleeTrap : Return True  ' A trap
-    '        Case NPCType.Hephasto : Return True  ' ????
-    '        Case NPCType.MinionExp : Return True  ' ????
-    '        Case NPCType.SlayerExp : Return True  ' ????
-    '        Case NPCType.SuccubusExp : Return True  ' ????
+    Public Function isBoss(ByVal type As D2Data.NPCCode)
 
+        Select Case type
 
-    '        Case NPCType.DeckardCain : Return True  ' In Trist?
-    '        Case NPCType.DarkWanderer : Return True  ' Act 3 guy outside town
-    '        Case NPCType.Tyrael : Return True  ' Kill Him in act 4 for quest?
-    '        Case NPCType.InjuredBarbarian : Return True  ' Dummy
-    '        Case NPCType.InjuredBarbarian2 : Return True  ' Dummy
-    '        Case NPCType.InjuredBarbarian3 : Return True  ' Dummy
-    '        Case NPCType.Act5Townguard : Return True  ' Dummy
-    '        Case NPCType.Act5Townguard2 : Return True  ' Dummy
-    '        Case NPCType.Tyrael3 : Return True  ' Appears when u kill baal?
+            Case D2Data.NPCCode.Andariel : Return True
+            Case D2Data.NPCCode.Duriel : Return True
+            Case D2Data.NPCCode.Mephisto : Return True
+            Case D2Data.NPCCode.Diablo : Return True
+            Case D2Data.NPCCode.BaalCrab : Return True
+            Case D2Data.NPCCode.BaalCrabToStairs : Return True
 
-    '        Case NPCType.NecroSkeleton : Return True  ' Necro summon
-    '        Case NPCType.NecroMage : Return True  ' Necro summon
+                'Secondary Bosses.
+            Case D2Data.NPCCode.Nihlathak : Return True
+            Case D2Data.NPCCode.TheSmith : Return True
+            Case D2Data.NPCCode.Tyrael : Return True
+            Case D2Data.NPCCode.Summoner : Return True
+            Case D2Data.NPCCode.Hephasto : Return True
+            Case D2Data.NPCCode.Radament : Return True
 
-    '        Case NPCType.Hydra : Return True
-    '        Case NPCType.Hydra2 : Return True
-    '        Case NPCType.Hydra3 : Return True
+                'Special Events
+            Case D2Data.NPCCode.DiabloClone : Return True
+            Case D2Data.NPCCode.UberBaal : Return True
+            Case D2Data.NPCCode.UberDiablo : Return True
+            Case D2Data.NPCCode.UberDuriel : Return True
+            Case D2Data.NPCCode.UberIzual : Return True
+            Case D2Data.NPCCode.UberMephisto : Return True
+            Case Else
+                Return False
+        End Select
+    End Function
 
-    '        Case NPCType.Guard : Return True  ' Act 2 merc?
-    '        Case NPCType.IronWolf : Return True  ' Act 3 merc?
-    '        Case NPCType.Act5Hireling1Hand : Return True  ' Act 5 merc?
-    '        Case NPCType.Act5Hireling2Hand : Return True ' Act 5 merc?
-    '        Case Else
-    '            Return False
-    '    End Select
-    'End Function
+    Public Function isUseless(ByVal type As D2Data.NPCCode) As Boolean
+        Select Case type
+            Case D2Data.NPCCode.Gorgon : Return True    'Unused
+            Case D2Data.NPCCode.Gorgon2 : Return True   'Unused
+            Case D2Data.NPCCode.Gorgon3 : Return True   'Unused
+            Case D2Data.NPCCode.Gorgon4 : Return True   'Unused
+            Case D2Data.NPCCode.ChaosHorde : Return True   'Unused
+            Case D2Data.NPCCode.ChaosHorde2 : Return True   'Unused
+            Case D2Data.NPCCode.ChaosHorde3 : Return True   'Unused
+            Case D2Data.NPCCode.ChaosHorde4 : Return True   'Unused
+            Case D2Data.NPCCode.DarkGuard : Return True   'Unused
+            Case D2Data.NPCCode.DarkGuard2 : Return True   'Unused
+            Case D2Data.NPCCode.DarkGuard3 : Return True   'Unused
+            Case D2Data.NPCCode.DarkGuard4 : Return True   'Unused
+            Case D2Data.NPCCode.DarkGuard5 : Return True   'Unused
+            Case D2Data.NPCCode.BloodMage : Return True   'Unused
+            Case D2Data.NPCCode.BloodMage2 : Return True   'Unused
+            Case D2Data.NPCCode.BloodMage3 : Return True   'Unused
+            Case D2Data.NPCCode.BloodMage4 : Return True   'Unused
+            Case D2Data.NPCCode.BloodMage5 : Return True   'Unused
+            Case D2Data.NPCCode.FireBeast : Return True   'Unused
+            Case D2Data.NPCCode.IceGlobe : Return True   'Unused
+            Case D2Data.NPCCode.LightningBeast : Return True   'Unused
+            Case D2Data.NPCCode.PoisonOrb : Return True   'Unused
+            Case D2Data.NPCCode.Chicken : Return True   'Dummy
+            Case D2Data.NPCCode.Rat : Return True   'Dummy
+            Case D2Data.NPCCode.Rogue : Return True   'Dummy
+            Case D2Data.NPCCode.HellMeteor : Return True   'Dummy
+            Case D2Data.NPCCode.Bird : Return True   'Dummy
+            Case D2Data.NPCCode.Bird2 : Return True   'Dummy
+            Case D2Data.NPCCode.Bat : Return True   'Dummy
+            Case D2Data.NPCCode.Cow : Return True   'Dummy
+            Case D2Data.NPCCode.Camel : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Male : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Female : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Child : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Guard : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Vendor : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Vendor2 : Return True   'Dummy
+            Case D2Data.NPCCode.Bug : Return True   'Dummy
+            Case D2Data.NPCCode.Scorpion : Return True   'Dummy
+            Case D2Data.NPCCode.Rogue2 : Return True   'Dummy
+            Case D2Data.NPCCode.Rogue3 : Return True   'Dummy
+            Case D2Data.NPCCode.Familiar : Return True   'Dummy
+            Case D2Data.NPCCode.Act3Male : Return True   'Dummy
+            Case D2Data.NPCCode.Act3Female : Return True   'Dummy
+            Case D2Data.NPCCode.Snake : Return True   'Dummy
+            Case D2Data.NPCCode.Parrot : Return True   'Dummy
+            Case D2Data.NPCCode.Fish : Return True   'Dummy
+            Case D2Data.NPCCode.EvilHole : Return True   'Dummy
+            Case D2Data.NPCCode.EvilHole2 : Return True   'Dummy
+            Case D2Data.NPCCode.EvilHole3 : Return True   'Dummy
+            Case D2Data.NPCCode.EvilHole4 : Return True   'Dummy
+            Case D2Data.NPCCode.EvilHole5 : Return True   'Dummy
+            Case D2Data.NPCCode.InvisoSpawner : Return True   'Dummy
+            Case D2Data.NPCCode.MiniSpider : Return True   'Dummy
+            Case D2Data.NPCCode.BoneWall : Return True   'Dummy
+            Case D2Data.NPCCode.SevenTombs : Return True   'Dummy
+            Case D2Data.NPCCode.SpiritMummy : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Guard4 : Return True   'Dummy
+            Case D2Data.NPCCode.Act2Guard5 : Return True   'Dummy
+            Case D2Data.NPCCode.Window : Return True   'Dummy
+            Case D2Data.NPCCode.Window2 : Return True   'Dummy
+            Case D2Data.NPCCode.MephistoSpirit : Return True   'Dummy
+            Case D2Data.NPCCode.InvisiblePet : Return True   'Dummy
+            Case D2Data.NPCCode.DemonHole : Return True   'Dummy
+            Case D2Data.NPCCode.FireboltTrap : Return True   'A trap
+            Case D2Data.NPCCode.HorzMissileTrap : Return True   'A trap
+            Case D2Data.NPCCode.VertMissileTrap : Return True   'A trap
+            Case D2Data.NPCCode.PoisonCloudTrap : Return True   'A trap
+            Case D2Data.NPCCode.LightningTrap : Return True   'A trap
+            Case D2Data.NPCCode.MeleeTrap : Return True   'A trap
+            Case D2Data.NPCCode.Hephasto : Return True   '????
+            Case D2Data.NPCCode.MinionExp : Return True   '????
+            Case D2Data.NPCCode.SlayerExp : Return True   '????
+            Case D2Data.NPCCode.SuccubusExp : Return True   '????
 
-    'Public Function isTownFolk(ByVal type As NPCType) As Boolean
-    '    Select Case type
-    '        Case NPCType.Charsi, _
-    '            NPCType.Gheed, _
-    '         NPCType.Warriv, _
-    '         NPCType.DeckardCain5, _
-    '         NPCType.Kashya, _
-    '         NPCType.Akara, _
-    '         NPCType.Greiz, _
-    '         NPCType.Elzix, _
-    '         NPCType.Drognan, _
-    '         NPCType.Kaelan, _
-    '         NPCType.Jerhyn, _
-    '         NPCType.Warriv2, _
-    '         NPCType.Lysander, _
-    '         NPCType.Fara, _
-    '         NPCType.DeckardCain2, _
-    '         NPCType.Atma, _
-    '         NPCType.Geglash, _
-    '         NPCType.Meshif, _
-    '         NPCType.Alkor, _
-    '         NPCType.Asheara, _
-    '         NPCType.Ormus, _
-    '         NPCType.DeckardCain3, _
-    '         NPCType.Meshif2, _
-    '         NPCType.Hratli, _
-    '         NPCType.Tyrael2, _
-    '         NPCType.DeckardCain4, _
-    '         NPCType.Halbu, _
-    '         NPCType.Jamella, _
-    '         NPCType.Malah, _
-    '         NPCType.QualKehk, _
-    '         NPCType.Larzuk, _
-    '         NPCType.DeckardCain6, _
-    '         NPCType.Drehya ' Anya?? wtf??  and who the hell is Drehya2?
-    '            Return True
-    '        Case Else
-    '            Return False
-    '    End Select
-    'End Function
+            Case D2Data.NPCCode.DeckardCain : Return True   'In Trist?
+            Case D2Data.NPCCode.DarkWanderer : Return True   'Act 3 guy outside town
+                'Case D2Data.NPCCode.Tyrael : Return True   'Kill Him in act 4 for quest?
+            Case D2Data.NPCCode.InjuredBarbarian : Return True   'Dummy
+            Case D2Data.NPCCode.InjuredBarbarian2 : Return True   'Dummy
+            Case D2Data.NPCCode.InjuredBarbarian3 : Return True   'Dummy
+            Case D2Data.NPCCode.Act5Townguard : Return True   'Dummy
+            Case D2Data.NPCCode.Act5Townguard2 : Return True   'Dummy
+            Case D2Data.NPCCode.Tyrael3 : Return True   'Appears when u kill baal?
 
-    'Public Function isMonster(ByVal type As NPCType) As Boolean
-    '    If isTownFolk(type) Or isUseless(type) Then
-    '        Return False
-    '    Else
-    '        Return True
-    '    End If
-    'End Function
+            Case D2Data.NPCCode.NecroSkeleton : Return True   'Necro summon
+            Case D2Data.NPCCode.NecroMage : Return True   'Necro summon
+
+            Case D2Data.NPCCode.Hydra : Return True
+            Case D2Data.NPCCode.Hydra2 : Return True
+            Case D2Data.NPCCode.Hydra3 : Return True
+
+            Case D2Data.NPCCode.Guard : Return True   'Act 2 merc?
+            Case D2Data.NPCCode.IronWolf : Return True   'Act 3 merc?
+            Case D2Data.NPCCode.Act5Hireling1Hand : Return True   'Act 5 merc?
+            Case D2Data.NPCCode.Act5Hireling2Hand : Return True  'Act 5 merc?
+
+            Case Else
+                Return False
+        End Select
+    End Function
+
+    Public Function isTownFolk(ByVal type As D2Data.NPCCode) As Boolean
+        Select Case type
+            Case D2Data.NPCCode.Charsi, _
+                D2Data.NPCCode.Gheed, _
+             D2Data.NPCCode.Warriv, _
+             D2Data.NPCCode.DeckardCain5, _
+             D2Data.NPCCode.Kashya, _
+             D2Data.NPCCode.Akara, _
+             D2Data.NPCCode.Greiz, _
+             D2Data.NPCCode.Elzix, _
+             D2Data.NPCCode.Drognan, _
+             D2Data.NPCCode.Kaelan, _
+             D2Data.NPCCode.Jerhyn, _
+             D2Data.NPCCode.Warriv2, _
+             D2Data.NPCCode.Lysander, _
+             D2Data.NPCCode.Fara, _
+             D2Data.NPCCode.DeckardCain2, _
+             D2Data.NPCCode.Atma, _
+             D2Data.NPCCode.Geglash, _
+             D2Data.NPCCode.Meshif, _
+             D2Data.NPCCode.Alkor, _
+             D2Data.NPCCode.Asheara, _
+             D2Data.NPCCode.Ormus, _
+             D2Data.NPCCode.DeckardCain3, _
+             D2Data.NPCCode.Meshif2, _
+             D2Data.NPCCode.Hratli, _
+             D2Data.NPCCode.Tyrael2, _
+             D2Data.NPCCode.DeckardCain4, _
+             D2Data.NPCCode.Halbu, _
+             D2Data.NPCCode.Jamella, _
+             D2Data.NPCCode.Malah, _
+             D2Data.NPCCode.QualKehk, _
+             D2Data.NPCCode.Larzuk, _
+             D2Data.NPCCode.DeckardCain6, _
+             D2Data.NPCCode.Drehya ' Anya?? wtf??  and who the hell is Drehya2?
+                Return True
+            Case Else
+                Return False
+        End Select
+    End Function
+
+    Public Function isMonster(ByVal type As D2Data.NPCCode) As Boolean
+        If isTownFolk(type) Or isUseless(type) Or isBoss(type) Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
 
 End Module
