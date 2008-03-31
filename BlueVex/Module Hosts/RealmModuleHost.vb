@@ -96,7 +96,7 @@ Public Class RealmModuleHost
 #Region " Packet Event Raisers "
 
     Overrides Sub InterptetPacketToServer(ByRef Packet As Packet)
-        Select Case Packet.Data(0)
+        Select Case Packet.Data(2)
             Case D2Packets.RealmClientPacket.CancelGameCreation
                 RaiseEvent OnCancelGameCreation(New RealmClient.CancelGameCreation(Packet.Data))
             Case D2Packets.RealmClientPacket.CharacterCreationRequest
@@ -126,7 +126,7 @@ Public Class RealmModuleHost
     End Sub
 
     Overrides Sub InterptetPacketToClient(ByRef Packet As Packet)
-        Select Case Packet.Data(0)
+        Select Case Packet.Data(2)
             Case D2Packets.RealmServerPacket.CharacterCreationResponse
                 RaiseEvent OnCharacterCreationResponse(New RealmServer.CharacterCreationResponse(Packet.Data))
             Case D2Packets.RealmServerPacket.CharacterDeletionResponse
