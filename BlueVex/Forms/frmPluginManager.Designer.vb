@@ -30,8 +30,7 @@ Partial Class frmPluginManager
         Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-        Me.tsbEnable = New System.Windows.Forms.ToolStripButton
-        Me.tsbDisable = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -54,7 +53,7 @@ Partial Class frmPluginManager
         'ColumnHeader1
         '
         Me.ColumnHeader1.Text = "ModuleName"
-        Me.ColumnHeader1.Width = 200
+        Me.ColumnHeader1.Width = 121
         '
         'ColumnHeader2
         '
@@ -64,6 +63,7 @@ Partial Class frmPluginManager
         'ColumnHeader3
         '
         Me.ColumnHeader3.Text = "Version"
+        Me.ColumnHeader3.Width = 66
         '
         'ColumnHeader5
         '
@@ -78,28 +78,18 @@ Partial Class frmPluginManager
         'ToolStrip1
         '
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEnable, Me.tsbDisable})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(607, 25)
         Me.ToolStrip1.TabIndex = 1
         Me.ToolStrip1.Text = "ToolStrip1"
         '
-        'tsbEnable
+        'ToolStripLabel1
         '
-        Me.tsbEnable.Enabled = False
-        Me.tsbEnable.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbEnable.Name = "tsbEnable"
-        Me.tsbEnable.Size = New System.Drawing.Size(46, 22)
-        Me.tsbEnable.Text = "Enable"
-        '
-        'tsbDisable
-        '
-        Me.tsbDisable.Enabled = False
-        Me.tsbDisable.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbDisable.Name = "tsbDisable"
-        Me.tsbDisable.Size = New System.Drawing.Size(49, 22)
-        Me.tsbDisable.Text = "Disable"
+        Me.ToolStripLabel1.Name = "ToolStripLabel1"
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(186, 22)
+        Me.ToolStripLabel1.Text = "Double Click to Enable/Disable Plugins"
         '
         'frmPluginManager
         '
@@ -125,6 +115,5 @@ Partial Class frmPluginManager
     Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents tsbEnable As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tsbDisable As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
 End Class
