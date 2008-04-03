@@ -1,6 +1,7 @@
 Imports System.Runtime.InteropServices
 
 Public Class Plugin
+    Declare Function GetWindowRect Lib "user32" (ByVal hWnd As Int32) As System.Drawing.Rectangle
 
     Public Sub New()
 
@@ -18,9 +19,9 @@ Public Class Plugin
                     MyRedVexInfo = info
                     Dim RedVexHandle As IntPtr = info.GetWindowHandle.Invoke()
                     Main = New frmMain
-                    Main.frmMain_Load(Nothing, Nothing)
-                    'Main.Show()
-                    'SetParent(Main.Handle, RedVexHandle)
+                    SetParent(Main.Handle, RedVexHandle)
+                    Main.SetDesktopLocation(405, 0)
+                    Main.Show()
                 End If
             End If
         Catch ex As Exception

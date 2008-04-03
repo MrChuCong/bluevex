@@ -4,6 +4,8 @@ Imports System.Net.Sockets
 Public Class frmMain
     Implements IGUI
 
+    Dim newAbout As frmAbout
+
 #Region " IGUI Implementations "
 
     Public Sub AddMenuItem(ByVal item As System.Windows.Forms.ToolStripMenuItem) Implements IGUI.AddMenuItem
@@ -86,6 +88,7 @@ Public Class frmMain
     End Sub
 
     Public Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
         Me.Text = IO.Path.GetFileNameWithoutExtension(Application.ExecutablePath)
         Main = Me
         If Not IO.Directory.Exists(Application.StartupPath & "\ManagedPlugins") Then IO.Directory.CreateDirectory(Application.StartupPath & "\ManagedPlugins")
@@ -145,8 +148,10 @@ Public Class frmMain
 
     Private Delegate Sub GameModuleInitializeDelegate(ByVal Host As IGame, ByVal form As System.Windows.Forms.Form)
     Sub LoadGameModules()
+
         Dim Plugins() As PluginServices.AvailablePlugin
         Plugins = PluginServices.FindPlugins(Application.StartupPath & "\ManagedPlugins", "BlueVex.IGameModule")
+
         If Plugins Is Nothing Then
             Log.WriteLine("Loaded game modules (0)")
             Exit Sub
@@ -199,30 +204,13 @@ Public Class frmMain
 #Region " Menu Items and Buttons "
 
     Private Sub AboutBlueVexToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AboutBlueVexToolStripMenuItem.Click
-        Dim newAbout As New frmAbout
-        newAbout.ShowDialog()
-    End Sub
-
-    Private Sub QuitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        'Me.NotifyIcon1.Visible = False
-        'End
+        newAbout = New frmAbout
+        'newAbout.ShowDialog()
     End Sub
 
     Private Sub OptionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptionsToolStripMenuItem.Click
         Dim newOptions As New frmOptions
         newOptions.ShowDialog()
-    End Sub
-
-    Private Sub tsbStart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.Start()
-    End Sub
-
-    Private Sub tsbStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.Stop()
-    End Sub
-
-    Private Sub MinimiseToTrayToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.Hide()
     End Sub
 
     Private Sub NotifyIcon1_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles NotifyIcon1.DoubleClick
@@ -236,28 +224,23 @@ Public Class frmMain
         'End
     End Sub
 
-    Private Sub StartToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.Start()
-    End Sub
-
-    Private Sub StopToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.Stop()
-    End Sub
-
-    Private Sub StartToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StartToolStripMenuItem1.Click
-        Me.Start()
-    End Sub
-
-    Private Sub StopToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopToolStripMenuItem1.Click
-        Me.Stop()
-    End Sub
-
     Private Sub ManagePluginsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ManagePluginsToolStripMenuItem.Click
         PluginManagerForm.MdiParent = Me
         PluginManagerForm.WindowState = FormWindowState.Maximized
         PluginManagerForm.Show()
     End Sub
+    Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SettingsToolStripMenuItem.Click
+        SettingsToolStripMenuItem.ShowDropDown()
+    End Sub
+    Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AboutToolStripMenuItem.Click
+        AboutToolStripMenuItem.ShowDropDown()
+    End Sub
+    Private Sub PluginManagerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PluginManagerButton.Click
 
+        PluginManagerForm.MdiParent = Me
+        PluginManagerForm.WindowState = FormWindowState.Maximized
+        PluginManagerForm.Show()
+    End Sub
 #End Region
 
 #Region " Hide MDI Child Icons in the MenuStrip "

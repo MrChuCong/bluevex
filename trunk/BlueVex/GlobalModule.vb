@@ -99,7 +99,6 @@ Public Module GameHelpers
                 Return False
         End Select
     End Function
-
     Public Function isUseless(ByVal type As D2Data.NPCCode) As Boolean
         Select Case type
             Case D2Data.NPCCode.Gorgon : Return True    'Unused
@@ -203,7 +202,6 @@ Public Module GameHelpers
                 Return False
         End Select
     End Function
-
     Public Function isTownFolk(ByVal type As D2Data.NPCCode) As Boolean
         Select Case type
             Case D2Data.NPCCode.Charsi, _
@@ -244,7 +242,6 @@ Public Module GameHelpers
                 Return False
         End Select
     End Function
-
     Public Function isMonster(ByVal type As D2Data.NPCCode) As Boolean
         If isTownFolk(type) Or isUseless(type) Or isBoss(type) Then
             Return False

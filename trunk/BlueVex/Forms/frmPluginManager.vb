@@ -77,46 +77,29 @@ Public Class frmPluginManager
 
     End Sub
 
-    Private Sub lvModules_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvModules.SelectedIndexChanged
+    Private Sub lvModules_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvModules.MouseDoubleClick
         If Me.lvModules.SelectedItems.Count = 1 Then
             If Me.lvModules.SelectedItems(0).Text = "Disabled" Then
-                Me.tsbEnable.Enabled = True
-                Me.tsbDisable.Enabled = False
+                For Each item As ListViewItem In Me.lvModules.SelectedItems
+                    item.Text = item.Tag
+                    item.ForeColor = Drawing.Color.Black
+                    If My.Settings.DisabledModules.Contains(item.SubItems(1).Text) Then
+                        My.Settings.DisabledModules.Remove(item.SubItems(1).Text)
+                    End If
+                Next
+                My.Settings.Save()
             Else
-                Me.tsbEnable.Enabled = False
-                Me.tsbDisable.Enabled = True
+                For Each item As ListViewItem In Me.lvModules.SelectedItems
+                    If item.Text <> "Disabled" Then
+                        item.Text = "Disabled"
+                        item.ForeColor = Drawing.Color.Gray
+                        My.Settings.DisabledModules.Add(item.SubItems(1).Text)
+                    End If
+                Next
+                My.Settings.Save()
+
             End If
-        ElseIf Me.lvModules.SelectedItems.Count = 0 Then
-            Me.tsbDisable.Enabled = False
-            Me.tsbEnable.Enabled = False
-        Else
-            Me.tsbDisable.Enabled = True
-            Me.tsbEnable.Enabled = True
         End If
-    End Sub
-
-    Private Sub tsbEnable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEnable.Click
-        For Each item As ListViewItem In Me.lvModules.SelectedItems
-            item.Text = item.Tag
-            item.ForeColor = Drawing.Color.Black
-            If My.Settings.DisabledModules.Contains(item.SubItems(1).Text) Then
-                My.Settings.DisabledModules.Remove(item.SubItems(1).Text)
-            End If
-        Next
-        lvModules_SelectedIndexChanged(Nothing, Nothing)
-        My.Settings.Save()
-    End Sub
-
-    Private Sub tsbDisable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbDisable.Click
-        For Each item As ListViewItem In Me.lvModules.SelectedItems
-            If item.Text <> "Disabled" Then
-                item.Text = "Disabled"
-                item.ForeColor = Drawing.Color.Gray
-                My.Settings.DisabledModules.Add(item.SubItems(1).Text)
-            End If
-        Next
-        lvModules_SelectedIndexChanged(Nothing, Nothing)
-        My.Settings.Save()
     End Sub
 
 End Class

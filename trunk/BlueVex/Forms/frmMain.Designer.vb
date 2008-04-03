@@ -25,11 +25,20 @@ Partial Class frmMain
         Me.components = New System.ComponentModel.Container
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.tsbDiablo = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RealmsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ManagePluginsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
+        Me.CreatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.PlehToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.OthersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
+        Me.OthersToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.AboutBlueVexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -38,6 +47,7 @@ Partial Class frmMain
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator
         Me.QuitToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip
+        Me.PluginManagerButton = New System.Windows.Forms.ToolStripButton
         Me.ToolStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -46,10 +56,10 @@ Partial Class frmMain
         'ToolStrip1
         '
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbDiablo})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbDiablo, Me.ToolStripSeparator3, Me.PluginManagerButton})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(553, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(225, 25)
         Me.ToolStrip1.TabIndex = 1
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -59,6 +69,11 @@ Partial Class frmMain
         Me.tsbDiablo.Name = "tsbDiablo"
         Me.tsbDiablo.Size = New System.Drawing.Size(75, 22)
         Me.tsbDiablo.Text = "Load Diablo 2"
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
         '
         'SettingsToolStripMenuItem
         '
@@ -88,10 +103,61 @@ Partial Class frmMain
         '
         'AboutToolStripMenuItem
         '
-        Me.AboutToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutBlueVexToolStripMenuItem})
+        Me.AboutToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AboutBlueVexToolStripMenuItem})
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.AboutToolStripMenuItem.Text = "About"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CreatorToolStripMenuItem, Me.PlehToolStripMenuItem, Me.ToolStripSeparator1, Me.OthersToolStripMenuItem, Me.ToolStripMenuItem2, Me.ToolStripSeparator2, Me.OthersToolStripMenuItem1})
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(155, 22)
+        Me.ToolStripMenuItem1.Text = "Developpers"
+        '
+        'CreatorToolStripMenuItem
+        '
+        Me.CreatorToolStripMenuItem.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.CreatorToolStripMenuItem.Name = "CreatorToolStripMenuItem"
+        Me.CreatorToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
+        Me.CreatorToolStripMenuItem.Text = "Creator:"
+        '
+        'PlehToolStripMenuItem
+        '
+        Me.PlehToolStripMenuItem.Font = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.PlehToolStripMenuItem.Name = "PlehToolStripMenuItem"
+        Me.PlehToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
+        Me.PlehToolStripMenuItem.Text = "Pleh"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(156, 6)
+        '
+        'OthersToolStripMenuItem
+        '
+        Me.OthersToolStripMenuItem.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.OthersToolStripMenuItem.Name = "OthersToolStripMenuItem"
+        Me.OthersToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
+        Me.OthersToolStripMenuItem.Text = "Developpers:"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(159, 22)
+        Me.ToolStripMenuItem2.Text = "Dezimtox"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(156, 6)
+        '
+        'OthersToolStripMenuItem1
+        '
+        Me.OthersToolStripMenuItem1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.OthersToolStripMenuItem1.Name = "OthersToolStripMenuItem1"
+        Me.OthersToolStripMenuItem1.Size = New System.Drawing.Size(159, 22)
+        Me.OthersToolStripMenuItem1.Text = "Others:"
         '
         'AboutBlueVexToolStripMenuItem
         '
@@ -140,15 +206,23 @@ Partial Class frmMain
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-        Me.MenuStrip1.Size = New System.Drawing.Size(553, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(225, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'PluginManagerButton
+        '
+        Me.PluginManagerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.PluginManagerButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.PluginManagerButton.Name = "PluginManagerButton"
+        Me.PluginManagerButton.Size = New System.Drawing.Size(84, 22)
+        Me.PluginManagerButton.Text = "Plugin Manager"
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(553, 405)
+        Me.ClientSize = New System.Drawing.Size(225, 52)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.IsMdiContainer = True
@@ -179,5 +253,25 @@ Partial Class frmMain
     Friend WithEvents QuitToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
     Friend WithEvents tsbDiablo As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CreatorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents PlehToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents OthersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents OthersToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+
+    Sub New()
+
+        ' This call is required by the Windows Form Designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.Text = "BlueVex Beta 5"
+        Me.Hide()
+    End Sub
+    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents PluginManagerButton As System.Windows.Forms.ToolStripButton
 
 End Class
