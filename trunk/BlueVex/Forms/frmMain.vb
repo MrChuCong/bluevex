@@ -4,6 +4,8 @@ Imports System.Net.Sockets
 Public Class frmMain
     Implements IGUI
 
+    Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+    Declare Function SetFocus Lib "user32" (ByVal hwnd As Long) As Long
     Dim newAbout As frmAbout
 
 #Region " IGUI Implementations "
@@ -83,9 +85,15 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        Me.Hide()
         e.Cancel = True
     End Sub
+
+    Private Sub frmMain_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
+
+        Dim handle As Long = FindWindow(Nothing, "rvt")
+        'handle = SetFocus(handle)
+    End Sub
+
 
     Public Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
@@ -120,7 +128,6 @@ Public Class frmMain
         '    If RealmListener IsNot Nothing Then If RealmListener.Started Then Me.tsbStart.Enabled = False : Me.tsbStop.Enabled = True
         '    If GameListener IsNot Nothing Then If GameListener.Started Then Me.tsbStart.Enabled = False : Me.tsbStop.Enabled = True
     End Sub
-
     Private Sub [Stop]()
         'If ChatListener IsNot Nothing Then ChatListener.Stop()
         'If RealmListener IsNot Nothing Then RealmListener.Stop()
@@ -158,9 +165,10 @@ Public Class frmMain
         End If
         Log.WriteLine("Loaded game modules (" & Plugins.Length & " total)")
         For i As Integer = 0 To Plugins.Length - 1
-            AvailableGameModules.Add(Plugins(i))
+            'AvailableGameModules.Add(Plugins(i))
             Dim GameModule As IGameModule = DirectCast(PluginServices.CreateInstance(Plugins(i)), IGameModule)
             Log.WriteLine("	" & (i + 1) & ".	Title: " & GameModule.Name)
+            AvailableGameModules.Add(GameModule)
             GameModule = Nothing
         Next
 
@@ -176,9 +184,10 @@ Public Class frmMain
         End If
         Log.WriteLine("Loaded chat modules (" & Plugins.Length & " total)")
         For i As Integer = 0 To Plugins.Length - 1
-            AvailableChatModules.Add(Plugins(i))
+            'AvailableChatModules.Add(Plugins(i))
             Dim ChatModule As IChatModule = DirectCast(PluginServices.CreateInstance(Plugins(i)), IChatModule)
             Log.WriteLine("	" & (i + 1) & ".	Title: " & ChatModule.Name)
+            AvailableChatModules.Add(ChatModule)
             ChatModule = Nothing
         Next
     End Sub
@@ -193,10 +202,12 @@ Public Class frmMain
             Exit Sub
         End If
         Log.WriteLine("Loaded realm modules (" & Plugins.Length & " total)")
+
         For i As Integer = 0 To Plugins.Length - 1
-            AvailableRealmModules.Add(Plugins(i))
+            'AvailableRealmModules.Add(Plugins(i))
             Dim RealmModule As IRealmModule = DirectCast(PluginServices.CreateInstance(Plugins(i)), IRealmModule)
             Log.WriteLine("	" & (i + 1) & ".	Title: " & RealmModule.Name)
+            AvailableRealmModules.Add(RealmModule)
             RealmModule = Nothing
         Next
     End Sub
@@ -214,9 +225,9 @@ Public Class frmMain
     End Sub
 
     Private Sub NotifyIcon1_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles NotifyIcon1.DoubleClick
-        Me.Show()
-        Me.BringToFront()
-        Me.Focus()
+        'Me.Show()
+        'Me.BringToFront()
+        'Me.Focus()
     End Sub
 
     Private Sub QuitToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles QuitToolStripMenuItem1.Click
@@ -226,6 +237,14 @@ Public Class frmMain
 
     Private Sub ManagePluginsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ManagePluginsToolStripMenuItem.Click
         PluginManagerForm.MdiParent = Me
+        Main.Height = 300
+        PluginManagerForm.WindowState = FormWindowState.Maximized
+        PluginManagerForm.Show()
+    End Sub
+    Private Sub PluginManagerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PluginManagerButton.Click
+
+        PluginManagerForm.MdiParent = Me
+        Main.Height = 300
         PluginManagerForm.WindowState = FormWindowState.Maximized
         PluginManagerForm.Show()
     End Sub
@@ -234,12 +253,6 @@ Public Class frmMain
     End Sub
     Private Sub AboutToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AboutToolStripMenuItem.Click
         AboutToolStripMenuItem.ShowDropDown()
-    End Sub
-    Private Sub PluginManagerButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PluginManagerButton.Click
-
-        PluginManagerForm.MdiParent = Me
-        PluginManagerForm.WindowState = FormWindowState.Maximized
-        PluginManagerForm.Show()
     End Sub
 #End Region
 

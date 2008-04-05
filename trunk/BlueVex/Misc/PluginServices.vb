@@ -1,5 +1,6 @@
 Imports System.IO
 Imports System.Reflection
+Imports System.Diagnostics.FileVersionInfo
 
 Public Class PluginServices
 

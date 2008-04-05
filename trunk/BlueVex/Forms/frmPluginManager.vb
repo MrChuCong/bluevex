@@ -6,11 +6,14 @@ Public Class frmPluginManager
     End Sub
 
     Private Sub frmPluginManager_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
         Me.lvModules.Items.Clear()
 
         Dim GameModule As IGameModule
+
         For i As Integer = 1 To AvailableGameModules.Count
-            GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
+            'GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
+            GameModule = DirectCast(AvailableGameModules(i), IGameModule)
             Dim lvi As New ListViewItem
             lvi.Text = "Game"
             lvi.Tag = "Game"
@@ -25,7 +28,7 @@ Public Class frmPluginManager
         Dim RealmModule As IRealmModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableRealmModules.Count
-            RealmModule = DirectCast(PluginServices.CreateInstance(AvailableRealmModules(i)), IRealmModule)
+            RealmModule = DirectCast(AvailableRealmModules(i), IRealmModule)
             Dim lvi As New ListViewItem
             lvi.Text = "Realm"
             lvi.Tag = "Realm"
@@ -40,7 +43,7 @@ Public Class frmPluginManager
         Dim ChatModule As IChatModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableChatModules.Count
-            ChatModule = DirectCast(PluginServices.CreateInstance(AvailableChatModules(i)), IChatModule)
+            ChatModule = DirectCast(AvailableChatModules(i), IChatModule)
             Dim lvi As New ListViewItem
             lvi.Text = "Chat"
             lvi.Tag = "Chat"
@@ -55,7 +58,7 @@ Public Class frmPluginManager
         Dim GUIModule As IGUIModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableGUIModules.Count
-            GUIModule = DirectCast(PluginServices.CreateInstance(AvailableGUIModules(i)), IGUIModule)
+            GUIModule = DirectCast(AvailableGUIModules(i), IGUIModule)
             Dim lvi As New ListViewItem
             lvi.Text = "GUI"
             lvi.Tag = "GUI"

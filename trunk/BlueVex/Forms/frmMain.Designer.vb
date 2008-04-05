@@ -26,6 +26,7 @@ Partial Class frmMain
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.tsbDiablo = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
+        Me.PluginManagerButton = New System.Windows.Forms.ToolStripButton
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RealmsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -47,7 +48,6 @@ Partial Class frmMain
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator
         Me.QuitToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip
-        Me.PluginManagerButton = New System.Windows.Forms.ToolStripButton
         Me.ToolStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -74,6 +74,14 @@ Partial Class frmMain
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
         Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+        '
+        'PluginManagerButton
+        '
+        Me.PluginManagerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.PluginManagerButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.PluginManagerButton.Name = "PluginManagerButton"
+        Me.PluginManagerButton.Size = New System.Drawing.Size(84, 22)
+        Me.PluginManagerButton.Text = "Plugin Manager"
         '
         'SettingsToolStripMenuItem
         '
@@ -210,24 +218,19 @@ Partial Class frmMain
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
-        'PluginManagerButton
-        '
-        Me.PluginManagerButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.PluginManagerButton.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.PluginManagerButton.Name = "PluginManagerButton"
-        Me.PluginManagerButton.Size = New System.Drawing.Size(84, 22)
-        Me.PluginManagerButton.Text = "Plugin Manager"
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(225, 52)
+        Me.ClientSize = New System.Drawing.Size(225, 53)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.IsMdiContainer = True
+        Me.Location = New System.Drawing.Point(1, 1)
         Me.MainMenuStrip = Me.MenuStrip1
+        Me.MinimizeBox = False
         Me.Name = "frmMain"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "BlueVex Beta 5"
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
@@ -266,10 +269,8 @@ Partial Class frmMain
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        Me.Text = "BlueVex Beta 5"
         Me.Hide()
+        ' Add any initialization after the InitializeComponent() call.
     End Sub
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents PluginManagerButton As System.Windows.Forms.ToolStripButton
