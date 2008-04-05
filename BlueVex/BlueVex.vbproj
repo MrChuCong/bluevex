@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\RedVex\</OutputPath>
+    <OutputPath>..\..\..\BlueVex Beta 5 Preview\RedVex\</OutputPath>
     <DocumentationFile>BlueVex.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
@@ -116,6 +116,10 @@
     <Compile Include="Misc\PluginServices.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\frmAbout.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmAbout.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmMain.vb</DependentUpon>
@@ -123,6 +127,10 @@
     <EmbeddedResource Include="Forms\frmOptions.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmOptions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmPluginManager.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPluginManager.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -132,7 +140,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="obj\app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

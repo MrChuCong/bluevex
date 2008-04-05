@@ -14,7 +14,8 @@ Public Class GameModuleHost
         Dim GameModule As IGameModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableGameModules.Count
-            GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
+            'GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
+            GameModule = DirectCast(AvailableGameModules(i), IGameModule)
             If My.Settings.DisabledModules Is Nothing Then My.Settings.DisabledModules = New Collections.Specialized.StringCollection
             If Not My.Settings.DisabledModules.Contains(GameModule.Name) Then
                 Log.WriteLine("Loading " & GameModule.Name)
@@ -495,8 +496,9 @@ Public Class GameModuleHost
                 RaiseEvent OnNPCWantsInteract(New GameServer.NPCWantsInteract(Packet.Data))
             Case D2Packets.GameServerPacket.OpenWaypoint
                 RaiseEvent OnOpenWaypoint(New GameServer.OpenWaypoint(Packet.Data))
-            Case D2Packets.GameServerPacket.OwnedItemAction
-                RaiseEvent OnItemAction(New GameServer.OwnedItemAction(Packet.Data))
+                'Quick Fix, Prevent crashing.
+                'Case D2Packets.GameServerPacket.OwnedItemAction
+                '   RaiseEvent OnItemAction(New GameServer.OwnedItemAction(Packet.Data))
             Case D2Packets.GameServerPacket.PartyMemberPulse
                 RaiseEvent OnPartyMemberPulse(New GameServer.PartyMemberPulse(Packet.Data))
             Case D2Packets.GameServerPacket.PartyMemberUpdate

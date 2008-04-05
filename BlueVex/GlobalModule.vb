@@ -44,7 +44,6 @@ Public Module GlobalModule
 End Module
 
 Public Module Log
-
     Public Delegate Sub WriteLineDelegate(ByVal Text As String)
     Sub WriteLine(ByVal Text As String)
         If Main.InvokeRequired Then
