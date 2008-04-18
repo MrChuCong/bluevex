@@ -496,7 +496,7 @@ Public Class GameModuleHost
                 RaiseEvent OnNPCWantsInteract(New GameServer.NPCWantsInteract(Packet.Data))
             Case D2Packets.GameServerPacket.OpenWaypoint
                 RaiseEvent OnOpenWaypoint(New GameServer.OpenWaypoint(Packet.Data))
-                'Quick Fix, Prevent crashing.
+                'Quick Fix, Prevent crashing *** gotta Do something about it!
                 'Case D2Packets.GameServerPacket.OwnedItemAction
                 '   RaiseEvent OnItemAction(New GameServer.OwnedItemAction(Packet.Data))
             Case D2Packets.GameServerPacket.PartyMemberPulse

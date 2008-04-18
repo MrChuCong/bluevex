@@ -32,7 +32,6 @@ Partial Class frmOptions
         Me.Label8 = New System.Windows.Forms.Label
         Me.butBrowse = New System.Windows.Forms.Button
         Me.txtDiabloPath = New System.Windows.Forms.TextBox
-        Me.cbLoadMinimized = New System.Windows.Forms.CheckBox
         Me.cbLoadDiablo = New System.Windows.Forms.CheckBox
         Me.cbAutoStart = New System.Windows.Forms.CheckBox
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
@@ -92,7 +91,6 @@ Partial Class frmOptions
         Me.GroupBox3.Controls.Add(Me.Label8)
         Me.GroupBox3.Controls.Add(Me.butBrowse)
         Me.GroupBox3.Controls.Add(Me.txtDiabloPath)
-        Me.GroupBox3.Controls.Add(Me.cbLoadMinimized)
         Me.GroupBox3.Controls.Add(Me.cbLoadDiablo)
         Me.GroupBox3.Controls.Add(Me.cbAutoStart)
         Me.GroupBox3.Location = New System.Drawing.Point(6, 6)
@@ -143,20 +141,10 @@ Partial Class frmOptions
         Me.txtDiabloPath.Size = New System.Drawing.Size(243, 20)
         Me.txtDiabloPath.TabIndex = 3
         '
-        'cbLoadMinimized
-        '
-        Me.cbLoadMinimized.AutoSize = True
-        Me.cbLoadMinimized.Location = New System.Drawing.Point(104, 19)
-        Me.cbLoadMinimized.Name = "cbLoadMinimized"
-        Me.cbLoadMinimized.Size = New System.Drawing.Size(99, 17)
-        Me.cbLoadMinimized.TabIndex = 2
-        Me.cbLoadMinimized.Text = "Load Minimized"
-        Me.cbLoadMinimized.UseVisualStyleBackColor = True
-        '
         'cbLoadDiablo
         '
         Me.cbLoadDiablo.AutoSize = True
-        Me.cbLoadDiablo.Location = New System.Drawing.Point(233, 19)
+        Me.cbLoadDiablo.Location = New System.Drawing.Point(83, 19)
         Me.cbLoadDiablo.Name = "cbLoadDiablo"
         Me.cbLoadDiablo.Size = New System.Drawing.Size(104, 17)
         Me.cbLoadDiablo.TabIndex = 1
@@ -207,7 +195,6 @@ Partial Class frmOptions
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents butBrowse As System.Windows.Forms.Button
     Friend WithEvents txtDiabloPath As System.Windows.Forms.TextBox
-    Friend WithEvents cbLoadMinimized As System.Windows.Forms.CheckBox
     Friend WithEvents cbLoadDiablo As System.Windows.Forms.CheckBox
     Friend WithEvents cbAutoStart As System.Windows.Forms.CheckBox
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog

@@ -78,10 +78,6 @@ Public Class frmMain
 
     Private Loaded As Integer = 0
     Private Sub frmMain_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-        If Loaded < 2 Then
-            If My.Settings.LoadMinimized = True Then Me.Hide()
-            Loaded += 1
-        End If
     End Sub
 
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
