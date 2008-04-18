@@ -280,12 +280,6 @@ BOOL CCollisionMap::GenerateMap(VOID)
 //////////////////////////////////////////////////////////////////////////////////////////////
 		*/
 
-
-
-
-
-
-
 		if(!Memory.ReadMemory(dwRoom + 0x60,&dwRoom,sizeof(DWORD)))
 			return FALSE;
 		

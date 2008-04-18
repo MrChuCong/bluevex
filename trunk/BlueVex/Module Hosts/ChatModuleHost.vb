@@ -14,7 +14,7 @@ Public Class ChatModuleHost
         Dim ChatModule As IChatModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableChatModules.Count
-            ChatModule = DirectCast(PluginServices.CreateInstance(AvailableChatModules(i)), IChatModule)
+            ChatModule = DirectCast(AvailableChatModules(i), IChatModule)
             If My.Settings.DisabledModules Is Nothing Then My.Settings.DisabledModules = New Collections.Specialized.StringCollection
             If Not My.Settings.DisabledModules.Contains(ChatModule.Name) Then
                 Log.WriteLine("Loading " & ChatModule.Name)
