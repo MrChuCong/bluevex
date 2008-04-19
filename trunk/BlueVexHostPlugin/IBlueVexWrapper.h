@@ -10,6 +10,7 @@ class     IBlueVexWrapper
 public:
 
 	virtual void    InitPlugin(RedVexInfo* Funcs) = 0;
+	virtual void    DestroyPlugin() = 0;
 	virtual void    InitGameModule(IProxy* proxy, IModule* module) = 0;
 	virtual void	OnRelayGameDataToClient(const unsigned char* bytes,int length,IPacket* packet) = 0;
 	virtual void	OnRelayGameDataToServer(const unsigned char* bytes,int length,IPacket* packet) = 0;
