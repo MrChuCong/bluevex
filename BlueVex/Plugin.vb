@@ -27,6 +27,10 @@ Public Class Plugin
         End Try
     End Sub
 
+    Public Sub DestroyPlugin()
+        'MsgBox("Destroy Plugins")
+    End Sub
+
 End Class
 
 Public Module MainModule
@@ -44,15 +48,13 @@ Public Module MainModule
     End Structure
 
     Public Delegate Sub RelayDelegate(ByVal bytes() As Byte, ByVal length As Integer, ByVal ProxyPointer As IntPtr, ByVal ModulePointer As IntPtr)
-    Public Delegate Function GetMapDelegate(ByVal PID As Int32) As IntPtr
-
+    
     <Serializable(), StructLayout(LayoutKind.Sequential)> _
     Public Structure FunctionInfo
         Public RelayToClientDelegate As RelayDelegate
         Public RelayToServerDelegate As RelayDelegate
         Public ProxyPointer As IntPtr
         Public ModulePointer As IntPtr
-        Public GetMap As GetMapDelegate
     End Structure
 
     Delegate Sub SetFlagDelegate(ByVal PacketPointer As IntPtr, ByVal flag As Integer)
@@ -60,6 +62,5 @@ Public Module MainModule
     Public Structure PacketFunctionInfo
         Public SetFlag As SetFlagDelegate
     End Structure
-
 
 End Module
