@@ -14,28 +14,6 @@ const char PatchRegion[] = "q9fvn4q2hb3456223434hs0sj3q5gfamkzc32vhsdpopdj028qhe
 
 PluginInfo Info;
 
-BOOL EnableDebugPriv(VOID) {
-   HANDLE hToken;
-   LUID sedebugnameValue;
-   TOKEN_PRIVILEGES tkp;
-   if(OpenProcessToken(GetCurrentProcess(),TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken )) {
-      if(LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &sedebugnameValue )) {
-         tkp.PrivilegeCount=1;
-         tkp.Privileges[0].Luid = sedebugnameValue;
-         tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-         if(AdjustTokenPrivileges(hToken, FALSE, &tkp, sizeof tkp, NULL, NULL )) {
-            CloseHandle(hToken);
-            return TRUE;
-         }
-         printf("AdjustTokenPrivileges failed (%d). SeDebugPrivilege is not available.\n", GetLastError());
-      } else
-         printf("LookupPrivilegeValue failed (%d). SeDebugPrivilege is not available.\n", GetLastError());
-   } else
-      printf("OpenProcessToken failed (%d). SeDebugPrivilege is not available.\n", GetLastError());
-   CloseHandle(hToken);
-   return FALSE;
-} 
-
 #pragma unmanaged
 int __stdcall DllMain(HINSTANCE instance, int reason, void* reserved)
 {
@@ -65,7 +43,7 @@ extern "C"
 {
 	__declspec(dllexport) PluginInfo* __stdcall InitPlugin(RedVexInfo* Funcs)
 	{
-		Funcs->WriteLog("BlueVex Diablo II Proxy\nCore Version 1.0 Jan 10 2008\n(c) 2008 by Pleh\n");
+		Funcs->WriteLog("BlueVex Diablo II Proxy\nCore Version 1.1 April 19 2008\n(c) 2008 by Pleh\n");
 
 		IBlueVexWrapper *wrapper = IBlueVexWrapper::CreateInstance();
 		wrapper->InitPlugin(Funcs);

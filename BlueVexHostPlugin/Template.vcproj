@@ -246,42 +246,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="CollisionMap"
-			>
-			<File
-				RelativePath=".\ArrayEx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CMemory.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CMemory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CollisionMap.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CollisionMap.h"
-				>
-			</File>
-			<File
-				RelativePath=".\D2Pathing.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Matrix.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SyncObj.h"
-				>
-			</File>
-		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>
