@@ -29,7 +29,6 @@ Public MustInherit Class IModuleHost
         Dim Packet As New Packet(bytes, bytes.Length, PacketPointer, PacketFunctions.SetFlag)
         InterptetPacketToServer(Packet)
     End Sub
-
     Sub OnRelayDataToClient(ByVal bytes() As Byte, ByVal PacketPointer As IntPtr, ByVal Funcs As IntPtr)
         Dim PacketFunctions As PacketFunctionInfo = Nothing
         If Funcs <> IntPtr.Zero Then

@@ -3,7 +3,6 @@ Imports System.Configuration
 Public Class frmOptions
 
     Private Sub butOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles butOK.Click
-        My.Settings.AutoStart = Me.cbAutoStart.Checked
         My.Settings.LoadDiablo = Me.cbLoadDiablo.Checked
         My.Settings.DiabloPath = Me.txtDiabloPath.Text
         My.Settings.DiabloArgs = Me.txtArgs.Text
@@ -16,7 +15,6 @@ Public Class frmOptions
     End Sub
 
     Private Sub frmOptions_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.cbAutoStart.Checked = My.Settings.AutoStart
         Me.cbLoadDiablo.Checked = My.Settings.LoadDiablo
         Me.txtDiabloPath.Text = My.Settings.DiabloPath
         Me.txtArgs.Text = My.Settings.DiabloArgs

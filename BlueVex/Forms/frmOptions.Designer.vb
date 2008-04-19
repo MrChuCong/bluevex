@@ -33,7 +33,6 @@ Partial Class frmOptions
         Me.butBrowse = New System.Windows.Forms.Button
         Me.txtDiabloPath = New System.Windows.Forms.TextBox
         Me.cbLoadDiablo = New System.Windows.Forms.CheckBox
-        Me.cbAutoStart = New System.Windows.Forms.CheckBox
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -92,7 +91,6 @@ Partial Class frmOptions
         Me.GroupBox3.Controls.Add(Me.butBrowse)
         Me.GroupBox3.Controls.Add(Me.txtDiabloPath)
         Me.GroupBox3.Controls.Add(Me.cbLoadDiablo)
-        Me.GroupBox3.Controls.Add(Me.cbAutoStart)
         Me.GroupBox3.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(366, 100)
@@ -144,22 +142,12 @@ Partial Class frmOptions
         'cbLoadDiablo
         '
         Me.cbLoadDiablo.AutoSize = True
-        Me.cbLoadDiablo.Location = New System.Drawing.Point(83, 19)
+        Me.cbLoadDiablo.Location = New System.Drawing.Point(9, 19)
         Me.cbLoadDiablo.Name = "cbLoadDiablo"
         Me.cbLoadDiablo.Size = New System.Drawing.Size(104, 17)
         Me.cbLoadDiablo.TabIndex = 1
         Me.cbLoadDiablo.Text = "Auto Run Diablo"
         Me.cbLoadDiablo.UseVisualStyleBackColor = True
-        '
-        'cbAutoStart
-        '
-        Me.cbAutoStart.AutoSize = True
-        Me.cbAutoStart.Location = New System.Drawing.Point(9, 19)
-        Me.cbAutoStart.Name = "cbAutoStart"
-        Me.cbAutoStart.Size = New System.Drawing.Size(70, 17)
-        Me.cbAutoStart.TabIndex = 0
-        Me.cbAutoStart.Text = "AutoStart"
-        Me.cbAutoStart.UseVisualStyleBackColor = True
         '
         'OpenFileDialog1
         '
@@ -196,7 +184,6 @@ Partial Class frmOptions
     Friend WithEvents butBrowse As System.Windows.Forms.Button
     Friend WithEvents txtDiabloPath As System.Windows.Forms.TextBox
     Friend WithEvents cbLoadDiablo As System.Windows.Forms.CheckBox
-    Friend WithEvents cbAutoStart As System.Windows.Forms.CheckBox
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents txtArgs As System.Windows.Forms.TextBox
