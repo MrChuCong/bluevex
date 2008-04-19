@@ -25,6 +25,9 @@ void	IBlueVexWrapper::Destroy(IBlueVexWrapper *instance)
 
 void	BlueVexWrapper::DestroyPlugin()
 {
+	if(_GameModule)_GameModule->Destroy();
+	if(_ChatModule)_ChatModule->Destroy();
+	if(_RealmModule)_RealmModule->Destroy();
 	_managedPlugin->DestroyPlugin();
 }
 

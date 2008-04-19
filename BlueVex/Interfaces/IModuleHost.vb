@@ -18,6 +18,11 @@ Public MustInherit Class IModuleHost
     MustOverride Sub LoadModules()
 
     Sub Destroy()
+        'Add Dispose Code Here
+        For Each obj As Object In LoadedModules
+            'MsgBox(obj.GetType.Name)
+            'obj.Dispose()
+        Next
     End Sub
 
     Sub OnRelayDataToServer(ByVal bytes() As Byte, ByVal PacketPointer As IntPtr, ByVal Funcs As IntPtr)
