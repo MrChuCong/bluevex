@@ -623,58 +623,16 @@ Public Class GameModuleHost
 
         Dim PacketObject As New GameClient.SendMessage(Packet.Data)
 
-        'Dim PacketObject As SendMessagePacket = BytesToPacket(Packet.Data, New SendMessagePacket)
-        'Automaticaly Prevent sending messages starting with . to the server : Make this optional later
-        If PacketObject.Message.StartsWith(".") Then Packet.Flag = Packet.PacketFlag.PacketFlag_Dead
-
+        'There's a plugin for redvex to do this. It's best to Remove it.
+        'If PacketObject.Message.StartsWith(".") And Not PacketObject.Message.StartsWith("..") Then Packet.Flag = Packet.PacketFlag.PacketFlag_Dead
+        'Usefull function, I will leave it here.
         If PacketObject.Message = ".Map" Then
-            Dim ps() As Process = Process.GetProcessesByName("Diablo II")
-
-            Dim MapInfo As New MapInfo
-            Dim MapPointer As IntPtr = Functions.GetMap(ps(0).Id)
-            If MapPointer <> IntPtr.Zero Then
-                MapInfo = Marshal.PtrToStructure(MapPointer, GetType(MapInfo))
-            End If
-
-            Dim MapBytes(MapInfo.Width * MapInfo.Height) As Byte
-            Marshal.Copy(MapInfo.Bytes, MapBytes, 0, MapInfo.Width * MapInfo.Height)
-
-            Dim b As New Bitmap(MapInfo.Width, MapInfo.Height)
-            Dim bd As Imaging.BitmapData = b.LockBits(New Rectangle(0, 0, b.Width, b.Height), Imaging.ImageLockMode.WriteOnly, Imaging.PixelFormat.Format24bppRgb)
-            Dim bytes As Integer = bd.Stride * b.Height
-            Dim rgbValues(bytes - 1) As Byte
-            Marshal.Copy(bd.Scan0, rgbValues, 0, bytes)
-            Dim i As Integer = 0
-            For y As Integer = 0 To MapInfo.Height - 1
-                For x As Integer = 0 To MapInfo.Width - 1
-                    If MapBytes(i) Mod 2 = 0 Then
-                        rgbValues(i * 3) = 255
-                        rgbValues((i * 3) + 1) = 0
-                        rgbValues((i * 3) + 2) = 0
-                    Else
-                        rgbValues(i * 3) = 0
-                        rgbValues((i * 3) + 1) = 0
-                        rgbValues((i * 3) + 2) = 0
-                    End If
-                    i += 1
-                Next
-            Next
-            Marshal.Copy(rgbValues, 0, bd.Scan0, bytes)
-            b.UnlockBits(bd)
-
-            If MapInfo.Exit1ID <> 0 Then
-                b.SetPixel(MapInfo.Exit1X, MapInfo.Exit1Y, Color.Green)
-            End If
-            If MapInfo.Exit2ID <> 0 Then
-                b.SetPixel(MapInfo.Exit2X, MapInfo.Exit2Y, Color.Green)
-            End If
-            If MapInfo.Exit3ID <> 0 Then
-                b.SetPixel(MapInfo.Exit3X, MapInfo.Exit3Y, Color.Green)
-            End If
-
-
+            Dim MapBitmap As New Pathing
+            Dim MapInfo As Pathing.MapInfo_t
+            Dim b As Bitmap
+            MapInfo = MapBitmap.GetMapFromMemory
+            b = MapBitmap.BitmapFromMapInfo(MapInfo)
             Main.Invoke(New OpenMapFormDelegate(AddressOf OpenMapForm), New Object() {b})
-
         End If
 
         'RaiseEvent OnSendMessage(PacketObject)

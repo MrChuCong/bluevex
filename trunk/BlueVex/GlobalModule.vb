@@ -31,7 +31,6 @@ Public Module GlobalModule
         While BinaryString.Length < 16 : BinaryString = "0" & BinaryString : End While
         Return Convert.ToInt16(BinaryString, 2)
     End Function
-
     Function ToBytes(ByVal value As Short) As Byte()
         Dim BinaryString As String = Convert.ToString(value, 2)
         While BinaryString.Length < 16 : BinaryString = "0" & BinaryString : End While

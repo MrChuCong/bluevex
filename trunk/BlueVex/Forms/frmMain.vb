@@ -4,8 +4,6 @@ Imports System.Net.Sockets
 Public Class frmMain
     Implements IGUI
 
-    Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
-    Declare Function SetFocus Lib "user32" (ByVal hwnd As Long) As Long
     Dim newAbout As frmAbout
 
 #Region " IGUI Implementations "
@@ -25,7 +23,6 @@ Public Class frmMain
 #Region " Hot Keys "
 
     Private m_hotKeys As HotKeyCollection = New HotKeyCollection(Me)
-
     Public Event HotKeyPressed As HotKeyPressedEventHandler
 
     Public ReadOnly Property HotKeys() As HotKeyCollection
@@ -77,31 +74,23 @@ Public Class frmMain
     End Sub
 
     Private Loaded As Integer = 0
-    Private Sub frmMain_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-    End Sub
 
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         e.Cancel = True
     End Sub
-
-    Private Sub frmMain_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
-
-        Dim handle As Long = FindWindow(Nothing, "rvt")
-        'handle = SetFocus(handle)
-    End Sub
-
 
     Public Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Me.Text = IO.Path.GetFileNameWithoutExtension(Application.ExecutablePath)
         Main = Me
         If Not IO.Directory.Exists(Application.StartupPath & "\ManagedPlugins") Then IO.Directory.CreateDirectory(Application.StartupPath & "\ManagedPlugins")
+
         LoadGameModules()
         LoadChatModules()
         LoadRealmModules()
         LoadGUIModules()
         LoadModules()
-        If My.Settings.AutoStart Then Start()
+
         If My.Settings.LoadDiablo Then
             If My.Settings.DiabloPath <> "" Then
                 If IO.File.Exists(My.Settings.DiabloPath) Then
@@ -113,26 +102,7 @@ Public Class frmMain
                 End If
             End If
         End If
-    End Sub
 
-    Private Sub Start()
-        '    If ChatListener Is Nothing Then ChatListener = New TcpProxyListener(My.Settings.ChatClientPort, ProxyType.Chat)
-        '    If RealmListener Is Nothing Then RealmListener = New TcpProxyListener(My.Settings.RealmClientPort, ProxyType.Realm)
-        '    If GameListener Is Nothing Then GameListener = New TcpProxyListener(My.Settings.GameClientPort, ProxyType.Game)
-
-        '    If ChatListener IsNot Nothing Then If ChatListener.Started Then Me.tsbStart.Enabled = False : Me.tsbStop.Enabled = True
-        '    If RealmListener IsNot Nothing Then If RealmListener.Started Then Me.tsbStart.Enabled = False : Me.tsbStop.Enabled = True
-        '    If GameListener IsNot Nothing Then If GameListener.Started Then Me.tsbStart.Enabled = False : Me.tsbStop.Enabled = True
-    End Sub
-    Private Sub [Stop]()
-        'If ChatListener IsNot Nothing Then ChatListener.Stop()
-        'If RealmListener IsNot Nothing Then RealmListener.Stop()
-        'If GameListener IsNot Nothing Then GameListener.Stop()
-        'ChatListener = Nothing
-        'RealmListener = Nothing
-        'GameListener = Nothing
-        'Me.tsbStop.Enabled = False
-        'Me.tsbStart.Enabled = True
     End Sub
 
     Private Delegate Sub GUIModuleInitializeDelegate(ByVal Host As IGUI, ByVal form As System.Windows.Forms.Form)

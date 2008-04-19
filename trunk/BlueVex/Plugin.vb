@@ -61,23 +61,5 @@ Public Module MainModule
         Public SetFlag As SetFlagDelegate
     End Structure
 
-    <Serializable(), StructLayout(LayoutKind.Sequential)> _
-    Public Structure MapInfo
-        Public X As Integer
-        Public Y As Integer
-        Public Width As Integer
-        Public Height As Integer
-        Public LevelNo As Integer
-        Public Exit1ID As Integer
-        Public Exit1X As Integer
-        Public Exit1Y As Integer
-        Public Exit2ID As Integer
-        Public Exit2X As Integer
-        Public Exit2Y As Integer
-        Public Exit3ID As Integer
-        Public Exit3X As Integer
-        Public Exit3Y As Integer
-        Public Bytes As IntPtr
-    End Structure
 
 End Module
