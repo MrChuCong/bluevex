@@ -21,6 +21,7 @@ Public MustInherit Class IModuleHost
         'Add Dispose Code Here
         For Each obj As Object In LoadedModules
             'MsgBox(obj.GetType.Name)
+            obj.destroy()
             'obj.Dispose()
         Next
     End Sub

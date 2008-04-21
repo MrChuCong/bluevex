@@ -1,7 +1,6 @@
 Imports System.Runtime.InteropServices
 
 Public Class Plugin
-    Declare Function GetWindowRect Lib "user32" (ByVal hWnd As Int32) As System.Drawing.Rectangle
     Private Declare Function SetParent Lib "user32" (ByVal hWndChild As IntPtr, ByVal hWndNewParent As IntPtr) As Integer
 
     Public Sub New()
@@ -28,6 +27,7 @@ Public Class Plugin
     End Sub
 
     Public Sub DestroyPlugin()
+
         'MsgBox("Destroy Plugins")
     End Sub
 

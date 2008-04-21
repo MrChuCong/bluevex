@@ -1100,7 +1100,6 @@ Public Class Pathing
         Return AbsToRelative
     End Function
 
-
     Private Function BitmapToCellData(ByVal MapImage As Bitmap) As CellData(,)
         Dim Map(MapImage.Width - 1, MapImage.Height - 1) As CellData
 
@@ -1117,6 +1116,7 @@ Public Class Pathing
 
         Return Map
     End Function
+
     Private Function MapInfoToCellData(ByVal Mapinfo As MapInfo_t) As CellData(,)
         Dim Map(Mapinfo.MapSizeX - 1, Mapinfo.MapSizeY - 1) As CellData
         For X As Integer = 0 To Mapinfo.MapSizeX - 1
@@ -1167,8 +1167,6 @@ Public Class Pathing
         Return b
     End Function
 
-
-
     Private Function FindClosestFloor(ByVal Map As CellData(,), ByVal StartX As Integer, ByVal StartY As Integer, ByVal MaxX As Integer, ByVal MaxY As Integer) As Point
         Dim offset As Integer = 1
 
@@ -1198,11 +1196,10 @@ Public Class Pathing
 
         Return Nothing
     End Function
-    Private Function GetWalkPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Map As CellData(,)) As List(Of Point)
+    Private Function GetWalkPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As MapInfo_t) As List(Of Point)
 
+        Dim Map As CellData(,) = MapInfoToCellData(Mapinfo)
         Dim Heap As New BinaryHeap()
-
-
         Dim StartX, StartY, EndX, EndY As Int16
         StartX = StartPoint.X
         StartY = StartPoint.Y
@@ -1378,9 +1375,11 @@ Public Class Pathing
 
         Return Nothing
     End Function
-    Private Function GetTeleportPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Map As CellData(,), ByVal dist As Integer) As List(Of Point)
+    Private Function GetTeleportPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As MapInfo_t, ByVal dist As Integer) As List(Of Point)
         On Error Resume Next
         Dim Heap As New BinaryHeap()
+
+        Dim Map As CellData(,) = MapInfoToCellData(Mapinfo)
 
         Dim StartX, StartY, EndX, EndY As Int16
         StartX = StartPoint.X
@@ -1522,12 +1521,12 @@ Public Class Pathing
             Dim tY As Int16 = EndY
             Points.Add(New Point(tX, tY))
             Dim i As Integer = 1
-            While True
 
+            While True
                 Dim sX As Int16 = Map(tX, tY).ParentX
                 Dim sY As Int16 = Map(tX, tY).ParentY
 
-                If (i Mod dist = 0) Or (sX = StartX And sY = StartY) Then
+                If (i Mod dist = 0) Then
                     Points.Add(New Point(sX, sY))
                 End If
 
@@ -1544,130 +1543,142 @@ Public Class Pathing
     End Function
 
     Public Function PathToWaypoint(ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
+        If Mapinfo.MapSizeX = Nothing Then Return Nothing
         Dim WpList() As Integer = {&H77, &H9D, &H9C, &H143, &H120, &H192, &HED, &H144, &H18E, &HEE, &H1AD, &H1F0, &H1FF, &H1EE}
         Dim StartPoint = MyPosition()
         'Check if our map contains one of those ids.
         For i As Integer = 0 To WpList.Length - 1
             If Mapinfo.Objects.Keys.Contains(WpList(i)) Then
                 If Walk Then
-                    Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(WpList(i)), Mapinfo), MapInfoToCellData(Mapinfo)), Mapinfo)
+                    Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(WpList(i)), Mapinfo), Mapinfo), Mapinfo)
                 Else
-                    Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(WpList(i)), Mapinfo), MapInfoToCellData(Mapinfo), Distance), Mapinfo)
+                    Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(WpList(i)), Mapinfo), Mapinfo, Distance), Mapinfo)
                 End If
             End If
         Next
         Return Nothing
     End Function
     Public Function PathToObject(ByVal ObjectId As Integer, ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
-        If Mapinfo Is Nothing Then Return Nothing
+        If Mapinfo.MapSizeX = Nothing Then Return Nothing
         Dim StartPoint = MyPosition()
         If Mapinfo.Objects.Keys.Contains(ObjectId) Then
             If Walk Then
-                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo), MapInfoToCellData(Mapinfo)), Mapinfo)
+                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo), Mapinfo), Mapinfo)
             Else
-                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo), MapInfoToCellData(Mapinfo), Distance), Mapinfo)
+                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo), Mapinfo, Distance), Mapinfo)
             End If
         End If
         Return Nothing
     End Function
     Public Function PathToNpc(ByVal NPCId As Integer, ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
-        If Mapinfo Is Nothing Then Return Nothing
+        If Mapinfo.MapSizeX = Nothing Then Return Nothing
         Dim StartPoint = MyPosition()
         If Mapinfo.Npcs.Keys.Contains(NPCId) Then
             If Walk Then
-                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo), MapInfoToCellData(Mapinfo)), Mapinfo)
+                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo), Mapinfo), Mapinfo)
             Else
-                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo), MapInfoToCellData(Mapinfo), Distance), Mapinfo)
+                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo), Mapinfo, Distance), Mapinfo)
             End If
         End If
         Return Nothing
     End Function
     Public Function PathToLevel(ByVal LevelId As Integer, ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
-        If Mapinfo Is Nothing Then Return Nothing
+        If Mapinfo.MapSizeX = Nothing Then Return Nothing
         Dim StartPoint = MyPosition()
 
         If Mapinfo.Exits.Keys.Contains(LevelId) Then
 
             If Walk Then
-                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Exits.ItemBykey(LevelId), Mapinfo), MapInfoToCellData(Mapinfo)), Mapinfo)
+                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Exits.ItemBykey(LevelId), Mapinfo), Mapinfo), Mapinfo)
             Else
-                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Exits.ItemBykey(LevelId), Mapinfo), MapInfoToCellData(Mapinfo), Distance), Mapinfo)
+                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Exits.ItemBykey(LevelId), Mapinfo), Mapinfo, Distance), Mapinfo)
             End If
         Else
             Dim ptExitPoints(Mapinfo.MapSizeX, 2) As Point
             Dim nTotalPoints As Integer = 0
             Dim nCurrentExit As Integer = 0
 
-            Dim I As Integer
-            While I < Mapinfo.MapSizeX - 1
+            Dim I As Integer = 0
+
+            While I < Mapinfo.MapSizeX
                 If Mapinfo.Bytes(I, 0) Mod 2 = 0 Then
                     ptExitPoints(nTotalPoints, 0).X = I
                     ptExitPoints(nTotalPoints, 0).Y = 0
-                    For I = I + 1 To Mapinfo.MapSizeX - 1
+                    I += 1
+                    While I < Mapinfo.MapSizeX
                         If Mapinfo.Bytes(I, 0) Mod 2 = 0 Then
                             ptExitPoints(nTotalPoints, 1).X = I - 1
                             ptExitPoints(nTotalPoints, 1).Y = 0
-                            Exit For
+                            Exit While
                         End If
-                    Next
+                        I += 1
+                    End While
                     nTotalPoints += 1
                 End If
                 I += 1
             End While
             I = 0
-            While I < Mapinfo.MapSizeX - 1
+
+            While I < Mapinfo.MapSizeX
                 If Mapinfo.Bytes(I, Mapinfo.MapSizeY - 1) Mod 2 = 0 Then
                     ptExitPoints(nTotalPoints, 0).X = I
                     ptExitPoints(nTotalPoints, 0).Y = Mapinfo.MapSizeY - 1
-
-                    For I = I + 1 To Mapinfo.MapSizeX - 1
+                    I += 1
+                    While I < Mapinfo.MapSizeX
                         If Mapinfo.Bytes(I, Mapinfo.MapSizeY - 1) Mod 2 = 0 Then
                             ptExitPoints(nTotalPoints, 1).X = I - 1
                             ptExitPoints(nTotalPoints, 1).Y = Mapinfo.MapSizeY - 1
-                            Exit For
+                            Exit While
                         End If
-                    Next
+                        I += 1
+                    End While
                     nTotalPoints += 1
                 End If
                 I += 1
             End While
             I = 0
-            While I < Mapinfo.MapSizeY - 1
+            While I < Mapinfo.MapSizeY
                 If Mapinfo.Bytes(0, I) Mod 2 = 0 Then
                     ptExitPoints(nTotalPoints, 0).X = 0
                     ptExitPoints(nTotalPoints, 0).Y = I
-
-                    For I = I + 1 To Mapinfo.MapSizeY - 1
+                    I += 1
+                    While I < Mapinfo.MapSizeY
                         If Mapinfo.Bytes(0, I) Mod 2 = 0 Then
                             ptExitPoints(nTotalPoints, 1).X = 0
                             ptExitPoints(nTotalPoints, 1).Y = I - 1
-                            Exit For
+                            Exit While
                         End If
-                    Next
+                        I += 1
+                    End While
                     nTotalPoints += 1
                 End If
                 I += 1
             End While
             I = 0
-            While I < Mapinfo.MapSizeY - 1
+
+            While I < Mapinfo.MapSizeY
+
                 If Mapinfo.Bytes(Mapinfo.MapSizeX - 1, I) Mod 2 = 0 Then
                     ptExitPoints(nTotalPoints, 0).X = Mapinfo.MapSizeX - 1
                     ptExitPoints(nTotalPoints, 0).Y = I
-                    For I = I + 1 To Mapinfo.MapSizeY - 1
+                    I += 1
+                    While I < Mapinfo.MapSizeY
                         If Mapinfo.Bytes(Mapinfo.MapSizeX - 1, I) Mod 2 = 0 Then
                             ptExitPoints(nTotalPoints, 1).X = Mapinfo.MapSizeX - 1
                             ptExitPoints(nTotalPoints, 1).Y = I - 1
-                            Exit For
+                            Exit While
                         End If
-                    Next
+                        I += 1
+                    End While
                     nTotalPoints += 1
                 End If
                 I += 1
             End While
-            I = 0
-            Dim ptCenters(nTotalPoints) As Point
 
-            For I = 0 To nTotalPoints - 1
+            Dim ptCenters(nTotalPoints) As Point
+            I = 0
+            While I < nTotalPoints
+
                 Dim nXDiff As Integer = ptExitPoints(I, 1).X - ptExitPoints(I, 0).X
                 Dim nYDiff As Integer = ptExitPoints(I, 1).Y - ptExitPoints(I, 0).Y
                 Dim nXCenter As Integer = 0
@@ -1697,26 +1708,28 @@ Public Class Pathing
                 Else
                     ptCenters(I).Y = nYCenter
                 End If
-            Next
+                I += 1
+            End While
+
             If Mapinfo.LevelsNear.Keys.Contains(LevelId) Then
                 Dim iter As Exit_T = Mapinfo.LevelsNear.ItemBykey(LevelId)
-                For j As Integer = 0 To nTotalPoints - 1
-                    If (ptCenters(j).X + Mapinfo.MapPosX * 5) >= iter.First.X - 5 And (ptCenters(j).X + Mapinfo.MapPosX * 5) - 5 <= (iter.First.X + iter.Second.X) Then
-                        If (ptCenters(j).Y + Mapinfo.MapPosY * 5) >= iter.First.Y - 5 And (ptCenters(j).Y + Mapinfo.MapPosY * 5) - 5 <= (iter.First.Y + iter.Second.Y) Then
-                            Dim EndPoint As New Point(ptCenters(j).X + Mapinfo.MapPosX * 5, ptCenters(j).Y + Mapinfo.MapPosY * 5)
+                Dim J As Integer = 0
+                While j < nTotalPoints
+                    If (ptCenters(J).X + Mapinfo.MapPosX * 5) >= iter.First.X - 5 And (ptCenters(J).X + Mapinfo.MapPosX * 5) - 5 <= (iter.First.X + iter.Second.X) Then
+                        If (ptCenters(J).Y + Mapinfo.MapPosY * 5) >= iter.First.Y - 5 And (ptCenters(J).Y + Mapinfo.MapPosY * 5) - 5 <= (iter.First.Y + iter.Second.Y) Then
+                            Dim EndPoint As New Point(ptCenters(J).X + Mapinfo.MapPosX * 5, ptCenters(J).Y + Mapinfo.MapPosY * 5)
                             If Walk Then
-                                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(EndPoint, Mapinfo), MapInfoToCellData(Mapinfo)), Mapinfo)
+                                Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(EndPoint, Mapinfo), Mapinfo), Mapinfo)
                             Else
-                                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(EndPoint, Mapinfo), MapInfoToCellData(Mapinfo), Distance), Mapinfo)
+                                Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(EndPoint, Mapinfo), Mapinfo, Distance), Mapinfo)
                             End If
                         End If
                     End If
-                Next
+                    J += 1
+                End While
             End If
         End If
-
         Return Nothing
-
     End Function
 #End Region
 
