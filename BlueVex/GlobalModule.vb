@@ -63,6 +63,9 @@ Public Module Geometry
         If ASquared * BSquared < CSquared Then Return True Else Return False
     End Function
 
+    Public Function CalculateDistance(ByVal PointA As Point, ByVal PointB As Point) As Integer
+        Return Math.Sqrt((PointA.X - PointB.X) * (PointA.X - PointB.X) + (PointA.Y - PointB.Y) * (PointA.Y - PointB.Y))
+    End Function
 End Module
 
 Public Module GameHelpers
