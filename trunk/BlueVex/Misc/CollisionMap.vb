@@ -1238,190 +1238,6 @@ Public Class Pathing
 
         Return Nothing
     End Function
-    Private Function GetTeleportPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As MapInfo_t, ByVal dist As Integer) As List(Of Point)
-        On Error Resume Next
-        Dim Heap As New BinaryHeap()
-
-        Dim Map As CellData(,) = MapInfoToCellData(Mapinfo)
-
-        Dim StartX, StartY, EndX, EndY As Int16
-        StartX = StartPoint.X
-        StartY = StartPoint.Y
-        EndX = EndPoint.X
-        EndY = EndPoint.Y
-
-        Dim MaxX As Integer = Map(0, 0).MaxX
-        Dim MaxY As Integer = Map(0, 0).MaxY
-
-        For yC As Int16 = 0 To MaxY - 1
-            For xC As Int16 = 0 To MaxX - 1
-                With Map(xC, yC)
-                    .FCost = 0
-                    .GCost = 0
-                    .HCost = 0
-                    .OCList = 0
-                    .ParentX = 0
-                    .ParentY = 0
-                End With
-            Next
-        Next
-
-        Dim PathFound, PathHunt As Boolean
-        Dim ParentX, ParentY As Int16
-
-        Dim xCnt, yCnt As Int16
-
-        'Make sure the starting point and ending point are not the same
-        If (StartX = EndX) And (StartY = EndY) Then Return Nothing
-
-        'Make sure the start and end point is not a wall
-        If Map(StartX, StartY).Wall Then
-            Dim ClosestPoint As Point = FindClosestFloor(Map, StartX, StartY, MaxX - 1, MaxY - 1)
-            StartX = ClosestPoint.X
-            StartY = ClosestPoint.Y
-        End If
-
-        If Map(EndX, EndY).Wall Then
-            Dim ClosestPoint As Point = FindClosestFloor(Map, EndX, EndY, MaxX - 1, MaxY - 1)
-            EndX = ClosestPoint.X
-            EndY = ClosestPoint.Y
-        End If
-
-        'Set the flags
-        PathFound = False
-        PathHunt = True
-
-        'Put the starting point on the open list
-        Map(StartX, StartY).OCList = inOpened
-        Heap.Add(0, StartX, StartY)
-
-        'Find the children
-        While PathHunt
-            If Heap.Count <> 0 Then
-                'Get the parent node
-                ParentX = Heap.GetX
-                ParentY = Heap.GetY
-
-                'Remove the root
-                Map(ParentX, ParentY).OCList = inClosed
-                Heap.RemoveRoot()
-
-                'Find the available children to add to the open list
-                For yCnt = (ParentY - 1) To (ParentY + 1)
-                    For xCnt = (ParentX - 1) To (ParentX + 1)
-
-                        'Make sure we are not out of bounds
-                        If xCnt <> -1 And xCnt <> MaxX And yCnt <> -1 And yCnt < MaxY Then
-                            'Make sure it's not on the closed list
-                            If Map(xCnt, yCnt).OCList <> inClosed Then
-                                'Make sure no wall
-                                If Map(xCnt, yCnt).Wall = False Then
-
-                                    'Don't cut across corners
-                                    Dim CanWalk As Boolean = True
-                                    If xCnt = ParentX - 1 Then
-                                        If yCnt = ParentY - 1 Then
-                                            If Map(ParentX - 1, ParentY).Wall = True Or Map(ParentX, ParentY - 1).Wall = True Then CanWalk = False
-                                        ElseIf yCnt = ParentY + 1 Then
-                                            If Map(ParentX, ParentY + 1).Wall = True Or Map(ParentX - 1, ParentY).Wall = True Then CanWalk = False
-                                        End If
-                                    ElseIf xCnt = ParentX + 1 Then
-                                        If yCnt = ParentY - 1 Then
-                                            If Map(ParentX, ParentY - 1).Wall = True Or Map(ParentX + 1, ParentY).Wall = True Then CanWalk = False
-                                        ElseIf yCnt = ParentY + 1 Then
-                                            If Map(ParentX + 1, ParentY).Wall = True Or Map(ParentX, ParentY + 1).Wall = True Then CanWalk = False
-                                        End If
-                                    End If
-                                    'If we can move this way
-                                    If CanWalk = True Then
-                                        If Map(xCnt, yCnt).OCList <> inOpened Then
-                                            'Calculate the GCost
-                                            If Math.Abs(xCnt - ParentX) = 1 And Math.Abs(yCnt - ParentY) = 1 Then
-                                                Map(xCnt, yCnt).GCost = Map(ParentX, ParentY).GCost + 14
-                                            Else
-                                                Map(xCnt, yCnt).GCost = Map(ParentX, ParentY).GCost + 10
-                                            End If
-
-                                            'Calculate the HCost
-                                            Map(xCnt, yCnt).HCost = 10 * (Math.Abs(xCnt - EndX) + Math.Abs(yCnt - EndY))
-                                            Map(xCnt, yCnt).FCost = (Map(xCnt, yCnt).GCost + Map(xCnt, yCnt).HCost)
-
-                                            'Add the parent value
-                                            Map(xCnt, yCnt).ParentX = ParentX
-                                            Map(xCnt, yCnt).ParentY = ParentY
-
-                                            'Add the item to the heap
-                                            Heap.Add(Map(xCnt, yCnt).FCost, xCnt, yCnt)
-
-                                            'Add the item to the open list
-                                            Map(xCnt, yCnt).OCList = inOpened
-
-                                        Else
-                                            'We will check for better value
-                                            Dim AddedGCost As Int16
-                                            If Math.Abs(xCnt - ParentX) = 1 And Math.Abs(yCnt - ParentY) = 1 Then
-                                                AddedGCost = 14
-                                            Else
-                                                AddedGCost = 10
-                                            End If
-                                            Dim tempCost As Int16 = Map(ParentX, ParentY).GCost + AddedGCost
-
-                                            If tempCost < Map(xCnt, yCnt).GCost Then
-                                                Map(xCnt, yCnt).GCost = tempCost
-                                                Map(xCnt, yCnt).ParentX = ParentX
-                                                Map(xCnt, yCnt).ParentY = ParentY
-                                                If Map(xCnt, yCnt).OCList = inOpened Then
-                                                    Dim NewCost As Int16 = Map(xCnt, yCnt).HCost + Map(xCnt, yCnt).GCost
-                                                    Heap.Add(NewCost, xCnt, yCnt)
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-                                End If
-                            End If
-                        End If
-                    Next
-                Next
-            Else
-                PathFound = False
-                PathHunt = False
-                Return Nothing
-            End If
-
-            'If we find a path
-            If Map(EndX, EndY).OCList = inOpened Then
-                PathFound = True
-                PathHunt = False
-            End If
-
-        End While
-
-        If PathFound Then
-            Dim Points As New List(Of Point)
-            Dim tX As Int16 = EndX
-            Dim tY As Int16 = EndY
-            Points.Add(New Point(tX, tY))
-            Dim i As Integer = 1
-
-            While True
-                Dim sX As Int16 = Map(tX, tY).ParentX
-                Dim sY As Int16 = Map(tX, tY).ParentY
-
-                If (i Mod dist = 0) Then
-                    Points.Add(New Point(sX, sY))
-                End If
-
-                tX = sX
-                tY = sY
-                If tX = StartX And tY = StartY Then Exit While
-                i += 1
-            End While
-            Points.Reverse()
-            Return Points
-        End If
-
-        Return Nothing
-    End Function
 
     Public Function PathToWaypoint(ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
         If Mapinfo.MapSizeX = Nothing Then Return Nothing
@@ -1473,6 +1289,7 @@ Public Class Pathing
                 Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Exits.ItemBykey(LevelId), Mapinfo), Mapinfo), Mapinfo)
             Else
                 Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Exits.ItemBykey(LevelId), Mapinfo), Mapinfo, Distance), Mapinfo)
+
             End If
         Else
             Dim ptExitPoints(Mapinfo.MapSizeX * 2, 2) As Point
@@ -1612,6 +1429,154 @@ Public Class Pathing
         End If
         Return Nothing
     End Function
+
+#Region "Teleport Path"
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''Abin's Teleport Path''''''''''''''''''''''''
+    '''''''''''''''''''' Ported to .Net by Dezimtox'''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    Private M_ptstart As Point
+    Private M_ptEnd As Point
+    Private Tp_Range As Integer
+    Private M_pptable As Integer(,)
+
+    Private m_nCX As Integer
+    Private m_nCY As Integer
+    Private Const RANGE_INVALID = 10000
+
+    Enum PathState
+        PATH_FAIL = 0 'Failed, error occurred or no available path
+        PATH_CONTINUE = 1 'Path OK, destination not reached yet
+        PATH_REACHED = 2
+    End Enum
+
+    Private Function CalculateDistance(ByVal X1 As Integer, ByVal Y1 As Integer, ByVal X2 As Integer, ByVal Y2 As Integer) As Integer
+        Return Math.Sqrt((X1 - X2) * (X1 - X2) + (Y1 - Y2) * (Y1 - Y2))
+    End Function
+    Private Function CalculateDistance(ByVal Point1 As Point, ByVal Point2 As Point) As Integer
+        Return CalculateDistance(Point1.X, Point1.Y, Point2.X, Point2.Y)
+    End Function
+
+    Private Function IsValidIndex(ByVal x As Integer, ByVal y As Integer) As Boolean
+        Return x >= 0 And x < m_nCX And y >= 0 And y < m_nCY
+    End Function
+    Private Sub MakeDistanceTable(ByRef Mapinfo As MapInfo_t)
+        ReDim M_pptable(Mapinfo.MapSizeX, Mapinfo.MapSizeY)
+        For x As Integer = 0 To Mapinfo.MapSizeX - 1
+            For y As Integer = 0 To Mapinfo.MapSizeY - 1
+                If Mapinfo.Bytes(x, y) Mod 2 = 0 Then
+                    M_pptable(x, y) = CalculateDistance(x, y, M_ptEnd.X, M_ptEnd.Y)
+                Else
+                    M_pptable(x, y) = RANGE_INVALID
+                End If
+            Next
+        Next
+        M_pptable(M_ptEnd.X, M_ptEnd.Y) = 1
+    End Sub
+    Private Function Block(ByVal pos As Point, ByVal nRange As Integer)
+        nRange = Math.Max(nRange, 1)
+        For i As Integer = pos.X - nRange To pos.X + nRange - 1
+            For j As Integer = pos.Y - nRange To pos.Y + nRange - 1
+                If IsValidIndex(i, j) Then
+                    M_pptable(i, j) = RANGE_INVALID
+                End If
+            Next
+        Next
+    End Function
+    Private Function GetBestMove(ByRef pos As Point, Optional ByVal nAdjust As Integer = 2) As Integer
+        If CalculateDistance(M_ptEnd, pos) <= Tp_Range Then
+            pos = M_ptEnd
+            Return PathState.PATH_REACHED 'We reached the destination
+        End If
+
+        If IsValidIndex(pos.X, pos.Y) = False Then
+            Return PathState.PATH_FAIL 'fail
+        End If
+
+        Block(pos, nAdjust)
+
+        Dim Px As Integer
+        Dim Py As Integer
+        Dim BestX As Integer
+        Dim BestY As Integer
+
+        Dim value As Integer = RANGE_INVALID
+
+        For Px = pos.X - Tp_Range To pos.X + Tp_Range
+            For Py = pos.Y - Tp_Range To pos.Y + Tp_Range
+                If Not IsValidIndex(Px, Py) Then
+                    Continue For
+                End If
+                If M_pptable(Px, Py) < value And CalculateDistance(Px, Py, pos.X, pos.Y) <= Tp_Range Then
+                    value = M_pptable(Px, Py)
+                    BestX = Px
+                    BestY = Py
+
+                End If
+            Next
+
+        Next
+        If value >= RANGE_INVALID Then
+            Return PathState.PATH_FAIL 'Pathing failed
+        End If
+        pos = New Point(BestX, BestY)
+        Block(pos, nAdjust)
+        Return PathState.PATH_CONTINUE 'Ok but not reached yet
+    End Function
+    Private Function GetRedundancy(ByVal lpPath As List(Of Point), ByVal pos As Point) As Integer
+        If lpPath.Count = 0 Then Return -1
+        For i As Integer = 1 To lpPath.Count - 1
+            If CalculateDistance(lpPath(i).X, lpPath(i).Y, pos.X, pos.Y) <= Tp_Range / 2 Then
+                Return i
+            End If
+        Next
+        Return -1
+    End Function
+
+    Private Function GetTeleportPath(ByVal ptStart As Point, ByVal ptEnd As Point, ByVal Mapinfo As MapInfo_t, ByVal Range As Integer) As List(Of Point)
+        Dim Path As New List(Of Point)
+
+        M_ptstart = ptStart
+        M_ptEnd = ptEnd
+
+        Tp_Range = Range
+
+        m_nCX = Mapinfo.MapSizeX
+        m_nCY = Mapinfo.MapSizeY
+        MakeDistanceTable(Mapinfo)
+        Path.Add(ptStart)
+        Dim dwFound = 1
+        Dim Pos As Point = ptStart
+        Dim bOK As Boolean
+        Dim nRes As Integer = GetBestMove(Pos)
+        While nRes <> PathState.PATH_FAIL
+            If nRes = PathState.PATH_REACHED Then
+                bOK = True
+                Path.Add(ptEnd)
+                dwFound += 1
+                Exit While
+            End If
+            Dim nRedundancy As Integer = GetRedundancy(Path, Pos)
+            If nRedundancy = -1 Then
+                Path.Add(Pos)
+                dwFound += 1
+            Else
+                dwFound = nRedundancy + 1
+                Path.RemoveRange(dwFound, Path.Count - dwFound)
+            End If
+            nRes = GetBestMove(Pos)
+        End While
+
+        If Not bOK Then
+            dwFound = 0
+        End If
+
+        Return Path
+    End Function
+#End Region
+
 #End Region
 
 #End Region
@@ -1806,18 +1771,14 @@ Public Class Pathing
         End Select
     End Function
     Public Function GetNextQuest(ByVal MapInfo As BlueVex.Pathing.MapInfo_t, ByRef ObjectType As Integer) As Integer
-
         '1 =Level, 2 = Object, 3 = NPC
         ObjectType = 1
-
         Select Case MapInfo.LevelNo
             'Act1
             Case D2Data.AreaLevel.BloodMoor
                 Return D2Data.AreaLevel.DenOfEvil
-
             Case D2Data.AreaLevel.ColdPlains
                 Return D2Data.AreaLevel.BurialGrounds
-
             Case D2Data.AreaLevel.StonyField
                 ObjectType = 2
                 Return 17
