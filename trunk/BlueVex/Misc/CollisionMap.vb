@@ -5,8 +5,10 @@ Imports System.Collections
 Imports System.Collections.Specialized
 Imports MEC
 
+
 Public Class Pathing
 #Region "Structures"
+
     Private Structure CollMap_t
 
         Dim dwPosGameX As Int32 '0x00 0
@@ -47,6 +49,7 @@ Public Class Pathing
     End Structure
 #End Region
 #Region "Declarations"
+
     Private Declare Function WaitForSingleObject Lib "kernel32" Alias "WaitForSingleObject" (ByVal hHandle As Integer, ByVal dwMilliseconds As Integer) As Integer
     Private Declare Function VirtualAllocEx Lib "kernel32" (ByVal hProcess As Integer, ByVal lpAddress As Integer, ByVal dwSize As Integer, ByVal flAllocationType As Integer, ByVal flProtect As Integer) As Integer
     Private Declare Function VirtualFreeEx Lib "kernel32" (ByVal hProcess As Integer, ByVal lpAddress As Integer, ByVal dwSize As Integer, ByVal dwFreeType As Integer) As Integer
@@ -93,6 +96,20 @@ Public Class Pathing
     Dim LevelNo As Integer
 
 #Region "Private"
+
+    Private Function ByteToStruct(ByVal Buff() As Byte, ByVal MyType As System.Type) As Object
+
+        Dim MyGC As GCHandle = GCHandle.Alloc(Buff, GCHandleType.Pinned)
+        'Marshals data from an unmanaged block of memory 
+        'to a newly allocated managed object of the specified type.
+
+        Dim Obj As Object = _
+            Marshal.PtrToStructure(MyGC.AddrOfPinnedObject, MyType)
+        Return Obj
+        'Free GChandle to avoid memory leaks
+        MyGC.Free()
+    End Function
+
     Private Sub AddRoomData(ByVal LevelNo As Long, ByVal X As Long, ByVal Y As Long)
         Dim BufferByte As Byte()
 
@@ -220,160 +237,7 @@ Public Class Pathing
         CloseHandle(Phandle)
         VirtualFreeEx(MemEditor.netProcHandle.Handle.ToInt32, Address, (Len(AsmStub(0)) * AsmStub.Length), MEM_RELEASE)
     End Sub
-    Private Function ByteToCollMap(ByVal CollMapByte() As Byte) As CollMap_t
-        Dim pcol As CollMap_t
-        Dim Buffer As String = ""
-        Dim i As Integer = 3
 
-        While i >= 0
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwPosGameX = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 7
-        While i > 3
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwPosGameY = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 11
-        While i > 7
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwSizeGameX = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 15
-        While i > 11
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwSizeGameY = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 19
-        While i > 15
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwPosRoomX = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 23
-        While i > 19
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwPosRoomY = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 27
-        While i > 23
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwSizeRoomX = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 31
-        While i > 27
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.dwSizeRoomY = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 35
-        While i > 31
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.MapStart = HexToDec(Buffer)
-        Buffer = ""
-
-        i = 39
-        While i > 35
-            Select Case Len(DecToHex(CollMapByte(i)))
-                Case 1
-                    Buffer &= Int(0).ToString & DecToHex(CollMapByte(i).ToString)
-                Case 0
-                    Buffer &= "00"
-                Case Else
-                    Buffer &= DecToHex(CollMapByte(i))
-            End Select
-            i -= 1
-        End While
-        pcol.MapEnd = HexToDec(Buffer)
-        Return pcol
-    End Function
     Private Function DecToHex(ByVal DecVal As Double) As String
         Dim a As Double, b As Double, c As String, d As Double
         a = DecVal
@@ -407,7 +271,7 @@ Public Class Pathing
 
 #Region "Public"
 
-    Public Function MyPosition() As Point
+    Public Function GetMyPosition() As Point
         Dim MemReader As New MemEdit
 
         If MemReader.mOpenProcess("Diablo II") = Nothing Then Return Nothing
@@ -417,8 +281,8 @@ Public Class Pathing
         Playerinfo.dwUnitAddr = MemReader.ReadMemoryLong(D2client.BaseAddress.ToInt32 + &H11C1E0, 4)
         Dwtemp = MemReader.ReadMemoryLong(Playerinfo.dwUnitAddr + &H2C, 4)
 
-        MyPosition.X = MemReader.ReadMemoryShort(Dwtemp + &H2)
-        MyPosition.Y = MemReader.ReadMemoryShort(Dwtemp + &H6)
+        GetMyPosition.X = MemReader.ReadMemoryShort(Dwtemp + &H2)
+        GetMyPosition.Y = MemReader.ReadMemoryShort(Dwtemp + &H6)
         MemReader.mCloseProcess()
     End Function
 
@@ -605,9 +469,8 @@ Public Class Pathing
 
             Dim CollMapByte As Byte()
             Dim pcol As CollMap_t
-
-            CollMapByte = MemEditor.ReadMemoryAOB(dwCol, Len(New CollMap_t))
-            pcol = ByteToCollMap(CollMapByte)
+            CollMapByte = MemEditor.ReadMemoryAOB(dwCol, Marshal.SizeOf(GetType(CollMap_t)))
+            pcol = ByteToStruct(CollMapByte, pcol.GetType)
 
             ' ***Building CollisionMap here ***
 
@@ -1453,49 +1316,67 @@ Public Class Pathing
                             If Map(xCnt, yCnt).OCList <> inClosed Then
                                 'Make sure no wall
                                 If Map(xCnt, yCnt).Wall = False Then
-                                    If Map(xCnt, yCnt).OCList <> inOpened Then
-                                        'Calculate the GCost
-                                        If Math.Abs(xCnt - ParentX) = 1 And Math.Abs(yCnt - ParentY) = 1 Then
-                                            Map(xCnt, yCnt).GCost = Map(ParentX, ParentY).GCost + 14
-                                        Else
-                                            Map(xCnt, yCnt).GCost = Map(ParentX, ParentY).GCost + 10
+
+                                    'Don't cut across corners
+                                    Dim CanWalk As Boolean = True
+                                    If xCnt = ParentX - 1 Then
+                                        If yCnt = ParentY - 1 Then
+                                            If Map(ParentX - 1, ParentY).Wall = True Or Map(ParentX, ParentY - 1).Wall = True Then CanWalk = False
+                                        ElseIf yCnt = ParentY + 1 Then
+                                            If Map(ParentX, ParentY + 1).Wall = True Or Map(ParentX - 1, ParentY).Wall = True Then CanWalk = False
                                         End If
-
-                                        'Calculate the HCost
-                                        Map(xCnt, yCnt).HCost = 10 * (Math.Abs(xCnt - EndX) + Math.Abs(yCnt - EndY))
-                                        Map(xCnt, yCnt).FCost = (Map(xCnt, yCnt).GCost + Map(xCnt, yCnt).HCost)
-
-                                        'Add the parent value
-                                        Map(xCnt, yCnt).ParentX = ParentX
-                                        Map(xCnt, yCnt).ParentY = ParentY
-
-                                        'Add the item to the heap
-                                        Heap.Add(Map(xCnt, yCnt).FCost, xCnt, yCnt)
-
-                                        'Add the item to the open list
-                                        Map(xCnt, yCnt).OCList = inOpened
-
-                                    Else
-                                        'We will check for better value
-                                        Dim AddedGCost As Int16
-                                        If Math.Abs(xCnt - ParentX) = 1 And Math.Abs(yCnt - ParentY) = 1 Then
-                                            AddedGCost = 14
-                                        Else
-                                            AddedGCost = 10
+                                    ElseIf xCnt = ParentX + 1 Then
+                                        If yCnt = ParentY - 1 Then
+                                            If Map(ParentX, ParentY - 1).Wall = True Or Map(ParentX + 1, ParentY).Wall = True Then CanWalk = False
+                                        ElseIf yCnt = ParentY + 1 Then
+                                            If Map(ParentX + 1, ParentY).Wall = True Or Map(ParentX, ParentY + 1).Wall = True Then CanWalk = False
                                         End If
-                                        Dim tempCost As Int16 = Map(ParentX, ParentY).GCost + AddedGCost
+                                    End If
+                                    'If we can move this way
+                                    If CanWalk = True Then
+                                        If Map(xCnt, yCnt).OCList <> inOpened Then
+                                            'Calculate the GCost
+                                            If Math.Abs(xCnt - ParentX) = 1 And Math.Abs(yCnt - ParentY) = 1 Then
+                                                Map(xCnt, yCnt).GCost = Map(ParentX, ParentY).GCost + 14
+                                            Else
+                                                Map(xCnt, yCnt).GCost = Map(ParentX, ParentY).GCost + 10
+                                            End If
 
-                                        If tempCost < Map(xCnt, yCnt).GCost Then
-                                            Map(xCnt, yCnt).GCost = tempCost
+                                            'Calculate the HCost
+                                            Map(xCnt, yCnt).HCost = 10 * (Math.Abs(xCnt - EndX) + Math.Abs(yCnt - EndY))
+                                            Map(xCnt, yCnt).FCost = (Map(xCnt, yCnt).GCost + Map(xCnt, yCnt).HCost)
+
+                                            'Add the parent value
                                             Map(xCnt, yCnt).ParentX = ParentX
                                             Map(xCnt, yCnt).ParentY = ParentY
-                                            If Map(xCnt, yCnt).OCList = inOpened Then
-                                                Dim NewCost As Int16 = Map(xCnt, yCnt).HCost + Map(xCnt, yCnt).GCost
-                                                Heap.Add(NewCost, xCnt, yCnt)
+
+                                            'Add the item to the heap
+                                            Heap.Add(Map(xCnt, yCnt).FCost, xCnt, yCnt)
+
+                                            'Add the item to the open list
+                                            Map(xCnt, yCnt).OCList = inOpened
+
+                                        Else
+                                            'We will check for better value
+                                            Dim AddedGCost As Int16
+                                            If Math.Abs(xCnt - ParentX) = 1 And Math.Abs(yCnt - ParentY) = 1 Then
+                                                AddedGCost = 14
+                                            Else
+                                                AddedGCost = 10
+                                            End If
+                                            Dim tempCost As Int16 = Map(ParentX, ParentY).GCost + AddedGCost
+
+                                            If tempCost < Map(xCnt, yCnt).GCost Then
+                                                Map(xCnt, yCnt).GCost = tempCost
+                                                Map(xCnt, yCnt).ParentX = ParentX
+                                                Map(xCnt, yCnt).ParentY = ParentY
+                                                If Map(xCnt, yCnt).OCList = inOpened Then
+                                                    Dim NewCost As Int16 = Map(xCnt, yCnt).HCost + Map(xCnt, yCnt).GCost
+                                                    Heap.Add(NewCost, xCnt, yCnt)
+                                                End If
                                             End If
                                         End If
                                     End If
-
                                 End If
                             End If
                         End If
@@ -1545,7 +1426,7 @@ Public Class Pathing
     Public Function PathToWaypoint(ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
         If Mapinfo.MapSizeX = Nothing Then Return Nothing
         Dim WpList() As Integer = {&H77, &H9D, &H9C, &H143, &H120, &H192, &HED, &H144, &H18E, &HEE, &H1AD, &H1F0, &H1FF, &H1EE}
-        Dim StartPoint = MyPosition()
+        Dim StartPoint = GetMyPosition()
         'Check if our map contains one of those ids.
         For i As Integer = 0 To WpList.Length - 1
             If Mapinfo.Objects.Keys.Contains(WpList(i)) Then
@@ -1560,7 +1441,7 @@ Public Class Pathing
     End Function
     Public Function PathToObject(ByVal ObjectId As Integer, ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
         If Mapinfo.MapSizeX = Nothing Then Return Nothing
-        Dim StartPoint = MyPosition()
+        Dim StartPoint = GetMyPosition()
         If Mapinfo.Objects.Keys.Contains(ObjectId) Then
             If Walk Then
                 Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo), Mapinfo), Mapinfo)
@@ -1572,7 +1453,7 @@ Public Class Pathing
     End Function
     Public Function PathToNpc(ByVal NPCId As Integer, ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
         If Mapinfo.MapSizeX = Nothing Then Return Nothing
-        Dim StartPoint = MyPosition()
+        Dim StartPoint = GetMyPosition()
         If Mapinfo.Npcs.Keys.Contains(NPCId) Then
             If Walk Then
                 Return RelativeToAbs(GetWalkPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo), Mapinfo), Mapinfo)
@@ -1584,7 +1465,7 @@ Public Class Pathing
     End Function
     Public Function PathToLevel(ByVal LevelId As Integer, ByVal Mapinfo As Pathing.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
         If Mapinfo.MapSizeX = Nothing Then Return Nothing
-        Dim StartPoint = MyPosition()
+        Dim StartPoint = GetMyPosition()
 
         If Mapinfo.Exits.Keys.Contains(LevelId) Then
 
@@ -1594,7 +1475,7 @@ Public Class Pathing
                 Return RelativeToAbs(GetTeleportPath(AbsToRelative(StartPoint, Mapinfo), AbsToRelative(Mapinfo.Exits.ItemBykey(LevelId), Mapinfo), Mapinfo, Distance), Mapinfo)
             End If
         Else
-            Dim ptExitPoints(Mapinfo.MapSizeX, 2) As Point
+            Dim ptExitPoints(Mapinfo.MapSizeX * 2, 2) As Point
             Dim nTotalPoints As Integer = 0
             Dim nCurrentExit As Integer = 0
 
@@ -1733,6 +1614,295 @@ Public Class Pathing
     End Function
 #End Region
 
+#End Region
+
+#Region "Game Helper"
+
+    Public Function GetNextlevel(ByVal Mapinfo As MapInfo_t, ByRef ObjectType As Integer) As Integer
+        '1 =Level, 2 = Object, 3 = NPC
+        ObjectType = 1
+        Select Case Mapinfo.LevelNo
+            'Act1
+            Case D2Data.AreaLevel.RogueEncampment
+                Return D2Data.AreaLevel.BloodMoor
+            Case D2Data.AreaLevel.BloodMoor
+                Return D2Data.AreaLevel.ColdPlains
+            Case D2Data.AreaLevel.ColdPlains
+                Return D2Data.AreaLevel.StonyField
+            Case D2Data.AreaLevel.StonyField
+                Return D2Data.AreaLevel.UndergroundPassageLevel1
+            Case D2Data.AreaLevel.UndergroundPassageLevel1
+                Return D2Data.AreaLevel.DarkWood
+            Case D2Data.AreaLevel.DarkWood
+                Return D2Data.AreaLevel.BlackMarsh
+            Case D2Data.AreaLevel.BlackMarsh
+                Return D2Data.AreaLevel.TamoeHighland
+            Case D2Data.AreaLevel.TamoeHighland
+                Return D2Data.AreaLevel.MonasteryGate
+            Case D2Data.AreaLevel.MonasteryGate
+                Return D2Data.AreaLevel.OuterCloister
+            Case D2Data.AreaLevel.OuterCloister
+                Return D2Data.AreaLevel.Barracks
+            Case D2Data.AreaLevel.Barracks
+                Return D2Data.AreaLevel.JailLevel1
+            Case D2Data.AreaLevel.JailLevel1
+                Return D2Data.AreaLevel.JailLevel2
+            Case D2Data.AreaLevel.JailLevel2
+                Return D2Data.AreaLevel.JailLevel3
+            Case D2Data.AreaLevel.JailLevel3
+                Return D2Data.AreaLevel.InnerCloister
+            Case D2Data.AreaLevel.InnerCloister
+                Return D2Data.AreaLevel.Cathedral
+            Case D2Data.AreaLevel.Cathedral
+                Return D2Data.AreaLevel.CatacombsLevel1
+            Case D2Data.AreaLevel.CatacombsLevel1
+                Return D2Data.AreaLevel.CatacombsLevel2
+            Case D2Data.AreaLevel.CatacombsLevel2
+                Return D2Data.AreaLevel.CatacombsLevel3
+            Case D2Data.AreaLevel.CatacombsLevel3
+                Return D2Data.AreaLevel.CatacombsLevel4
+                'Act1 Caves
+            Case D2Data.AreaLevel.CaveLevel1
+                Return D2Data.AreaLevel.CaveLevel2
+            Case D2Data.AreaLevel.HoleLevel1
+                Return D2Data.AreaLevel.HoleLevel2
+            Case D2Data.AreaLevel.ForgottenTower
+                Return D2Data.AreaLevel.TowerCellarLevel1
+            Case D2Data.AreaLevel.TowerCellarLevel1
+                Return D2Data.AreaLevel.TowerCellarLevel2
+            Case D2Data.AreaLevel.TowerCellarLevel2
+                Return D2Data.AreaLevel.TowerCellarLevel3
+            Case D2Data.AreaLevel.TowerCellarLevel3
+                Return D2Data.AreaLevel.TowerCellarLevel4
+            Case D2Data.AreaLevel.TowerCellarLevel4
+                Return D2Data.AreaLevel.TowerCellarLevel5
+            Case D2Data.AreaLevel.PitLevel1
+                Return D2Data.AreaLevel.PitLevel2
+                'Act2
+            Case D2Data.AreaLevel.LutGholein
+                Return D2Data.AreaLevel.RockyWaste
+            Case D2Data.AreaLevel.RockyWaste
+                Return D2Data.AreaLevel.DryHills
+            Case D2Data.AreaLevel.DryHills
+                Return D2Data.AreaLevel.FarOasis
+            Case D2Data.AreaLevel.FarOasis
+                Return D2Data.AreaLevel.LostCity
+            Case D2Data.AreaLevel.LostCity
+                Return D2Data.AreaLevel.ValleyOfSnakes
+                'Act2 Caves
+            Case D2Data.AreaLevel.SewersLevel1Act2
+                Return D2Data.AreaLevel.SewersLevel2Act2
+            Case D2Data.AreaLevel.SewersLevel2Act2
+                Return D2Data.AreaLevel.SewersLevel3Act2
+            Case D2Data.AreaLevel.HallsOfTheDeadLevel1
+                Return D2Data.AreaLevel.HallsOfTheDeadLevel2
+            Case D2Data.AreaLevel.HallsOfTheDeadLevel2
+                Return 60 'HallsOfTheDeadLevel3
+            Case D2Data.AreaLevel.MaggotLairLevel1
+                Return D2Data.AreaLevel.MaggotLairLevel2
+            Case D2Data.AreaLevel.MaggotLairLevel2
+                Return D2Data.AreaLevel.MaggotLairLevel3
+            Case D2Data.AreaLevel.StonyTombLevel1
+                Return D2Data.AreaLevel.StonyTombLevel2
+            Case D2Data.AreaLevel.ClawViperTempleLevel1
+                Return D2Data.AreaLevel.ClawViperTempleLevel2
+            Case D2Data.AreaLevel.HaremLevel1
+                Return D2Data.AreaLevel.HaremLevel2
+            Case D2Data.AreaLevel.HaremLevel2
+                Return D2Data.AreaLevel.PalaceCellarLevel1
+            Case D2Data.AreaLevel.PalaceCellarLevel1
+                Return D2Data.AreaLevel.PalaceCellarLevel2
+            Case D2Data.AreaLevel.PalaceCellarLevel2
+                Return D2Data.AreaLevel.PalaceCellarLevel3
+            Case D2Data.AreaLevel.PalaceCellarLevel3
+                ObjectType = 2
+                Return D2Data.GameObjectID.ArcaneSanctuaryPortal
+            Case D2Data.AreaLevel.ArcaneSanctuary
+                ObjectType = 2
+                Return 357
+                'Act3
+            Case D2Data.AreaLevel.KurastDocks
+                Return D2Data.AreaLevel.SpiderForest
+            Case D2Data.AreaLevel.SpiderForest
+                Return D2Data.AreaLevel.GreatMarsh
+            Case D2Data.AreaLevel.GreatMarsh
+                Return D2Data.AreaLevel.FlayerJungle
+            Case D2Data.AreaLevel.FlayerJungle
+                Return D2Data.AreaLevel.LowerKurast
+            Case D2Data.AreaLevel.LowerKurast
+                Return D2Data.AreaLevel.KurastBazaar
+            Case D2Data.AreaLevel.KurastBazaar
+                Return D2Data.AreaLevel.UpperKurast
+            Case D2Data.AreaLevel.UpperKurast
+                Return D2Data.AreaLevel.KurastCauseway
+            Case D2Data.AreaLevel.KurastCauseway
+                Return D2Data.AreaLevel.Travincal
+            Case D2Data.AreaLevel.Travincal
+                ObjectType = 2
+                Return 386
+            Case D2Data.AreaLevel.DuranceOfHateLevel1
+                Return D2Data.AreaLevel.DuranceOfHateLevel2
+            Case D2Data.AreaLevel.DuranceOfHateLevel2
+                Return D2Data.AreaLevel.DuranceOfHateLevel3
+            Case D2Data.AreaLevel.FlayerDungeonLevel1
+                Return D2Data.AreaLevel.FlayerDungeonLevel2
+            Case D2Data.AreaLevel.FlayerDungeonLevel2
+                Return D2Data.AreaLevel.FlayerDungeonLevel3
+            Case D2Data.AreaLevel.SewersLevel1Act3
+                Return D2Data.AreaLevel.SewersLevel2Act3
+            Case D2Data.AreaLevel.SwampyPitLevel1
+                Return D2Data.AreaLevel.SwampyPitLevel2
+            Case D2Data.AreaLevel.SwampyPitLevel2
+                Return D2Data.AreaLevel.SwampyPitLevel3
+                'A4
+            Case D2Data.AreaLevel.ThePandemoniumFortress
+                Return D2Data.AreaLevel.OuterSteppes
+            Case D2Data.AreaLevel.OuterSteppes
+                Return D2Data.AreaLevel.PlainsOfDespair
+            Case D2Data.AreaLevel.PlainsOfDespair
+                Return D2Data.AreaLevel.CityOfTheDamned
+            Case D2Data.AreaLevel.CityOfTheDamned
+                Return D2Data.AreaLevel.RiverOfFlame
+            Case D2Data.AreaLevel.RiverOfFlame
+                Return D2Data.AreaLevel.ChaosSanctuary
+            Case D2Data.AreaLevel.ChaosSanctuary
+                ObjectType = 2
+                Return D2Data.GameObjectID.DiabloStartPoint
+                'Act 5
+            Case D2Data.AreaLevel.Harrogath
+                Return D2Data.AreaLevel.BloodyFoothills
+            Case D2Data.AreaLevel.BloodyFoothills
+                Return D2Data.AreaLevel.FrigidHighlands
+            Case D2Data.AreaLevel.FrigidHighlands
+                Return D2Data.AreaLevel.ArreatPlateau
+            Case D2Data.AreaLevel.ArreatPlateau
+                Return D2Data.AreaLevel.CrystallinePassage
+            Case D2Data.AreaLevel.CrystallinePassage
+                Return D2Data.AreaLevel.GlacialTrail
+            Case D2Data.AreaLevel.GlacialTrail
+                Return D2Data.AreaLevel.FrozenTundra
+            Case D2Data.AreaLevel.FrozenTundra
+                Return D2Data.AreaLevel.TheAncientsWay
+            Case D2Data.AreaLevel.TheAncientsWay
+                Return D2Data.AreaLevel.ArreatSummit
+            Case D2Data.AreaLevel.ArreatSummit
+                Return D2Data.AreaLevel.TheWorldStoneKeepLevel1
+            Case D2Data.AreaLevel.TheWorldStoneKeepLevel1
+                Return D2Data.AreaLevel.TheWorldStoneKeepLevel2
+            Case D2Data.AreaLevel.TheWorldStoneKeepLevel2
+                Return D2Data.AreaLevel.TheWorldStoneKeepLevel3
+            Case D2Data.AreaLevel.TheWorldStoneKeepLevel3
+                Return D2Data.AreaLevel.ThroneOfDestruction
+            Case D2Data.AreaLevel.ThroneOfDestruction
+                ObjectType = 3
+                Return D2Data.NPCCode.BaalThrone
+            Case D2Data.AreaLevel.NihlathaksTemple
+                Return D2Data.AreaLevel.HallsOfAnguish
+            Case D2Data.AreaLevel.HallsOfAnguish
+                Return D2Data.AreaLevel.HallsOfPain
+            Case D2Data.AreaLevel.HallsOfPain
+                Return D2Data.AreaLevel.HallsOfVaught
+            Case Else : Return Nothing
+        End Select
+    End Function
+    Public Function GetNextQuest(ByVal MapInfo As BlueVex.Pathing.MapInfo_t, ByRef ObjectType As Integer) As Integer
+
+        '1 =Level, 2 = Object, 3 = NPC
+        ObjectType = 1
+
+        Select Case MapInfo.LevelNo
+            'Act1
+            Case D2Data.AreaLevel.BloodMoor
+                Return D2Data.AreaLevel.DenOfEvil
+
+            Case D2Data.AreaLevel.ColdPlains
+                Return D2Data.AreaLevel.BurialGrounds
+
+            Case D2Data.AreaLevel.StonyField
+                ObjectType = 2
+                Return 17
+            Case D2Data.AreaLevel.UndergroundPassageLevel1
+                Return D2Data.AreaLevel.UndergroundPassageLevel2
+            Case D2Data.AreaLevel.DarkWood
+                ObjectType = 2
+                Return 30
+            Case D2Data.AreaLevel.BlackMarsh
+                Return D2Data.AreaLevel.ForgottenTower
+            Case D2Data.AreaLevel.TamoeHighland
+                Return D2Data.AreaLevel.PitLevel1
+            Case D2Data.AreaLevel.Barracks
+                ObjectType = 2
+                Return 108
+                'Act2
+            Case D2Data.AreaLevel.DryHills
+                Return D2Data.AreaLevel.HallsOfTheDeadLevel1
+            Case D2Data.AreaLevel.FarOasis
+                Return D2Data.AreaLevel.MaggotLairLevel1
+            Case D2Data.AreaLevel.SewersLevel3Act2
+                ObjectType = 2
+                Return 355
+            Case 60 'HallsOfTheDeadLevel3
+                ObjectType = 2
+                Return 354
+            Case D2Data.AreaLevel.MaggotLairLevel3
+                ObjectType = 2
+                Return 356
+            Case D2Data.AreaLevel.TalRashasTomb1, D2Data.AreaLevel.TalRashasTomb2, D2Data.AreaLevel.TalRashasTomb3, D2Data.AreaLevel.TalRashasTomb4, D2Data.AreaLevel.TalRashasTomb5, D2Data.AreaLevel.TalRashasTomb6, D2Data.AreaLevel.TalRashasTomb7
+                ObjectType = 2
+                Return 152
+            Case D2Data.AreaLevel.ArcaneSanctuary
+                ObjectType = 2
+                Return 357
+                'Act3
+            Case D2Data.AreaLevel.SpiderForest
+                Return D2Data.AreaLevel.SpiderCavern
+            Case D2Data.AreaLevel.FlayerJungle
+                ObjectType = 2
+                Return 252
+            Case D2Data.AreaLevel.KurastBazaar
+                ObjectType = 2
+                Return 195
+            Case D2Data.AreaLevel.UpperKurast
+                Return D2Data.AreaLevel.SewersLevel1Act3
+            Case D2Data.AreaLevel.SewersLevel2Act3
+                ObjectType = 2
+                Return 405
+            Case D2Data.AreaLevel.SwampyPitLevel3
+                ObjectType = 2
+                Return 397
+            Case D2Data.AreaLevel.FlayerDungeonLevel3
+                ObjectType = 2
+                Return 406
+            Case D2Data.AreaLevel.RuinedTemple
+                ObjectType = 2
+                Return 193
+            Case D2Data.AreaLevel.Travincal
+                ObjectType = 2
+                Return 386
+                'A4
+            Case D2Data.AreaLevel.PlainsOfDespair
+                ObjectType = 3
+                Return 256
+            Case D2Data.AreaLevel.RiverOfFlame
+                ObjectType = 3
+                Return 775
+            Case D2Data.AreaLevel.ChaosSanctuary
+                ObjectType = 2
+                Return D2Data.GameObjectID.DiabloStartPoint
+                'A5
+            Case D2Data.AreaLevel.BloodyFoothills
+                Return 824 'Tile!
+            Case D2Data.AreaLevel.CrystallinePassage
+                Return D2Data.AreaLevel.FrozenRiver
+            Case D2Data.AreaLevel.FrozenRiver
+                ObjectType = 3
+                Return 793
+            Case D2Data.AreaLevel.HallsOfVaught
+                ObjectType = 2
+                Return D2Data.GameObjectID.NihlathakWildernessStartPosition
+        End Select
+        Return Nothing
+    End Function
 #End Region
 End Class
 
