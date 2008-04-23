@@ -2,7 +2,6 @@
 #include "BlueVexWrapper.h"
 #include "IPacket.h"
 #include "IProxy.h"
-#include "CollisionMap.h"
 #include <windows.h>
 #include <string>
 
