@@ -1475,7 +1475,7 @@ Public Class Pathing
         Next
         M_pptable(M_ptEnd.X, M_ptEnd.Y) = 1
     End Sub
-    Private Function Block(ByVal pos As Point, ByVal nRange As Integer)
+    Private Sub Block(ByVal pos As Point, ByVal nRange As Integer)
         nRange = Math.Max(nRange, 1)
         For i As Integer = pos.X - nRange To pos.X + nRange - 1
             For j As Integer = pos.Y - nRange To pos.Y + nRange - 1
@@ -1484,7 +1484,7 @@ Public Class Pathing
                 End If
             Next
         Next
-    End Function
+    End Sub
     Private Function GetBestMove(ByRef pos As Point, Optional ByVal nAdjust As Integer = 2) As Integer
         If CalculateDistance(M_ptEnd, pos) <= Tp_Range Then
             pos = M_ptEnd
