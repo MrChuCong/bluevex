@@ -1,6 +1,7 @@
 Public Class GameModule
     Implements BlueVex.IGameModule
 
+
 #Region " Module Info "
 
     Public ReadOnly Property Author() As String Implements BlueVex.IGameModule.Author
@@ -45,6 +46,10 @@ Public Class GameModule
         AddHandler Game.OnSwitchWeapons, AddressOf OnSwitchWeapons
     End Sub
 
+    Public Sub Destroy() Implements BlueVex.IGameModule.Destroy
+
+    End Sub
+
     Sub OnSendMessage(ByVal Packet As GameClient.SendMessage)
         If Packet.Message.StartsWith(".hello") Then
             'Make the Game Client Think Its Received a Message
@@ -75,5 +80,4 @@ Public Class GameModule
     Private Sub Game_OnItemAction(ByVal Packet As GameServer.ItemAction) Handles Game.OnItemAction
         Game.ReceiveMessage("ÿc1BlueVex", Packet.ToInfoString())
     End Sub
-
 End Class
