@@ -1059,7 +1059,7 @@ Public Class Pathing
 
         Return Nothing
     End Function
-    Private Function GetWalkPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As MapInfo_t) As List(Of Point)
+    Public Function GetWalkPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As MapInfo_t) As List(Of Point)
 
         Dim Map As CellData(,) = MapInfoToCellData(Mapinfo)
         Dim Heap As New BinaryHeap()
@@ -1535,7 +1535,7 @@ Public Class Pathing
         Return -1
     End Function
 
-    Private Function GetTeleportPath(ByVal ptStart As Point, ByVal ptEnd As Point, ByVal Mapinfo As MapInfo_t, ByVal Range As Integer) As List(Of Point)
+    Public Function GetTeleportPath(ByVal ptStart As Point, ByVal ptEnd As Point, ByVal Mapinfo As MapInfo_t, ByVal Range As Integer) As List(Of Point)
         Dim Path As New List(Of Point)
 
         M_ptstart = ptStart
