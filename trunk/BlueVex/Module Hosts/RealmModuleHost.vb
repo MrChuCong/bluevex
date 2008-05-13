@@ -12,7 +12,7 @@ Public Class RealmModuleHost
         Dim RealmModule As IRealmModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableRealmModules.Count
-            RealmModule = DirectCast(AvailableRealmModules(i), IRealmModule)
+            RealmModule = DirectCast(PluginServices.CreateInstance(AvailableRealmModules(i)), IRealmModule)
             If My.Settings.DisabledModules Is Nothing Then My.Settings.DisabledModules = New Collections.Specialized.StringCollection
             If Not My.Settings.DisabledModules.Contains(RealmModule.Name) Then
                 Log.WriteLine("Loading " & RealmModule.Name)

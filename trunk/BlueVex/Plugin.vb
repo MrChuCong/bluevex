@@ -4,6 +4,7 @@ Public Class Plugin
     Private Declare Function SetParent Lib "user32" (ByVal hWndChild As IntPtr, ByVal hWndNewParent As IntPtr) As Integer
 
     Public Sub New()
+
     End Sub
 
     Public Sub InitPlugin(ByVal Funcs As IntPtr)
@@ -27,7 +28,6 @@ Public Class Plugin
     End Sub
 
     Public Sub DestroyPlugin()
-
         'MsgBox("Destroy Plugins")
     End Sub
 

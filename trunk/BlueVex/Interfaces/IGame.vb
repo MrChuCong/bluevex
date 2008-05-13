@@ -205,7 +205,11 @@ Public Interface IGame
     Event OnGameOver(ByVal Packet As GameServer.GameOver)
     Event OnGoldTrade(ByVal Packet As GameServer.GoldTrade)
     Event OnInformationMessage(ByVal Packet As GameServer.InformationMessage)
+    '****************
+    Event OnOwnedItemAction(ByVal Packet As GameServer.OwnedItemAction)
+    '****************
     Event OnItemAction(ByVal Packet As GameServer.ItemAction)
+
     Event OnItemTriggerSkill(ByVal Packet As GameServer.ItemTriggerSkill)
     Event OnLoadAct(ByVal Packet As GameServer.LoadAct)
     Event OnLoadDone(ByVal Packet As GameServer.LoadDone)

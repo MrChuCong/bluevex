@@ -2,6 +2,7 @@ Imports System.Runtime.InteropServices
 Public MustInherit Class IModuleHost
 
     Friend LoadedModules As New Collection
+
     Friend Functions As FunctionInfo = Nothing
     Sub New(ByVal Funcs As IntPtr)
         Try
@@ -22,7 +23,6 @@ Public MustInherit Class IModuleHost
         For Each obj As Object In LoadedModules
             'MsgBox(obj.GetType.Name)
             obj.destroy()
-            'obj.Dispose()
         Next
     End Sub
 
@@ -58,6 +58,7 @@ Public MustInherit Class IModuleHost
     End Sub
 
     Sub Update()
+
     End Sub
 
     MustOverride Sub InterptetPacketToServer(ByRef Packet As Packet)

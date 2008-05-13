@@ -12,8 +12,7 @@ Public Class frmPluginManager
         Dim GameModule As IGameModule
 
         For i As Integer = 1 To AvailableGameModules.Count
-            'GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
-            GameModule = DirectCast(AvailableGameModules(i), IGameModule)
+            GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
             Dim lvi As New ListViewItem
             lvi.Text = "Game"
             lvi.Tag = "Game"
@@ -28,7 +27,8 @@ Public Class frmPluginManager
         Dim RealmModule As IRealmModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableRealmModules.Count
-            RealmModule = DirectCast(AvailableRealmModules(i), IRealmModule)
+
+            RealmModule = DirectCast(PluginServices.CreateInstance(AvailableRealmModules(i)), IRealmModule)
             Dim lvi As New ListViewItem
             lvi.Text = "Realm"
             lvi.Tag = "Realm"
@@ -43,7 +43,7 @@ Public Class frmPluginManager
         Dim ChatModule As IChatModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableChatModules.Count
-            ChatModule = DirectCast(AvailableChatModules(i), IChatModule)
+            ChatModule = DirectCast(PluginServices.CreateInstance(AvailableChatModules(i)), IChatModule)
             Dim lvi As New ListViewItem
             lvi.Text = "Chat"
             lvi.Tag = "Chat"
