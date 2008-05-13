@@ -120,21 +120,22 @@ Public Class frmMain
     End Sub
 
     Private Delegate Sub GameModuleInitializeDelegate(ByVal Host As IGame, ByVal form As System.Windows.Forms.Form)
+
     Sub LoadGameModules()
 
         Dim Plugins() As PluginServices.AvailablePlugin
         Plugins = PluginServices.FindPlugins(Application.StartupPath & "\ManagedPlugins", "BlueVex.IGameModule")
 
         If Plugins Is Nothing Then
+
             Log.WriteLine("Loaded game modules (0)")
             Exit Sub
         End If
         Log.WriteLine("Loaded game modules (" & Plugins.Length & " total)")
         For i As Integer = 0 To Plugins.Length - 1
-            'AvailableGameModules.Add(Plugins(i))
+            AvailableGameModules.Add(Plugins(i))
             Dim GameModule As IGameModule = DirectCast(PluginServices.CreateInstance(Plugins(i)), IGameModule)
             Log.WriteLine("	" & (i + 1) & ".	Title: " & GameModule.Name)
-            AvailableGameModules.Add(GameModule)
             GameModule = Nothing
         Next
 
@@ -150,10 +151,9 @@ Public Class frmMain
         End If
         Log.WriteLine("Loaded chat modules (" & Plugins.Length & " total)")
         For i As Integer = 0 To Plugins.Length - 1
-            'AvailableChatModules.Add(Plugins(i))
+            AvailableChatModules.Add(Plugins(i))
             Dim ChatModule As IChatModule = DirectCast(PluginServices.CreateInstance(Plugins(i)), IChatModule)
             Log.WriteLine("	" & (i + 1) & ".	Title: " & ChatModule.Name)
-            AvailableChatModules.Add(ChatModule)
             ChatModule = Nothing
         Next
     End Sub
@@ -170,10 +170,9 @@ Public Class frmMain
         Log.WriteLine("Loaded realm modules (" & Plugins.Length & " total)")
 
         For i As Integer = 0 To Plugins.Length - 1
-            'AvailableRealmModules.Add(Plugins(i))
+            AvailableRealmModules.Add(Plugins(i))
             Dim RealmModule As IRealmModule = DirectCast(PluginServices.CreateInstance(Plugins(i)), IRealmModule)
             Log.WriteLine("	" & (i + 1) & ".	Title: " & RealmModule.Name)
-            AvailableRealmModules.Add(RealmModule)
             RealmModule = Nothing
         Next
     End Sub

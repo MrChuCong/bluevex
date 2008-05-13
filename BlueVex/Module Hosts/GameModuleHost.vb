@@ -14,8 +14,7 @@ Public Class GameModuleHost
         Dim GameModule As IGameModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableGameModules.Count
-            'GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
-            GameModule = DirectCast(AvailableGameModules(i), IGameModule)
+            GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
             If My.Settings.DisabledModules Is Nothing Then My.Settings.DisabledModules = New Collections.Specialized.StringCollection
             If Not My.Settings.DisabledModules.Contains(GameModule.Name) Then
                 Log.WriteLine("Loading " & GameModule.Name)
@@ -168,7 +167,11 @@ Public Class GameModuleHost
     Public Event OnGameOver(ByVal Packet As GameServer.GameOver) Implements IGame.OnGameOver
     Public Event OnGoldTrade(ByVal Packet As GameServer.GoldTrade) Implements IGame.OnGoldTrade
     Public Event OnInformationMessage(ByVal Packet As GameServer.InformationMessage) Implements IGame.OnInformationMessage
+    '**************
+    Public Event OnOwnedItemAction(ByVal Packet As GameServer.OwnedItemAction) Implements IGame.OnOwnedItemAction
+    '**************
     Public Event OnItemAction(ByVal Packet As GameServer.ItemAction) Implements IGame.OnItemAction
+
     Public Event OnItemTriggerSkill(ByVal Packet As GameServer.ItemTriggerSkill) Implements IGame.OnItemTriggerSkill
     Public Event OnLoadAct(ByVal Packet As GameServer.LoadAct) Implements IGame.OnLoadAct
     Public Event OnLoadDone(ByVal Packet As GameServer.LoadDone) Implements IGame.OnLoadDone
@@ -496,9 +499,12 @@ Public Class GameModuleHost
                 RaiseEvent OnNPCWantsInteract(New GameServer.NPCWantsInteract(Packet.Data))
             Case D2Packets.GameServerPacket.OpenWaypoint
                 RaiseEvent OnOpenWaypoint(New GameServer.OpenWaypoint(Packet.Data))
-                'Quick Fix, Prevent crashing *** gotta Do something about it!
-                'Case D2Packets.GameServerPacket.OwnedItemAction
-                '   RaiseEvent OnItemAction(New GameServer.OwnedItemAction(Packet.Data))
+
+                'Pleh says this crash...
+            Case D2Packets.GameServerPacket.OwnedItemAction
+                RaiseEvent OnOwnedItemAction(New GameServer.OwnedItemAction(Packet.Data))
+                '***********************
+
             Case D2Packets.GameServerPacket.PartyMemberPulse
                 RaiseEvent OnPartyMemberPulse(New GameServer.PartyMemberPulse(Packet.Data))
             Case D2Packets.GameServerPacket.PartyMemberUpdate
@@ -627,8 +633,8 @@ Public Class GameModuleHost
         'If PacketObject.Message.StartsWith(".") And Not PacketObject.Message.StartsWith("..") Then Packet.Flag = Packet.PacketFlag.PacketFlag_Dead
         'Usefull function, I will leave it here.
         If PacketObject.Message = ".Map" Then
-            Dim MapBitmap As New Pathing
-            Dim MapInfo As Pathing.MapInfo_t
+            Dim MapBitmap As New Memory.Pathing
+            Dim MapInfo As Structures.MapInfo_t
             Dim b As Bitmap
             MapInfo = MapBitmap.GetMapFromMemory
             b = MapBitmap.BitmapFromMapInfo(MapInfo)
