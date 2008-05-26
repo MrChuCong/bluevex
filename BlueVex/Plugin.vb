@@ -16,9 +16,16 @@ Public Class Plugin
                 If Not info.Equals(Nothing) Then
                     MyRedVexInfo = info
                     Dim RedVexHandle As IntPtr = info.GetWindowHandle.Invoke()
-                    Main = New frmMain
+                    'If we don't already have form loaded
+                    If Main Is Nothing Then
+                        'Load it.
+                        Main = New frmMain
+                    End If
+                    'Set the window inside redvex.
                     SetParent(Main.Handle, RedVexHandle)
+                    'Put bluevex in good location.
                     Main.SetDesktopLocation(640 - Main.Width, 0)
+                    'Show bluevex
                     Main.Show()
                 End If
             End If
@@ -28,6 +35,7 @@ Public Class Plugin
     End Sub
 
     Public Sub DestroyPlugin()
+        'This Happens when the Whole BluevexHostPlugin gets Destroyed.
         'MsgBox("Destroy Plugins")
     End Sub
 

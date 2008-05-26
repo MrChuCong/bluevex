@@ -1,10 +1,25 @@
 Changelog V5.3
 
 
--Added memory.Infos.GetAreaId() function
--Namespace "Memory" contains all pathing and memory related functions.
--Added sub namespace, AreaId and Pathing to "Memory"
+-Added Namespace "Memory" contains all pathing and memory related functions.
+-Added sub namespace, Infos and Pathing to "Memory"
+-Added memory.Infos.GetAreaId function
 -GetTeleportPath, GetWalkPath are now public. To Generate a path between 2 random Points.
 -NameSpace "structures" Contains all Structure you would need.
--Fixed OnOwnedItemAction and I created a new event for it.
--Load appropriate plugins each time a proxy is loaded (Realm/Chat/Game)
+-Fixed OnOwnedItemAction and created a new event for it.
+-Fixed Multi-Client support with Bluevex.
+-Added Packet Flags to Packet Event Handlers.
+
+
+-Mapinfo and exit structs are back to the memory.pathing namespace.
+-Implemented MEC's class.
+-Added ShitLoad of NameSpace for easier Usage
+-Moved GetNextLevel, GetNextQuest to Module GameHelpers.
+-Added misc.Wrapped and misc.RawFunctions. For automated Memory reading. Lots of functions.
+-Added Function memory.misc.GetClientPID. which allow user to get the right D2 Window's id from
+   the position of the player that he got from packets.
+-Added attribute D2PID to each memory functions for multi-client support.
+
+
+-Adding SendKey(Key as integer), SendClick(x,y). For easy creation/joining of games.
+-Adding Macro to Create/Join Games

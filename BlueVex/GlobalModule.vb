@@ -57,9 +57,9 @@ End Module
 Public Module Geometry
 
     Public Function InRange(ByVal PointA As Point, ByVal PointB As Point, ByVal Distance As Integer) As Boolean
-        Dim ASquared As Integer = (PointA.X - PointB.X) * (PointA.X - PointB.X)
-        Dim BSquared As Integer = (PointA.Y - PointB.Y) * (PointA.Y - PointB.Y)
-        Dim CSquared As Integer = Distance * Distance
+        Dim ASquared As ULong = (PointA.X - PointB.X) * (PointA.X - PointB.X)
+        Dim BSquared As ULong = (PointA.Y - PointB.Y) * (PointA.Y - PointB.Y)
+        Dim CSquared As ULong = Distance * Distance
         If ASquared * BSquared < CSquared Then Return True Else Return False
     End Function
 
@@ -69,6 +69,288 @@ Public Module Geometry
 End Module
 
 Public Module GameHelpers
+
+    Public Function GetNextlevel(ByVal AreaID As D2Data.AreaLevel, ByRef ObjectType As Integer) As Integer
+        '1 =Level, 2 = Object, 3 = NPC
+        ObjectType = 1
+        Select Case AreaID
+            'Act1
+            Case D2Data.AreaLevel.RogueEncampment
+                Return D2Data.AreaLevel.BloodMoor
+            Case D2Data.AreaLevel.BloodMoor
+                Return D2Data.AreaLevel.ColdPlains
+            Case D2Data.AreaLevel.ColdPlains
+                Return D2Data.AreaLevel.StonyField
+            Case D2Data.AreaLevel.StonyField
+                Return D2Data.AreaLevel.UndergroundPassageLevel1
+            Case D2Data.AreaLevel.UndergroundPassageLevel1
+                Return D2Data.AreaLevel.DarkWood
+            Case D2Data.AreaLevel.DarkWood
+                Return D2Data.AreaLevel.BlackMarsh
+            Case D2Data.AreaLevel.BlackMarsh
+                Return D2Data.AreaLevel.TamoeHighland
+            Case D2Data.AreaLevel.TamoeHighland
+                Return D2Data.AreaLevel.MonasteryGate
+            Case D2Data.AreaLevel.MonasteryGate
+                Return D2Data.AreaLevel.OuterCloister
+            Case D2Data.AreaLevel.OuterCloister
+                Return D2Data.AreaLevel.Barracks
+            Case D2Data.AreaLevel.Barracks
+                Return D2Data.AreaLevel.JailLevel1
+            Case D2Data.AreaLevel.JailLevel1
+                Return D2Data.AreaLevel.JailLevel2
+            Case D2Data.AreaLevel.JailLevel2
+                Return D2Data.AreaLevel.JailLevel3
+            Case D2Data.AreaLevel.JailLevel3
+                Return D2Data.AreaLevel.InnerCloister
+            Case D2Data.AreaLevel.InnerCloister
+                Return D2Data.AreaLevel.Cathedral
+            Case D2Data.AreaLevel.Cathedral
+                Return D2Data.AreaLevel.CatacombsLevel1
+            Case D2Data.AreaLevel.CatacombsLevel1
+                Return D2Data.AreaLevel.CatacombsLevel2
+            Case D2Data.AreaLevel.CatacombsLevel2
+                Return D2Data.AreaLevel.CatacombsLevel3
+            Case D2Data.AreaLevel.CatacombsLevel3
+                Return D2Data.AreaLevel.CatacombsLevel4
+                'Act1 Caves
+            Case D2Data.AreaLevel.CaveLevel1
+                Return D2Data.AreaLevel.CaveLevel2
+            Case D2Data.AreaLevel.HoleLevel1
+                Return D2Data.AreaLevel.HoleLevel2
+            Case D2Data.AreaLevel.ForgottenTower
+                Return D2Data.AreaLevel.TowerCellarLevel1
+            Case D2Data.AreaLevel.TowerCellarLevel1
+                Return D2Data.AreaLevel.TowerCellarLevel2
+            Case D2Data.AreaLevel.TowerCellarLevel2
+                Return D2Data.AreaLevel.TowerCellarLevel3
+            Case D2Data.AreaLevel.TowerCellarLevel3
+                Return D2Data.AreaLevel.TowerCellarLevel4
+            Case D2Data.AreaLevel.TowerCellarLevel4
+                Return D2Data.AreaLevel.TowerCellarLevel5
+            Case D2Data.AreaLevel.PitLevel1
+                Return D2Data.AreaLevel.PitLevel2
+                'Act2
+            Case D2Data.AreaLevel.LutGholein
+                Return D2Data.AreaLevel.RockyWaste
+            Case D2Data.AreaLevel.RockyWaste
+                Return D2Data.AreaLevel.DryHills
+            Case D2Data.AreaLevel.DryHills
+                Return D2Data.AreaLevel.FarOasis
+            Case D2Data.AreaLevel.FarOasis
+                Return D2Data.AreaLevel.LostCity
+            Case D2Data.AreaLevel.LostCity
+                Return D2Data.AreaLevel.ValleyOfSnakes
+                'Act2 Caves
+            Case D2Data.AreaLevel.SewersLevel1Act2
+                Return D2Data.AreaLevel.SewersLevel2Act2
+            Case D2Data.AreaLevel.SewersLevel2Act2
+                Return D2Data.AreaLevel.SewersLevel3Act2
+            Case D2Data.AreaLevel.HallsOfTheDeadLevel1
+                Return D2Data.AreaLevel.HallsOfTheDeadLevel2
+            Case D2Data.AreaLevel.HallsOfTheDeadLevel2
+                Return 60 'HallsOfTheDeadLevel3
+            Case D2Data.AreaLevel.MaggotLairLevel1
+                Return D2Data.AreaLevel.MaggotLairLevel2
+            Case D2Data.AreaLevel.MaggotLairLevel2
+                Return D2Data.AreaLevel.MaggotLairLevel3
+            Case D2Data.AreaLevel.StonyTombLevel1
+                Return D2Data.AreaLevel.StonyTombLevel2
+            Case D2Data.AreaLevel.ClawViperTempleLevel1
+                Return D2Data.AreaLevel.ClawViperTempleLevel2
+            Case D2Data.AreaLevel.HaremLevel1
+                Return D2Data.AreaLevel.HaremLevel2
+            Case D2Data.AreaLevel.HaremLevel2
+                Return D2Data.AreaLevel.PalaceCellarLevel1
+            Case D2Data.AreaLevel.PalaceCellarLevel1
+                Return D2Data.AreaLevel.PalaceCellarLevel2
+            Case D2Data.AreaLevel.PalaceCellarLevel2
+                Return D2Data.AreaLevel.PalaceCellarLevel3
+            Case D2Data.AreaLevel.PalaceCellarLevel3
+                ObjectType = 2
+                Return D2Data.GameObjectID.ArcaneSanctuaryPortal
+            Case D2Data.AreaLevel.ArcaneSanctuary
+                ObjectType = 2
+                Return 357
+                'Act3
+            Case D2Data.AreaLevel.KurastDocks
+                Return D2Data.AreaLevel.SpiderForest
+            Case D2Data.AreaLevel.SpiderForest
+                Return D2Data.AreaLevel.GreatMarsh
+            Case D2Data.AreaLevel.GreatMarsh
+                Return D2Data.AreaLevel.FlayerJungle
+            Case D2Data.AreaLevel.FlayerJungle
+                Return D2Data.AreaLevel.LowerKurast
+            Case D2Data.AreaLevel.LowerKurast
+                Return D2Data.AreaLevel.KurastBazaar
+            Case D2Data.AreaLevel.KurastBazaar
+                Return D2Data.AreaLevel.UpperKurast
+            Case D2Data.AreaLevel.UpperKurast
+                Return D2Data.AreaLevel.KurastCauseway
+            Case D2Data.AreaLevel.KurastCauseway
+                Return D2Data.AreaLevel.Travincal
+            Case D2Data.AreaLevel.Travincal
+                ObjectType = 2
+                Return 386
+            Case D2Data.AreaLevel.DuranceOfHateLevel1
+                Return D2Data.AreaLevel.DuranceOfHateLevel2
+            Case D2Data.AreaLevel.DuranceOfHateLevel2
+                Return D2Data.AreaLevel.DuranceOfHateLevel3
+            Case D2Data.AreaLevel.FlayerDungeonLevel1
+                Return D2Data.AreaLevel.FlayerDungeonLevel2
+            Case D2Data.AreaLevel.FlayerDungeonLevel2
+                Return D2Data.AreaLevel.FlayerDungeonLevel3
+            Case D2Data.AreaLevel.SewersLevel1Act3
+                Return D2Data.AreaLevel.SewersLevel2Act3
+            Case D2Data.AreaLevel.SwampyPitLevel1
+                Return D2Data.AreaLevel.SwampyPitLevel2
+            Case D2Data.AreaLevel.SwampyPitLevel2
+                Return D2Data.AreaLevel.SwampyPitLevel3
+                'A4
+            Case D2Data.AreaLevel.ThePandemoniumFortress
+                Return D2Data.AreaLevel.OuterSteppes
+            Case D2Data.AreaLevel.OuterSteppes
+                Return D2Data.AreaLevel.PlainsOfDespair
+            Case D2Data.AreaLevel.PlainsOfDespair
+                Return D2Data.AreaLevel.CityOfTheDamned
+            Case D2Data.AreaLevel.CityOfTheDamned
+                Return D2Data.AreaLevel.RiverOfFlame
+            Case D2Data.AreaLevel.RiverOfFlame
+                Return D2Data.AreaLevel.ChaosSanctuary
+            Case D2Data.AreaLevel.ChaosSanctuary
+                ObjectType = 2
+                Return D2Data.GameObjectID.DiabloStartPoint
+                'Act 5
+            Case D2Data.AreaLevel.Harrogath
+                Return D2Data.AreaLevel.BloodyFoothills
+            Case D2Data.AreaLevel.BloodyFoothills
+                Return D2Data.AreaLevel.FrigidHighlands
+            Case D2Data.AreaLevel.FrigidHighlands
+                Return D2Data.AreaLevel.ArreatPlateau
+            Case D2Data.AreaLevel.ArreatPlateau
+                Return D2Data.AreaLevel.CrystallinePassage
+            Case D2Data.AreaLevel.CrystallinePassage
+                Return D2Data.AreaLevel.GlacialTrail
+            Case D2Data.AreaLevel.GlacialTrail
+                Return D2Data.AreaLevel.FrozenTundra
+            Case D2Data.AreaLevel.FrozenTundra
+                Return D2Data.AreaLevel.TheAncientsWay
+            Case D2Data.AreaLevel.TheAncientsWay
+                Return D2Data.AreaLevel.ArreatSummit
+            Case D2Data.AreaLevel.ArreatSummit
+                Return D2Data.AreaLevel.TheWorldStoneKeepLevel1
+            Case D2Data.AreaLevel.TheWorldStoneKeepLevel1
+                Return D2Data.AreaLevel.TheWorldStoneKeepLevel2
+            Case D2Data.AreaLevel.TheWorldStoneKeepLevel2
+                Return D2Data.AreaLevel.TheWorldStoneKeepLevel3
+            Case D2Data.AreaLevel.TheWorldStoneKeepLevel3
+                Return D2Data.AreaLevel.ThroneOfDestruction
+            Case D2Data.AreaLevel.ThroneOfDestruction
+                ObjectType = 3
+                Return D2Data.NPCCode.BaalThrone
+            Case D2Data.AreaLevel.NihlathaksTemple
+                Return D2Data.AreaLevel.HallsOfAnguish
+            Case D2Data.AreaLevel.HallsOfAnguish
+                Return D2Data.AreaLevel.HallsOfPain
+            Case D2Data.AreaLevel.HallsOfPain
+                Return D2Data.AreaLevel.HallsOfVaught
+            Case Else : Return Nothing
+        End Select
+    End Function
+    Public Function GetNextQuest(ByVal AreaID As D2Data.AreaLevel, ByRef ObjectType As Integer) As Integer
+        '1 =Level, 2 = Object, 3 = NPC
+        ObjectType = 1
+        Select Case AreaID
+            'Act1
+            Case D2Data.AreaLevel.BloodMoor
+                Return D2Data.AreaLevel.DenOfEvil
+            Case D2Data.AreaLevel.ColdPlains
+                Return D2Data.AreaLevel.BurialGrounds
+            Case D2Data.AreaLevel.StonyField
+                ObjectType = 2
+                Return 17
+            Case D2Data.AreaLevel.UndergroundPassageLevel1
+                Return D2Data.AreaLevel.UndergroundPassageLevel2
+            Case D2Data.AreaLevel.DarkWood
+                ObjectType = 2
+                Return 30
+            Case D2Data.AreaLevel.BlackMarsh
+                Return D2Data.AreaLevel.ForgottenTower
+            Case D2Data.AreaLevel.TamoeHighland
+                Return D2Data.AreaLevel.PitLevel1
+            Case D2Data.AreaLevel.Barracks
+                ObjectType = 2
+                Return 108
+                'Act2
+            Case D2Data.AreaLevel.DryHills
+                Return D2Data.AreaLevel.HallsOfTheDeadLevel1
+            Case D2Data.AreaLevel.FarOasis
+                Return D2Data.AreaLevel.MaggotLairLevel1
+            Case D2Data.AreaLevel.SewersLevel3Act2
+                ObjectType = 2
+                Return 355
+            Case 60 'HallsOfTheDeadLevel3
+                ObjectType = 2
+                Return 354
+            Case D2Data.AreaLevel.MaggotLairLevel3
+                ObjectType = 2
+                Return 356
+            Case D2Data.AreaLevel.TalRashasTomb1, D2Data.AreaLevel.TalRashasTomb2, D2Data.AreaLevel.TalRashasTomb3, D2Data.AreaLevel.TalRashasTomb4, D2Data.AreaLevel.TalRashasTomb5, D2Data.AreaLevel.TalRashasTomb6, D2Data.AreaLevel.TalRashasTomb7
+                ObjectType = 2
+                Return 152
+            Case D2Data.AreaLevel.ArcaneSanctuary
+                ObjectType = 2
+                Return 357
+                'Act3
+            Case D2Data.AreaLevel.SpiderForest
+                Return D2Data.AreaLevel.SpiderCavern
+            Case D2Data.AreaLevel.FlayerJungle
+                ObjectType = 2
+                Return 252
+            Case D2Data.AreaLevel.KurastBazaar
+                ObjectType = 2
+                Return 195
+            Case D2Data.AreaLevel.UpperKurast
+                Return D2Data.AreaLevel.SewersLevel1Act3
+            Case D2Data.AreaLevel.SewersLevel2Act3
+                ObjectType = 2
+                Return 405
+            Case D2Data.AreaLevel.SwampyPitLevel3
+                ObjectType = 2
+                Return 397
+            Case D2Data.AreaLevel.FlayerDungeonLevel3
+                ObjectType = 2
+                Return 406
+            Case D2Data.AreaLevel.RuinedTemple
+                ObjectType = 2
+                Return 193
+            Case D2Data.AreaLevel.Travincal
+                ObjectType = 2
+                Return 386
+                'A4
+            Case D2Data.AreaLevel.PlainsOfDespair
+                ObjectType = 3
+                Return 256
+            Case D2Data.AreaLevel.RiverOfFlame
+                ObjectType = 3
+                Return 775
+            Case D2Data.AreaLevel.ChaosSanctuary
+                ObjectType = 2
+                Return D2Data.GameObjectID.DiabloStartPoint
+                'A5
+            Case D2Data.AreaLevel.BloodyFoothills
+                Return 824 'Tile!
+            Case D2Data.AreaLevel.CrystallinePassage
+                Return D2Data.AreaLevel.FrozenRiver
+            Case D2Data.AreaLevel.FrozenRiver
+                ObjectType = 3
+                Return 793
+            Case D2Data.AreaLevel.HallsOfVaught
+                ObjectType = 2
+                Return D2Data.GameObjectID.NihlathakWildernessStartPosition
+        End Select
+        Return Nothing
+    End Function
 
     Public Function isBoss(ByVal type As D2Data.NPCCode)
 

@@ -2,6 +2,7 @@ Imports System.Runtime.InteropServices
 Public MustInherit Class IModuleHost
 
     Friend LoadedModules As New Collection
+    Friend ClientPID As New Integer
 
     Friend Functions As FunctionInfo = Nothing
     Sub New(ByVal Funcs As IntPtr)
@@ -23,7 +24,10 @@ Public MustInherit Class IModuleHost
         For Each obj As Object In LoadedModules
             'MsgBox(obj.GetType.Name)
             obj.destroy()
+
         Next
+        LoadedModules.Clear()
+
     End Sub
 
     Sub OnRelayDataToServer(ByVal bytes() As Byte, ByVal PacketPointer As IntPtr, ByVal Funcs As IntPtr)

@@ -3,10 +3,29 @@ Imports System.Drawing.Drawing2D
 Imports System.Diagnostics
 Imports System.Collections
 Imports System.Collections.Specialized
-Imports MEC
-Namespace Memory
 
-    Public Class Pathing
+Namespace Memory.Pathing
+
+    Public Structure MapInfo_t
+        Public LevelsNear As Structures.OrderedDictionary(Of Long, Exit_T)
+        Public Npcs As Structures.OrderedDictionary(Of Long, Point)
+        Public Objects As Structures.OrderedDictionary(Of Long, Point)
+        Public Exits As Structures.OrderedDictionary(Of Long, Point)
+        Public MapPosX As Integer
+        Public MapPosY As Integer
+        Public MapSizeX As Integer
+        Public MapSizeY As Integer
+        Public LevelNo As Integer
+        Public Bytes(,) As Integer
+        Public ClientPID As Integer
+    End Structure
+
+    Public Structure Exit_T
+        Dim First As Point
+        Dim Second As Point
+    End Structure
+
+    Public Class Pather
 
 #Region "Structures"
 
@@ -32,6 +51,7 @@ Namespace Memory
             Dim dwActAddr As Int32
             Dim dwRoomAddr As Int32
         End Structure
+
 #End Region
 #Region "Declarations"
 
@@ -73,12 +93,15 @@ Namespace Memory
         Dim Playerinfo As Playerinfo_t
         Dim m_map As CMatrix
 
-        Dim Mapinfo As New Dictionary(Of Integer, Structures.MapInfo_t)
+        Dim Mapinfo As New Dictionary(Of Integer, MapInfo_t)
 
         Dim D2client As System.Diagnostics.ProcessModule
         Dim D2common As System.Diagnostics.ProcessModule
-        Dim MemEditor As New MemEdit()
+
         Dim LevelNo As Integer
+
+        Dim MemEditor As New MEC.MemEdit
+
 
 #Region "Private"
 
@@ -223,49 +246,30 @@ Namespace Memory
             VirtualFreeEx(MemEditor.netProcHandle.Handle.ToInt32, Address, (Len(AsmStub(0)) * AsmStub.Length), MEM_RELEASE)
         End Sub
 
-        Private Function DecToHex(ByVal DecVal As Double) As String
-            Dim a As Double, b As Double, c As String, d As Double
-            a = DecVal
-            For b = 1 To Int(Math.Log(DecVal) / Math.Log(16)) + 1
-                d = CDbl(a Mod 16)
-                Select Case d
-                    Case 0 To 9
-                        c = d
-                    Case Else
-                        c = Chr(55 + d)
-                End Select
-                DecToHex = c & DecToHex
-                a = CDbl(Int(a / 16))
-            Next b
-
-        End Function
-        Private Function HexToDec(ByVal HexVal As String) As Double
-            Dim TotalDec As Double, a As Double, c As Double
-            For a = 1 To Len(HexVal)
-                Select Case (Mid(HexVal, a, 1))
-                    Case 0 To 9
-                        c = (Mid(HexVal, a, 1))
-                    Case Else
-                        c = (Asc(Mid(HexVal, a, 1)) - 55)
-                End Select
-                TotalDec = (TotalDec * 16) + c
-            Next a
-            HexToDec = TotalDec
-        End Function
 #End Region
 
 #Region "Public"
 
-        Public Function GetMapFromMemory() As Structures.MapInfo_t
+
+        Public Function GetMapFromMemory(Optional ByVal DiabloPID As Integer = 0) As MapInfo_t
             Dim Dwtemp As Long
 
-            If MemEditor.mOpenProcess("Diablo II") = 0 Then
-                Return Nothing
+            'User specified one, let's use it
+            If DiabloPID <> 0 Then
+                If MemEditor.mOpenDiabloProcess(DiabloPID) = IntPtr.Zero Then
+                    Return Nothing
+                End If
+            Else
+                'Fuck that shit! Let's find one for him.
+                If MemEditor.mOpenDiabloProcess = IntPtr.Zero Then
+                    Return Nothing
+                End If
             End If
 
             D2client = MemEditor.GetModule("D2Client.dll")
             D2common = MemEditor.GetModule("D2Common.dll")
             If D2client Is Nothing Then Return Nothing
+
             Playerinfo.dwUnitAddr = MemEditor.ReadMemoryLong(D2client.BaseAddress.ToInt32 + &H11C1E0, Len(New Int32))
             Playerinfo.dwPlayerId = MemEditor.ReadMemoryLong(Playerinfo.dwUnitAddr + &HC, 4)
             Playerinfo.dwActAddr = MemEditor.ReadMemoryLong(Playerinfo.dwUnitAddr + &H1C, 4)
@@ -282,12 +286,15 @@ Namespace Memory
             LevelNo = MemEditor.ReadMemoryLong(Dwtemp + &H14, 4)
 
             'Put the mapinfo in a buffer so we can easily change datas.
-            Dim BufferMapInfo As New Structures.MapInfo_t
+            Dim BufferMapInfo As New MapInfo_t
             'Initialize the Arrays
-            BufferMapInfo.LevelsNear = New Structures.OrderedDictionary(Of Long, Structures.Exit_T)
+            BufferMapInfo.LevelsNear = New Structures.OrderedDictionary(Of Long, Exit_T)
             BufferMapInfo.Exits = New Structures.OrderedDictionary(Of Long, Point)
             BufferMapInfo.Npcs = New Structures.OrderedDictionary(Of Long, Point)
             BufferMapInfo.Objects = New Structures.OrderedDictionary(Of Long, Point)
+
+            'Save the Client's ID
+            BufferMapInfo.ClientPID = MemEditor.netProcHandle.Id
 
             'Get the General Informations of the map.
             BufferMapInfo.LevelNo = LevelNo
@@ -358,7 +365,7 @@ Namespace Memory
                     dwSizeX = MemEditor.ReadMemoryLong(pLevel + &HC, 4)
                     dwSizeY = MemEditor.ReadMemoryLong(pLevel + &H10, 4)
 
-                    Dim Newlevel As Structures.Exit_T
+                    Dim Newlevel As Exit_T
                     Newlevel.First.X = dwPosX * 5
                     Newlevel.First.Y = dwPosY * 5
                     Newlevel.Second.X = dwSizeX * 5
@@ -440,7 +447,7 @@ Namespace Memory
                 Dim CollMapByte As Byte()
                 Dim pcol As CollMap_t
                 CollMapByte = MemEditor.ReadMemoryAOB(dwCol, Marshal.SizeOf(GetType(CollMap_t)))
-                pcol = ByteToStruct(CollMapByte, pcol.GetType)
+                pcol = Memory.Tools.ByteToStruct(CollMapByte, pcol.GetType)
 
                 ' ***Building CollisionMap here ***
 
@@ -506,7 +513,7 @@ Namespace Memory
 
         End Function
 
-        Public Function GetPreviousMapInfo(ByVal LevelNo As D2Data.AreaLevel) As Structures.MapInfo_t
+        Public Function GetPreviousMapInfo(ByVal LevelNo As D2Data.AreaLevel) As MapInfo_t
             'If the map has already been registered.
             If Mapinfo.ContainsKey(LevelNo) Then
                 'Return the infos.
@@ -514,10 +521,9 @@ Namespace Memory
             End If
             'Map not existing, return nothing
             Return Nothing
-
         End Function
 
-        Public Sub WriteMapToFile(ByVal Path As String, ByVal Mapdata As Structures.MapInfo_t)
+        Public Sub WriteMapToFile(ByVal Path As String, ByVal Mapdata As MapInfo_t)
 
             Dim oWrite As System.IO.StreamWriter
             oWrite = IO.File.CreateText(Path)
@@ -762,13 +768,13 @@ Namespace Memory
         Private Const inClosed = 2
 
         'Single Point
-        Public Function RelativeToAbs(ByVal Point As Point, ByVal mapinfo As Structures.MapInfo_t) As Point
+        Public Function RelativeToAbs(ByVal Point As Point, ByVal mapinfo As MapInfo_t) As Point
             RelativeToAbs.X = Point.X + mapinfo.MapPosX * 5
             RelativeToAbs.Y = Point.Y + mapinfo.MapPosY * 5
             Return RelativeToAbs
         End Function
         'List
-        Public Function RelativeToAbs(ByVal Point As List(Of Point), ByVal Mapinfo As Structures.MapInfo_t) As List(Of Point)
+        Public Function RelativeToAbs(ByVal Point As List(Of Point), ByVal Mapinfo As MapInfo_t) As List(Of Point)
             RelativeToAbs = New List(Of Point)
             If Not Point Is Nothing Then
                 'Each point are transfer into relative
@@ -778,9 +784,21 @@ Namespace Memory
             End If
             Return RelativeToAbs
         End Function
-        Public Function AbsToRelative(ByVal Point As Point, ByVal Mapinfo As Structures.MapInfo_t) As Point
+        'Single Point
+        Public Function AbsToRelative(ByVal Point As Point, ByVal Mapinfo As MapInfo_t) As Point
             AbsToRelative.X = Math.Abs(Point.X - Mapinfo.MapPosX * 5)
             AbsToRelative.Y = Math.Abs(Point.Y - Mapinfo.MapPosY * 5)
+            Return AbsToRelative
+        End Function
+        'List
+        Public Function AbsToRelative(ByVal Point As List(Of Point), ByVal Mapinfo As MapInfo_t) As List(Of Point)
+            AbsToRelative = New List(Of Point)
+            If Not Point Is Nothing Then
+                'Each point are transfer into relative
+                For i As Integer = 0 To Point.Count - 1
+                    AbsToRelative.Add(AbsToRelative(Point(i), Mapinfo))
+                Next
+            End If
             Return AbsToRelative
         End Function
 
@@ -801,8 +819,7 @@ Namespace Memory
 
             Return Map
         End Function
-
-        Private Function MapInfoToCellData(ByVal Mapinfo As Structures.MapInfo_t) As CellData(,)
+        Private Function MapInfoToCellData(ByVal Mapinfo As MapInfo_t) As CellData(,)
             Dim Map(Mapinfo.MapSizeX - 1, Mapinfo.MapSizeY - 1) As CellData
             For X As Integer = 0 To Mapinfo.MapSizeX - 1
                 For Y As Integer = 0 To Mapinfo.MapSizeY - 1
@@ -815,7 +832,8 @@ Namespace Memory
             Map(0, 0).MaxY = Mapinfo.MapSizeY
             Return Map
         End Function
-        Public Function BitmapFromMapInfo(ByVal MapInfo As Structures.MapInfo_t) As Bitmap
+
+        Public Function BitmapFromMapInfo(ByVal MapInfo As MapInfo_t) As Bitmap
 
             If MapInfo.MapSizeX = 0 Or MapInfo.MapSizeY = 0 Then
                 Return Nothing
@@ -881,7 +899,7 @@ Namespace Memory
 
             Return Nothing
         End Function
-        Public Function GetWalkPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As Structures.MapInfo_t) As List(Of Point)
+        Public Function GetWalkPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As MapInfo_t) As List(Of Point)
 
             Dim Map As CellData(,) = MapInfoToCellData(Mapinfo)
             Dim Heap As New BinaryHeap()
@@ -1065,10 +1083,12 @@ Namespace Memory
             Return Nothing
         End Function
 
-        Public Function PathToWaypoint(ByVal Mapinfo As Structures.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
+        Public Function PathToWaypoint(ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
             Dim WpList() As Integer = {&H77, &H9D, &H9C, &H143, &H120, &H192, &HED, &H144, &H18E, &HEE, &H1AD, &H1F0, &H1FF, &H1EE}
-            Dim StartPoint = Infos.GetMyPosition
+            'Switch so User choose his Client Instance.
+            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
+
             'Check if our map contains one of those ids.
             For i As Integer = 0 To WpList.Length - 1
                 If Mapinfo.Objects.Keys.Contains(WpList(i)) Then
@@ -1081,10 +1101,9 @@ Namespace Memory
             Next
             Return Nothing
         End Function
-
-        Public Function PathToObject(ByVal ObjectId As Integer, ByVal Mapinfo As Structures.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
+        Public Function PathToObject(ByVal ObjectId As Integer, ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
-            Dim StartPoint = Infos.GetMyPosition()
+            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
             If Mapinfo.Objects.Keys.Contains(ObjectId) Then
                 If Walk Then
                     Return GetWalkPath(StartPoint, Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo)
@@ -1094,9 +1113,9 @@ Namespace Memory
             End If
             Return Nothing
         End Function
-        Public Function PathToNpc(ByVal NPCId As Integer, ByVal Mapinfo As Structures.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
+        Public Function PathToNpc(ByVal NPCId As Integer, ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
-            Dim StartPoint = Infos.GetMyPosition()
+            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
             If Mapinfo.Npcs.Keys.Contains(NPCId) Then
                 If Walk Then
                     Return GetWalkPath(StartPoint, Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo)
@@ -1106,9 +1125,9 @@ Namespace Memory
             End If
             Return Nothing
         End Function
-        Public Function PathToLevel(ByVal LevelId As Integer, ByVal Mapinfo As Structures.MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
+        Public Function PathToLevel(ByVal LevelId As Integer, ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
-            Dim StartPoint = Infos.GetMyPosition()
+            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
 
             If Mapinfo.Exits.Keys.Contains(LevelId) Then
 
@@ -1236,7 +1255,7 @@ Namespace Memory
                 End While
 
                 If Mapinfo.LevelsNear.Keys.Contains(LevelId) Then
-                    Dim iter As Structures.Exit_T = Mapinfo.LevelsNear.ItemBykey(LevelId)
+                    Dim iter As Exit_T = Mapinfo.LevelsNear.ItemBykey(LevelId)
                     Dim J As Integer = 0
                     While J < nTotalPoints
                         If (ptCenters(J).X + Mapinfo.MapPosX * 5) >= iter.First.X - 5 And (ptCenters(J).X + Mapinfo.MapPosX * 5) - 5 <= (iter.First.X + iter.Second.X) Then
@@ -1272,7 +1291,7 @@ Namespace Memory
         Private m_nCY As Integer
         Private Const RANGE_INVALID = 10000
 
-        Enum PathState
+        Private Enum PathState
             PATH_FAIL = 0 'Failed, error occurred or no available path
             PATH_CONTINUE = 1 'Path OK, destination not reached yet
             PATH_REACHED = 2
@@ -1288,7 +1307,7 @@ Namespace Memory
         Private Function IsValidIndex(ByVal x As Integer, ByVal y As Integer) As Boolean
             Return x >= 0 And x < m_nCX And y >= 0 And y < m_nCY
         End Function
-        Private Sub MakeDistanceTable(ByRef Mapinfo As Structures.MapInfo_t)
+        Private Sub MakeDistanceTable(ByRef Mapinfo As MapInfo_t)
             ReDim M_pptable(Mapinfo.MapSizeX, Mapinfo.MapSizeY)
             For x As Integer = 0 To Mapinfo.MapSizeX - 1
                 For y As Integer = 0 To Mapinfo.MapSizeY - 1
@@ -1361,18 +1380,19 @@ Namespace Memory
             Return -1
         End Function
 
-        Public Function GetTeleportPath(ByVal ptStart As Point, ByVal ptEnd As Point, ByVal Mapinfo As Structures.MapInfo_t, ByVal Range As Integer) As List(Of Point)
+        Public Function GetTeleportPath(ByVal ptStart As Point, ByVal ptEnd As Point, ByVal Mapinfo As MapInfo_t, ByVal Distance As Integer) As List(Of Point)
             Dim Path As New List(Of Point)
 
             M_ptstart = AbsToRelative(ptStart, Mapinfo)
             M_ptEnd = AbsToRelative(ptEnd, Mapinfo)
 
-            Tp_Range = Range
+            Tp_Range = Distance
 
             m_nCX = Mapinfo.MapSizeX
             m_nCY = Mapinfo.MapSizeY
             MakeDistanceTable(Mapinfo)
-            Path.Add(ptStart)
+            'Starting point Not in the Path.
+            'Path.Add(ptStart)
             Dim dwFound = 1
             Dim Pos As Point = M_ptstart
             Dim bOK As Boolean
@@ -1407,339 +1427,6 @@ Namespace Memory
 
 #End Region
 
-#Region "Game Helper"
-
-        Public Function GetNextlevel(ByVal AreaID As D2Data.AreaLevel, ByRef ObjectType As Integer) As Integer
-            '1 =Level, 2 = Object, 3 = NPC
-            ObjectType = 1
-            Select Case AreaID
-                'Act1
-                Case D2Data.AreaLevel.RogueEncampment
-                    Return D2Data.AreaLevel.BloodMoor
-                Case D2Data.AreaLevel.BloodMoor
-                    Return D2Data.AreaLevel.ColdPlains
-                Case D2Data.AreaLevel.ColdPlains
-                    Return D2Data.AreaLevel.StonyField
-                Case D2Data.AreaLevel.StonyField
-                    Return D2Data.AreaLevel.UndergroundPassageLevel1
-                Case D2Data.AreaLevel.UndergroundPassageLevel1
-                    Return D2Data.AreaLevel.DarkWood
-                Case D2Data.AreaLevel.DarkWood
-                    Return D2Data.AreaLevel.BlackMarsh
-                Case D2Data.AreaLevel.BlackMarsh
-                    Return D2Data.AreaLevel.TamoeHighland
-                Case D2Data.AreaLevel.TamoeHighland
-                    Return D2Data.AreaLevel.MonasteryGate
-                Case D2Data.AreaLevel.MonasteryGate
-                    Return D2Data.AreaLevel.OuterCloister
-                Case D2Data.AreaLevel.OuterCloister
-                    Return D2Data.AreaLevel.Barracks
-                Case D2Data.AreaLevel.Barracks
-                    Return D2Data.AreaLevel.JailLevel1
-                Case D2Data.AreaLevel.JailLevel1
-                    Return D2Data.AreaLevel.JailLevel2
-                Case D2Data.AreaLevel.JailLevel2
-                    Return D2Data.AreaLevel.JailLevel3
-                Case D2Data.AreaLevel.JailLevel3
-                    Return D2Data.AreaLevel.InnerCloister
-                Case D2Data.AreaLevel.InnerCloister
-                    Return D2Data.AreaLevel.Cathedral
-                Case D2Data.AreaLevel.Cathedral
-                    Return D2Data.AreaLevel.CatacombsLevel1
-                Case D2Data.AreaLevel.CatacombsLevel1
-                    Return D2Data.AreaLevel.CatacombsLevel2
-                Case D2Data.AreaLevel.CatacombsLevel2
-                    Return D2Data.AreaLevel.CatacombsLevel3
-                Case D2Data.AreaLevel.CatacombsLevel3
-                    Return D2Data.AreaLevel.CatacombsLevel4
-                    'Act1 Caves
-                Case D2Data.AreaLevel.CaveLevel1
-                    Return D2Data.AreaLevel.CaveLevel2
-                Case D2Data.AreaLevel.HoleLevel1
-                    Return D2Data.AreaLevel.HoleLevel2
-                Case D2Data.AreaLevel.ForgottenTower
-                    Return D2Data.AreaLevel.TowerCellarLevel1
-                Case D2Data.AreaLevel.TowerCellarLevel1
-                    Return D2Data.AreaLevel.TowerCellarLevel2
-                Case D2Data.AreaLevel.TowerCellarLevel2
-                    Return D2Data.AreaLevel.TowerCellarLevel3
-                Case D2Data.AreaLevel.TowerCellarLevel3
-                    Return D2Data.AreaLevel.TowerCellarLevel4
-                Case D2Data.AreaLevel.TowerCellarLevel4
-                    Return D2Data.AreaLevel.TowerCellarLevel5
-                Case D2Data.AreaLevel.PitLevel1
-                    Return D2Data.AreaLevel.PitLevel2
-                    'Act2
-                Case D2Data.AreaLevel.LutGholein
-                    Return D2Data.AreaLevel.RockyWaste
-                Case D2Data.AreaLevel.RockyWaste
-                    Return D2Data.AreaLevel.DryHills
-                Case D2Data.AreaLevel.DryHills
-                    Return D2Data.AreaLevel.FarOasis
-                Case D2Data.AreaLevel.FarOasis
-                    Return D2Data.AreaLevel.LostCity
-                Case D2Data.AreaLevel.LostCity
-                    Return D2Data.AreaLevel.ValleyOfSnakes
-                    'Act2 Caves
-                Case D2Data.AreaLevel.SewersLevel1Act2
-                    Return D2Data.AreaLevel.SewersLevel2Act2
-                Case D2Data.AreaLevel.SewersLevel2Act2
-                    Return D2Data.AreaLevel.SewersLevel3Act2
-                Case D2Data.AreaLevel.HallsOfTheDeadLevel1
-                    Return D2Data.AreaLevel.HallsOfTheDeadLevel2
-                Case D2Data.AreaLevel.HallsOfTheDeadLevel2
-                    Return 60 'HallsOfTheDeadLevel3
-                Case D2Data.AreaLevel.MaggotLairLevel1
-                    Return D2Data.AreaLevel.MaggotLairLevel2
-                Case D2Data.AreaLevel.MaggotLairLevel2
-                    Return D2Data.AreaLevel.MaggotLairLevel3
-                Case D2Data.AreaLevel.StonyTombLevel1
-                    Return D2Data.AreaLevel.StonyTombLevel2
-                Case D2Data.AreaLevel.ClawViperTempleLevel1
-                    Return D2Data.AreaLevel.ClawViperTempleLevel2
-                Case D2Data.AreaLevel.HaremLevel1
-                    Return D2Data.AreaLevel.HaremLevel2
-                Case D2Data.AreaLevel.HaremLevel2
-                    Return D2Data.AreaLevel.PalaceCellarLevel1
-                Case D2Data.AreaLevel.PalaceCellarLevel1
-                    Return D2Data.AreaLevel.PalaceCellarLevel2
-                Case D2Data.AreaLevel.PalaceCellarLevel2
-                    Return D2Data.AreaLevel.PalaceCellarLevel3
-                Case D2Data.AreaLevel.PalaceCellarLevel3
-                    ObjectType = 2
-                    Return D2Data.GameObjectID.ArcaneSanctuaryPortal
-                Case D2Data.AreaLevel.ArcaneSanctuary
-                    ObjectType = 2
-                    Return 357
-                    'Act3
-                Case D2Data.AreaLevel.KurastDocks
-                    Return D2Data.AreaLevel.SpiderForest
-                Case D2Data.AreaLevel.SpiderForest
-                    Return D2Data.AreaLevel.GreatMarsh
-                Case D2Data.AreaLevel.GreatMarsh
-                    Return D2Data.AreaLevel.FlayerJungle
-                Case D2Data.AreaLevel.FlayerJungle
-                    Return D2Data.AreaLevel.LowerKurast
-                Case D2Data.AreaLevel.LowerKurast
-                    Return D2Data.AreaLevel.KurastBazaar
-                Case D2Data.AreaLevel.KurastBazaar
-                    Return D2Data.AreaLevel.UpperKurast
-                Case D2Data.AreaLevel.UpperKurast
-                    Return D2Data.AreaLevel.KurastCauseway
-                Case D2Data.AreaLevel.KurastCauseway
-                    Return D2Data.AreaLevel.Travincal
-                Case D2Data.AreaLevel.Travincal
-                    ObjectType = 2
-                    Return 386
-                Case D2Data.AreaLevel.DuranceOfHateLevel1
-                    Return D2Data.AreaLevel.DuranceOfHateLevel2
-                Case D2Data.AreaLevel.DuranceOfHateLevel2
-                    Return D2Data.AreaLevel.DuranceOfHateLevel3
-                Case D2Data.AreaLevel.FlayerDungeonLevel1
-                    Return D2Data.AreaLevel.FlayerDungeonLevel2
-                Case D2Data.AreaLevel.FlayerDungeonLevel2
-                    Return D2Data.AreaLevel.FlayerDungeonLevel3
-                Case D2Data.AreaLevel.SewersLevel1Act3
-                    Return D2Data.AreaLevel.SewersLevel2Act3
-                Case D2Data.AreaLevel.SwampyPitLevel1
-                    Return D2Data.AreaLevel.SwampyPitLevel2
-                Case D2Data.AreaLevel.SwampyPitLevel2
-                    Return D2Data.AreaLevel.SwampyPitLevel3
-                    'A4
-                Case D2Data.AreaLevel.ThePandemoniumFortress
-                    Return D2Data.AreaLevel.OuterSteppes
-                Case D2Data.AreaLevel.OuterSteppes
-                    Return D2Data.AreaLevel.PlainsOfDespair
-                Case D2Data.AreaLevel.PlainsOfDespair
-                    Return D2Data.AreaLevel.CityOfTheDamned
-                Case D2Data.AreaLevel.CityOfTheDamned
-                    Return D2Data.AreaLevel.RiverOfFlame
-                Case D2Data.AreaLevel.RiverOfFlame
-                    Return D2Data.AreaLevel.ChaosSanctuary
-                Case D2Data.AreaLevel.ChaosSanctuary
-                    ObjectType = 2
-                    Return D2Data.GameObjectID.DiabloStartPoint
-                    'Act 5
-                Case D2Data.AreaLevel.Harrogath
-                    Return D2Data.AreaLevel.BloodyFoothills
-                Case D2Data.AreaLevel.BloodyFoothills
-                    Return D2Data.AreaLevel.FrigidHighlands
-                Case D2Data.AreaLevel.FrigidHighlands
-                    Return D2Data.AreaLevel.ArreatPlateau
-                Case D2Data.AreaLevel.ArreatPlateau
-                    Return D2Data.AreaLevel.CrystallinePassage
-                Case D2Data.AreaLevel.CrystallinePassage
-                    Return D2Data.AreaLevel.GlacialTrail
-                Case D2Data.AreaLevel.GlacialTrail
-                    Return D2Data.AreaLevel.FrozenTundra
-                Case D2Data.AreaLevel.FrozenTundra
-                    Return D2Data.AreaLevel.TheAncientsWay
-                Case D2Data.AreaLevel.TheAncientsWay
-                    Return D2Data.AreaLevel.ArreatSummit
-                Case D2Data.AreaLevel.ArreatSummit
-                    Return D2Data.AreaLevel.TheWorldStoneKeepLevel1
-                Case D2Data.AreaLevel.TheWorldStoneKeepLevel1
-                    Return D2Data.AreaLevel.TheWorldStoneKeepLevel2
-                Case D2Data.AreaLevel.TheWorldStoneKeepLevel2
-                    Return D2Data.AreaLevel.TheWorldStoneKeepLevel3
-                Case D2Data.AreaLevel.TheWorldStoneKeepLevel3
-                    Return D2Data.AreaLevel.ThroneOfDestruction
-                Case D2Data.AreaLevel.ThroneOfDestruction
-                    ObjectType = 3
-                    Return D2Data.NPCCode.BaalThrone
-                Case D2Data.AreaLevel.NihlathaksTemple
-                    Return D2Data.AreaLevel.HallsOfAnguish
-                Case D2Data.AreaLevel.HallsOfAnguish
-                    Return D2Data.AreaLevel.HallsOfPain
-                Case D2Data.AreaLevel.HallsOfPain
-                    Return D2Data.AreaLevel.HallsOfVaught
-                Case Else : Return Nothing
-            End Select
-        End Function
-        Public Function GetNextQuest(ByVal AreaID As D2Data.AreaLevel, ByRef ObjectType As Integer) As Integer
-            '1 =Level, 2 = Object, 3 = NPC
-            ObjectType = 1
-            Select Case AreaID
-                'Act1
-                Case D2Data.AreaLevel.BloodMoor
-                    Return D2Data.AreaLevel.DenOfEvil
-                Case D2Data.AreaLevel.ColdPlains
-                    Return D2Data.AreaLevel.BurialGrounds
-                Case D2Data.AreaLevel.StonyField
-                    ObjectType = 2
-                    Return 17
-                Case D2Data.AreaLevel.UndergroundPassageLevel1
-                    Return D2Data.AreaLevel.UndergroundPassageLevel2
-                Case D2Data.AreaLevel.DarkWood
-                    ObjectType = 2
-                    Return 30
-                Case D2Data.AreaLevel.BlackMarsh
-                    Return D2Data.AreaLevel.ForgottenTower
-                Case D2Data.AreaLevel.TamoeHighland
-                    Return D2Data.AreaLevel.PitLevel1
-                Case D2Data.AreaLevel.Barracks
-                    ObjectType = 2
-                    Return 108
-                    'Act2
-                Case D2Data.AreaLevel.DryHills
-                    Return D2Data.AreaLevel.HallsOfTheDeadLevel1
-                Case D2Data.AreaLevel.FarOasis
-                    Return D2Data.AreaLevel.MaggotLairLevel1
-                Case D2Data.AreaLevel.SewersLevel3Act2
-                    ObjectType = 2
-                    Return 355
-                Case 60 'HallsOfTheDeadLevel3
-                    ObjectType = 2
-                    Return 354
-                Case D2Data.AreaLevel.MaggotLairLevel3
-                    ObjectType = 2
-                    Return 356
-                Case D2Data.AreaLevel.TalRashasTomb1, D2Data.AreaLevel.TalRashasTomb2, D2Data.AreaLevel.TalRashasTomb3, D2Data.AreaLevel.TalRashasTomb4, D2Data.AreaLevel.TalRashasTomb5, D2Data.AreaLevel.TalRashasTomb6, D2Data.AreaLevel.TalRashasTomb7
-                    ObjectType = 2
-                    Return 152
-                Case D2Data.AreaLevel.ArcaneSanctuary
-                    ObjectType = 2
-                    Return 357
-                    'Act3
-                Case D2Data.AreaLevel.SpiderForest
-                    Return D2Data.AreaLevel.SpiderCavern
-                Case D2Data.AreaLevel.FlayerJungle
-                    ObjectType = 2
-                    Return 252
-                Case D2Data.AreaLevel.KurastBazaar
-                    ObjectType = 2
-                    Return 195
-                Case D2Data.AreaLevel.UpperKurast
-                    Return D2Data.AreaLevel.SewersLevel1Act3
-                Case D2Data.AreaLevel.SewersLevel2Act3
-                    ObjectType = 2
-                    Return 405
-                Case D2Data.AreaLevel.SwampyPitLevel3
-                    ObjectType = 2
-                    Return 397
-                Case D2Data.AreaLevel.FlayerDungeonLevel3
-                    ObjectType = 2
-                    Return 406
-                Case D2Data.AreaLevel.RuinedTemple
-                    ObjectType = 2
-                    Return 193
-                Case D2Data.AreaLevel.Travincal
-                    ObjectType = 2
-                    Return 386
-                    'A4
-                Case D2Data.AreaLevel.PlainsOfDespair
-                    ObjectType = 3
-                    Return 256
-                Case D2Data.AreaLevel.RiverOfFlame
-                    ObjectType = 3
-                    Return 775
-                Case D2Data.AreaLevel.ChaosSanctuary
-                    ObjectType = 2
-                    Return D2Data.GameObjectID.DiabloStartPoint
-                    'A5
-                Case D2Data.AreaLevel.BloodyFoothills
-                    Return 824 'Tile!
-                Case D2Data.AreaLevel.CrystallinePassage
-                    Return D2Data.AreaLevel.FrozenRiver
-                Case D2Data.AreaLevel.FrozenRiver
-                    ObjectType = 3
-                    Return 793
-                Case D2Data.AreaLevel.HallsOfVaught
-                    ObjectType = 2
-                    Return D2Data.GameObjectID.NihlathakWildernessStartPosition
-            End Select
-            Return Nothing
-        End Function
-#End Region
     End Class
-
-    Namespace Infos
-        Public Module Infos
-            Public Function GetMyPosition() As Point
-
-                Dim MemReader As New MemEdit
-                Dim d2client As System.Diagnostics.ProcessModule
-                Dim dwUnitAddr As Int32
-                Dim Dwtemp As Int32
-
-                If MemReader.mOpenProcess("Diablo II") = Nothing Then Return Nothing
-                d2client = MemReader.GetModule("D2Client.dll")
-                If d2client Is Nothing Then Return Nothing
-
-
-                dwUnitAddr = MemReader.ReadMemoryLong(d2client.BaseAddress.ToInt32 + &H11C1E0, 4)
-                Dwtemp = MemReader.ReadMemoryLong(dwUnitAddr + &H2C, 4)
-
-                GetMyPosition.X = MemReader.ReadMemoryShort(Dwtemp + &H2)
-                GetMyPosition.Y = MemReader.ReadMemoryShort(Dwtemp + &H6)
-                MemReader.mCloseProcess()
-            End Function
-
-            Public Function GetAreaID() As Long
-                Dim MemReader As New MemEdit
-                Dim d2client As System.Diagnostics.ProcessModule
-                Dim dwUnitAddr As Int32
-                Dim Dwtemp As Int32
-                Dim AreaId As Long
-
-                If MemReader.mOpenProcess("Diablo II") = Nothing Then Return Nothing
-                d2client = MemReader.GetModule("D2Client.dll")
-                If d2client Is Nothing Then Return Nothing
-
-                dwUnitAddr = MemReader.ReadMemoryLong(d2client.BaseAddress.ToInt32 + &H11C1E0, Len(New Int32))
-                Dwtemp = MemReader.ReadMemoryLong(dwUnitAddr + &H2C, 4)
-
-                'Map Information
-                Dwtemp = MemReader.ReadMemoryLong(dwUnitAddr + &H2C, 4)
-                Dwtemp = MemReader.ReadMemoryLong(Dwtemp + &H1C, 4)
-                Dwtemp = MemReader.ReadMemoryLong(Dwtemp + &H38, 4)
-                Dwtemp = MemReader.ReadMemoryLong(Dwtemp + &H1C, 4)
-
-                AreaId = MemReader.ReadMemoryLong(Dwtemp + &H14, 4)
-                MemReader.mCloseProcess()
-                Return AreaId
-            End Function
-        End Module
-    End Namespace
 End Namespace
 
