@@ -63,132 +63,144 @@ Public Class ChatModuleHost
 
 #Region " Chat Client Events "
 
-    Public Event OnAdInfoRequest(ByVal Packet As BnetClient.AdInfoRequest) Implements IChat.OnAdInfoRequest
-    Public Event OnBnetAuthRequest(ByVal Packet As BnetClient.BnetAuthRequest) Implements IChat.OnBnetAuthRequest
-    Public Event OnBnetConnectionRequest(ByVal Packet As BnetClient.BnetConnectionRequest) Implements IChat.OnBnetConnectionRequest
-    Public Event OnBnetLogonRequest(ByVal Packet As BnetClient.BnetLogonRequest) Implements IChat.OnBnetLogonRequest
-    Public Event OnBnetPong(ByVal Packet As BnetClient.BnetPong) Implements IChat.OnBnetPong
-    Public Event OnChannelListRequest(ByVal Packet As BnetClient.ChannelListRequest) Implements IChat.OnChannelListRequest
-    Public Event OnChatCommand(ByVal Packet As BnetClient.ChatCommand) Implements IChat.OnChatCommand
-    Public Event OnDisplayAd(ByVal Packet As BnetClient.DisplayAd) Implements IChat.OnDisplayAd
-    Public Event OnEnterChatRequest(ByVal Packet As BnetClient.EnterChatRequest) Implements IChat.OnEnterChatRequest
-    Public Event OnExtraWorkResponse(ByVal Packet As BnetClient.ExtraWorkResponse) Implements IChat.OnExtraWorkResponse
-    Public Event OnFileTimeRequest(ByVal Packet As BnetClient.FileTimeRequest) Implements IChat.OnFileTimeRequest
-    Public Event OnJoinChannel(ByVal Packet As BnetClient.JoinChannel) Implements IChat.OnJoinChannel
-    Public Event OnKeepAlive(ByVal Packet As BnetClient.KeepAlive) Implements IChat.OnKeepAlive
-    Public Event OnLeaveChat(ByVal Packet As BnetClient.LeaveChat) Implements IChat.OnLeaveChat
-    Public Event OnLeaveGame(ByVal Packet As BnetClient.LeaveGame) Implements IChat.OnLeaveGame
-    Public Event OnNewsInfoRequest(ByVal Packet As BnetClient.NewsInfoRequest) Implements IChat.OnNewsInfoRequest
-    Public Event OnNotifyJoin(ByVal Packet As BnetClient.NotifyJoin) Implements IChat.OnNotifyJoin
-    Public Event OnQueryRealms(ByVal Packet As BnetClient.QueryRealms) Implements IChat.OnQueryRealms
-    Public Event OnRealmLogonRequest(ByVal Packet As BnetClient.RealmLogonRequest) Implements IChat.OnRealmLogonRequest
-    Public Event OnStartGame(ByVal Packet As BnetClient.StartGame) Implements IChat.OnStartGame
+    Public Event OnAdInfoRequest(ByVal Packet As BnetClient.AdInfoRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnAdInfoRequest
+    Public Event OnBnetAuthRequest(ByVal Packet As BnetClient.BnetAuthRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetAuthRequest
+    Public Event OnBnetConnectionRequest(ByVal Packet As BnetClient.BnetConnectionRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetConnectionRequest
+    Public Event OnBnetLogonRequest(ByVal Packet As BnetClient.BnetLogonRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetLogonRequest
+    Public Event OnBnetPong(ByVal Packet As BnetClient.BnetPong, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetPong
+    Public Event OnChannelListRequest(ByVal Packet As BnetClient.ChannelListRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnChannelListRequest
+    Public Event OnChatCommand(ByVal Packet As BnetClient.ChatCommand, ByRef Flag As Packet.PacketFlag) Implements IChat.OnChatCommand
+    Public Event OnDisplayAd(ByVal Packet As BnetClient.DisplayAd, ByRef Flag As Packet.PacketFlag) Implements IChat.OnDisplayAd
+    Public Event OnEnterChatRequest(ByVal Packet As BnetClient.EnterChatRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnEnterChatRequest
+    Public Event OnExtraWorkResponse(ByVal Packet As BnetClient.ExtraWorkResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnExtraWorkResponse
+    Public Event OnFileTimeRequest(ByVal Packet As BnetClient.FileTimeRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnFileTimeRequest
+    Public Event OnJoinChannel(ByVal Packet As BnetClient.JoinChannel, ByRef Flag As Packet.PacketFlag) Implements IChat.OnJoinChannel
+    Public Event OnKeepAlive(ByVal Packet As BnetClient.KeepAlive, ByRef Flag As Packet.PacketFlag) Implements IChat.OnKeepAlive
+    Public Event OnLeaveChat(ByVal Packet As BnetClient.LeaveChat, ByRef Flag As Packet.PacketFlag) Implements IChat.OnLeaveChat
+    Public Event OnLeaveGame(ByVal Packet As BnetClient.LeaveGame, ByRef Flag As Packet.PacketFlag) Implements IChat.OnLeaveGame
+    Public Event OnNewsInfoRequest(ByVal Packet As BnetClient.NewsInfoRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnNewsInfoRequest
+    Public Event OnNotifyJoin(ByVal Packet As BnetClient.NotifyJoin, ByRef Flag As Packet.PacketFlag) Implements IChat.OnNotifyJoin
+    Public Event OnQueryRealms(ByVal Packet As BnetClient.QueryRealms, ByRef Flag As Packet.PacketFlag) Implements IChat.OnQueryRealms
+    Public Event OnRealmLogonRequest(ByVal Packet As BnetClient.RealmLogonRequest, ByRef Flag As Packet.PacketFlag) Implements IChat.OnRealmLogonRequest
+    Public Event OnStartGame(ByVal Packet As BnetClient.StartGame, ByRef Flag As Packet.PacketFlag) Implements IChat.OnStartGame
 
 #End Region
 
 #Region " Chat Server Events "
 
-    Public Event OnAdInfo(ByVal packet As BnetServer.AdInfo) Implements IChat.OnAdInfo
-    Public Event OnBnetAuthResponse(ByVal packet As BnetServer.BnetAuthResponse) Implements IChat.OnBnetAuthResponse
-    Public Event OnBnetConnectionResponse(ByVal packet As BnetServer.BnetConnectionResponse) Implements IChat.OnBnetConnectionResponse
-    Public Event OnBnetLogonResponse(ByVal packet As BnetServer.BnetLogonResponse) Implements IChat.OnBnetLogonResponse
-    Public Event OnBnetPing(ByVal packet As BnetServer.BnetPing) Implements IChat.OnBnetPing
-    Public Event OnChannelList(ByVal packet As BnetServer.ChannelList) Implements IChat.OnChannelList
-    Public Event OnChatEvent(ByVal packet As BnetServer.ChatEvent) Implements IChat.OnChatEvent
-    Public Event OnEnterChatResponse(ByVal packet As BnetServer.EnterChatResponse) Implements IChat.OnEnterChatResponse
-    Public Event OnExtraWorkInfo(ByVal packet As BnetServer.ExtraWorkInfo) Implements IChat.OnExtraWorkInfo
-    Public Event OnFileTimeInfo(ByVal packet As BnetServer.FileTimeInfo) Implements IChat.OnFileTimeInfo
-    'Public Event OnNewsInfo(ByVal packet As BnetServer.NewsInfo) Implements IChat.OnNewsInfo
-    Public Event OnQueryRealmsResponse(ByVal packet As BnetServer.QueryRealmsResponse) Implements IChat.OnQueryRealmsResponse
-    Public Event OnRealmLogonResponse(ByVal packet As BnetServer.RealmLogonResponse) Implements IChat.OnRealmLogonResponse
-    Public Event OnRequiredExtraWorkInfo(ByVal packet As BnetServer.RequiredExtraWorkInfo) Implements IChat.OnRequiredExtraWorkInfo
-    Public Event OnServerKeepAlive(ByVal packet As BnetServer.KeepAlive) Implements IChat.OnServerKeepAlive
+    Public Event OnAdInfo(ByVal packet As BnetServer.AdInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnAdInfo
+    Public Event OnBnetAuthResponse(ByVal packet As BnetServer.BnetAuthResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetAuthResponse
+    Public Event OnBnetConnectionResponse(ByVal packet As BnetServer.BnetConnectionResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetConnectionResponse
+    Public Event OnBnetLogonResponse(ByVal packet As BnetServer.BnetLogonResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetLogonResponse
+    Public Event OnBnetPing(ByVal packet As BnetServer.BnetPing, ByRef Flag As Packet.PacketFlag) Implements IChat.OnBnetPing
+    Public Event OnChannelList(ByVal packet As BnetServer.ChannelList, ByRef Flag As Packet.PacketFlag) Implements IChat.OnChannelList
+    Public Event OnChatEvent(ByVal packet As BnetServer.ChatEvent, ByRef Flag As Packet.PacketFlag) Implements IChat.OnChatEvent
+    Public Event OnEnterChatResponse(ByVal packet As BnetServer.EnterChatResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnEnterChatResponse
+    Public Event OnExtraWorkInfo(ByVal packet As BnetServer.ExtraWorkInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnExtraWorkInfo
+    Public Event OnFileTimeInfo(ByVal packet As BnetServer.FileTimeInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnFileTimeInfo
+    'Public Event OnNewsInfo(ByVal packet As BnetServer.NewsInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnNewsInfo
+    Public Event OnQueryRealmsResponse(ByVal packet As BnetServer.QueryRealmsResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnQueryRealmsResponse
+    Public Event OnRealmLogonResponse(ByVal packet As BnetServer.RealmLogonResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnRealmLogonResponse
+    Public Event OnRequiredExtraWorkInfo(ByVal packet As BnetServer.RequiredExtraWorkInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnRequiredExtraWorkInfo
+    Public Event OnServerKeepAlive(ByVal packet As BnetServer.KeepAlive, ByRef Flag As Packet.PacketFlag) Implements IChat.OnServerKeepAlive
 
 #End Region
 
 #Region " Packet Event Raisers "
 
     Overrides Sub InterptetPacketToServer(ByRef Packet As Packet)
+        Dim Flag As Packet.PacketFlag
+        Flag = Packet.Flag
+
         Select Case Packet.Data(1)
             Case D2Packets.BnetClientPacket.AdInfoRequest
-                RaiseEvent OnAdInfoRequest(New BnetClient.AdInfoRequest(Packet.Data))
+                RaiseEvent OnAdInfoRequest(New BnetClient.AdInfoRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.BnetAuthRequest
-                RaiseEvent OnBnetAuthRequest(New BnetClient.BnetAuthRequest(Packet.Data))
+                RaiseEvent OnBnetAuthRequest(New BnetClient.BnetAuthRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.BnetConnectionRequest
-                RaiseEvent OnBnetConnectionRequest(New BnetClient.BnetConnectionRequest(Packet.Data))
+                RaiseEvent OnBnetConnectionRequest(New BnetClient.BnetConnectionRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.BnetLogonRequest
-                RaiseEvent OnBnetLogonRequest(New BnetClient.BnetLogonRequest(Packet.Data))
+                RaiseEvent OnBnetLogonRequest(New BnetClient.BnetLogonRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.BnetPong
-                RaiseEvent OnBnetPong(New BnetClient.BnetPong(Packet.Data))
+                RaiseEvent OnBnetPong(New BnetClient.BnetPong(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.ChannelListRequest
-                RaiseEvent OnChannelListRequest(New BnetClient.ChannelListRequest(Packet.Data))
+                RaiseEvent OnChannelListRequest(New BnetClient.ChannelListRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.ChatCommand
-                RaiseEvent OnChatCommand(New BnetClient.ChatCommand(Packet.Data))
+                RaiseEvent OnChatCommand(New BnetClient.ChatCommand(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.DisplayAd
-                RaiseEvent OnDisplayAd(New BnetClient.DisplayAd(Packet.Data))
+                RaiseEvent OnDisplayAd(New BnetClient.DisplayAd(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.EnterChatRequest
-                RaiseEvent OnEnterChatRequest(New BnetClient.EnterChatRequest(Packet.Data))
+                RaiseEvent OnEnterChatRequest(New BnetClient.EnterChatRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.ExtraWorkResponse
-                RaiseEvent OnExtraWorkResponse(New BnetClient.ExtraWorkResponse(Packet.Data))
+                RaiseEvent OnExtraWorkResponse(New BnetClient.ExtraWorkResponse(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.FileTimeRequest
-                RaiseEvent OnFileTimeRequest(New BnetClient.FileTimeRequest(Packet.Data))
+                RaiseEvent OnFileTimeRequest(New BnetClient.FileTimeRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.JoinChannel
-                RaiseEvent OnJoinChannel(New BnetClient.JoinChannel(Packet.Data))
+                RaiseEvent OnJoinChannel(New BnetClient.JoinChannel(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.KeepAlive
-                RaiseEvent OnKeepAlive(New BnetClient.KeepAlive(Packet.Data))
+                RaiseEvent OnKeepAlive(New BnetClient.KeepAlive(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.LeaveChat
-                RaiseEvent OnLeaveChat(New BnetClient.LeaveChat(Packet.Data))
+                RaiseEvent OnLeaveChat(New BnetClient.LeaveChat(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.LeaveGame
-                RaiseEvent OnLeaveGame(New BnetClient.LeaveGame(Packet.Data))
+                RaiseEvent OnLeaveGame(New BnetClient.LeaveGame(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.NewsInfoRequest
                 LastDate = 0
-                RaiseEvent OnNewsInfoRequest(New BnetClient.NewsInfoRequest(Packet.Data))
+                RaiseEvent OnNewsInfoRequest(New BnetClient.NewsInfoRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.NotifyJoin
-                RaiseEvent OnNotifyJoin(New BnetClient.NotifyJoin(Packet.Data))
+                RaiseEvent OnNotifyJoin(New BnetClient.NotifyJoin(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.QueryRealms
-                RaiseEvent OnQueryRealms(New BnetClient.QueryRealms(Packet.Data))
+                RaiseEvent OnQueryRealms(New BnetClient.QueryRealms(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.RealmLogonRequest
-                RaiseEvent OnRealmLogonRequest(New BnetClient.RealmLogonRequest(Packet.Data))
+                RaiseEvent OnRealmLogonRequest(New BnetClient.RealmLogonRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.StartGame
-                RaiseEvent OnStartGame(New BnetClient.StartGame(Packet.Data))
+                RaiseEvent OnStartGame(New BnetClient.StartGame(Packet.Data), Flag)
         End Select
+        If Packet.Flag <> Flag Then
+            Packet.Flag = Flag
+        End If
         RaiseEvent OnSendPacket(Packet)
     End Sub
 
     Overrides Sub InterptetPacketToClient(ByRef Packet As Packet)
+        Dim Flag As Packet.PacketFlag
+        Flag = Packet.Flag
+
         Select Case Packet.Data(1)
             Case D2Packets.BnetServerPacket.AdInfo
-                RaiseEvent OnAdInfo(New BnetServer.AdInfo(Packet.Data))
+                RaiseEvent OnAdInfo(New BnetServer.AdInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.BnetAuthResponse
-                RaiseEvent OnBnetAuthResponse(New BnetServer.BnetAuthResponse(Packet.Data))
+                RaiseEvent OnBnetAuthResponse(New BnetServer.BnetAuthResponse(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.BnetConnectionResponse
-                RaiseEvent OnBnetConnectionResponse(New BnetServer.BnetConnectionResponse(Packet.Data))
+                RaiseEvent OnBnetConnectionResponse(New BnetServer.BnetConnectionResponse(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.BnetLogonResponse
-                RaiseEvent OnBnetLogonResponse(New BnetServer.BnetLogonResponse(Packet.Data))
+                RaiseEvent OnBnetLogonResponse(New BnetServer.BnetLogonResponse(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.BnetPing
-                RaiseEvent OnBnetPing(New BnetServer.BnetPing(Packet.Data))
+                RaiseEvent OnBnetPing(New BnetServer.BnetPing(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.ChannelList
-                RaiseEvent OnChannelList(New BnetServer.ChannelList(Packet.Data))
+                RaiseEvent OnChannelList(New BnetServer.ChannelList(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.ChatEvent
-                RaiseEvent OnChatEvent(New BnetServer.ChatEvent(Packet.Data))
+                RaiseEvent OnChatEvent(New BnetServer.ChatEvent(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.EnterChatResponse
-                RaiseEvent OnEnterChatResponse(New BnetServer.EnterChatResponse(Packet.Data))
+                RaiseEvent OnEnterChatResponse(New BnetServer.EnterChatResponse(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.ExtraWorkInfo
-                RaiseEvent OnExtraWorkInfo(New BnetServer.ExtraWorkInfo(Packet.Data))
+                RaiseEvent OnExtraWorkInfo(New BnetServer.ExtraWorkInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.FileTimeInfo
-                RaiseEvent OnFileTimeInfo(New BnetServer.FileTimeInfo(Packet.Data))
+                RaiseEvent OnFileTimeInfo(New BnetServer.FileTimeInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.NewsInfo
-                Packet.Flag = BlueVex.Packet.PacketFlag.PacketFlag_Dead
-                'RaiseEvent OnNewsInfo(New BnetServer.NewsInfo(Packet.Data))
+                Flag = Packet.PacketFlag.PacketFlag_Dead
+                'RaiseEvent OnNewsInfo(New BnetServer.NewsInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.QueryRealmsResponse
-                RaiseEvent OnQueryRealmsResponse(New BnetServer.QueryRealmsResponse(Packet.Data))
+                RaiseEvent OnQueryRealmsResponse(New BnetServer.QueryRealmsResponse(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.RealmLogonResponse
-                RaiseEvent OnRealmLogonResponse(New BnetServer.RealmLogonResponse(Packet.Data))
+                RaiseEvent OnRealmLogonResponse(New BnetServer.RealmLogonResponse(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.RequiredExtraWorkInfo
-                RaiseEvent OnRequiredExtraWorkInfo(New BnetServer.RequiredExtraWorkInfo(Packet.Data))
+                RaiseEvent OnRequiredExtraWorkInfo(New BnetServer.RequiredExtraWorkInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.KeepAlive
-                RaiseEvent OnServerKeepAlive(New BnetServer.KeepAlive(Packet.Data))
+                RaiseEvent OnServerKeepAlive(New BnetServer.KeepAlive(Packet.Data), Flag)
         End Select
+        If Packet.Flag <> Flag Then
+            Packet.Flag = Flag
+        End If
         RaiseEvent OnReceivePacket(Packet)
     End Sub
 

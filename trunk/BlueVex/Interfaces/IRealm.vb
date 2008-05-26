@@ -16,35 +16,35 @@ Public Interface IRealm
 
 #Region " Realm Client "
 
-    Event OnCancelGameCreation(ByVal Packet As RealmClient.CancelGameCreation)
-    Event OnCharacterCreationRequest(ByVal Packet As RealmClient.CharacterCreationRequest)
-    Event OnCharacterDeletionRequest(ByVal Packet As RealmClient.CharacterDeletionRequest)
-    Event OnCharacterListRequest(ByVal Packet As RealmClient.CharacterListRequest)
-    Event OnCharacterLogonRequest(ByVal Packet As RealmClient.CharacterLogonRequest)
-    Event OnCharacterUpgradeRequest(ByVal Packet As RealmClient.CharacterUpgradeRequest)
-    Event OnCreateGameRequest(ByVal Packet As RealmClient.CreateGameRequest)
-    Event OnGameInfoRequest(ByVal Packet As RealmClient.GameInfoRequest)
-    Event OnGameListRequest(ByVal Packet As RealmClient.GameListRequest)
-    Event OnJoinGameRequest(ByVal Packet As RealmClient.JoinGameRequest)
-    Event OnMessageOfTheDayRequest(ByVal Packet As RealmClient.MessageOfTheDayRequest)
-    Event OnRealmStartupRequest(ByVal Packet As RealmClient.RealmStartupRequest)
+    Event OnCancelGameCreation(ByVal Packet As RealmClient.CancelGameCreation, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterCreationRequest(ByVal Packet As RealmClient.CharacterCreationRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterDeletionRequest(ByVal Packet As RealmClient.CharacterDeletionRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterListRequest(ByVal Packet As RealmClient.CharacterListRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterLogonRequest(ByVal Packet As RealmClient.CharacterLogonRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterUpgradeRequest(ByVal Packet As RealmClient.CharacterUpgradeRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnCreateGameRequest(ByVal Packet As RealmClient.CreateGameRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnGameInfoRequest(ByVal Packet As RealmClient.GameInfoRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnGameListRequest(ByVal Packet As RealmClient.GameListRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnJoinGameRequest(ByVal Packet As RealmClient.JoinGameRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnMessageOfTheDayRequest(ByVal Packet As RealmClient.MessageOfTheDayRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnRealmStartupRequest(ByVal Packet As RealmClient.RealmStartupRequest, ByRef Flag As Packet.PacketFlag)
 
 #End Region
 
 #Region " Realm Server "
 
-    Event OnCharacterCreationResponse(ByVal Packet As RealmServer.CharacterCreationResponse)
-    Event OnCharacterDeletionResponse(ByVal Packet As RealmServer.CharacterDeletionResponse)
-    Event OnCharacterList(ByVal Packet As RealmServer.CharacterList)
-    Event OnCharacterLogonResponse(ByVal Packet As RealmServer.CharacterLogonResponse)
-    Event OnCharacterUpgradeResponse(ByVal Packet As RealmServer.CharacterUpgradeResponse)
-    Event OnCreateGameResponse(ByVal Packet As RealmServer.CreateGameResponse)
-    Event OnGameCreationQueue(ByVal Packet As RealmServer.GameCreationQueue)
-    Event OnGameInfo(ByVal Packet As RealmServer.GameInfo)
-    Event OnGameList(ByVal Packet As RealmServer.GameList)
-    Event OnJoinGameResponse(ByVal Packet As RealmServer.JoinGameResponse)
-    Event OnMessageOfTheDay(ByVal Packet As RealmServer.MessageOfTheDay)
-    Event OnRealmStartupResponse(ByVal Packet As RealmServer.RealmStartupResponse)
+    Event OnCharacterCreationResponse(ByVal Packet As RealmServer.CharacterCreationResponse, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterDeletionResponse(ByVal Packet As RealmServer.CharacterDeletionResponse, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterList(ByVal Packet As RealmServer.CharacterList, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterLogonResponse(ByVal Packet As RealmServer.CharacterLogonResponse, ByRef Flag As Packet.PacketFlag)
+    Event OnCharacterUpgradeResponse(ByVal Packet As RealmServer.CharacterUpgradeResponse, ByRef Flag As Packet.PacketFlag)
+    Event OnCreateGameResponse(ByVal Packet As RealmServer.CreateGameResponse, ByRef Flag As Packet.PacketFlag)
+    Event OnGameCreationQueue(ByVal Packet As RealmServer.GameCreationQueue, ByRef Flag As Packet.PacketFlag)
+    Event OnGameInfo(ByVal Packet As RealmServer.GameInfo, ByRef Flag As Packet.PacketFlag)
+    Event OnGameList(ByVal Packet As RealmServer.GameList, ByRef Flag As Packet.PacketFlag)
+    Event OnJoinGameResponse(ByVal Packet As RealmServer.JoinGameResponse, ByRef Flag As Packet.PacketFlag)
+    Event OnMessageOfTheDay(ByVal Packet As RealmServer.MessageOfTheDay, ByRef Flag As Packet.PacketFlag)
+    Event OnRealmStartupResponse(ByVal Packet As RealmServer.RealmStartupResponse, ByRef Flag As Packet.PacketFlag)
 
 #End Region
 
