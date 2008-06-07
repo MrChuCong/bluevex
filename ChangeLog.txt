@@ -16,10 +16,13 @@ Changelog V5.3
 -Added ShitLoad of NameSpace for easier Usage
 -Moved GetNextLevel, GetNextQuest to Module GameHelpers.
 -Added misc.Wrapped and misc.RawFunctions. For automated Memory reading. Lots of functions.
--Added Function memory.misc.GetClientPID. which allow user to get the right D2 Window's id from
+-Added Function memory.misc.GetClientPIDfromPos which allow user to get the right D2 Window's id from
    the position of the player that he got from packets.
 -Added attribute D2PID to each memory functions for multi-client support.
 
 
--Adding SendKey(Key as integer), SendClick(x,y). For easy creation/joining of games.
--Adding Macro to Create/Join Games
+-Added memory.misc.GetClientPidFromStatus. Which will give you a list of every client with a specific status.
+Added memory.wrappedfunc.GetClientStatus. Which returns the Client's status.
+-Added Macros as a class, "Macro".
+-Added SendKey(Key as integer), SendClick(x,y). For customized Macro
+-Added Every Macro that I could think of. ***
