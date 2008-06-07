@@ -1,9 +1,10 @@
 ﻿''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''All Credits go to ApacheChief for the code following this message.''''''''''''''''
+'''''''''All Credits go to ApacheChief - The Code was Edited by DezimtoX''''''''''''''''
 ''''''''Original Thread: http://www.edgeofnowhere.cc/viewtopic.php?t=362418'''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 Imports System
 Imports System.Text
 Imports System.Diagnostics
@@ -19,15 +20,16 @@ Namespace Memory.Misc
 
     Public Module Other
 
-        Public Function GetClientPID(ByVal PlayerPosFromPackets As Point) As Integer
-            Dim Pos As Point = PlayerPosFromPackets
+        Public Function ClientPIDFromPos(ByVal PositionFromPackets As Point) As Integer
+            Dim Pos As Point = PositionFromPackets
             Dim MemEditor As New MEC.MemEdit
 
             Dim DiabloProcesses As Process() = Process.GetProcesses
             For Each Process As Process In DiabloProcesses
-                '***Got to check if that works with any title.
+                '***Don't change this, it works no matter the window name.
                 If Process.ProcessName = "Diablo II" Then
-                    If InRange(Memory.Misc.WrappedFunc.GetMyPosition(Process.Id), Pos, 15) Then
+                    'Sometime the packets are not that accurate. Range of 7 Units.
+                    If InRange(Memory.Misc.WrappedFunc.GetMyPosition(Process.Id), Pos, 7) Then
                         Return Process.Id
                     End If
                 End If
@@ -35,12 +37,28 @@ Namespace Memory.Misc
             Return Nothing
         End Function
 
+        '**** Needs Testing *****
+        Public Function ClientPIDFromStatus(ByVal Status As WrappedFunc.OutOfGameState) As List(Of Process)
+            Dim Clients As New List(Of Process)
+
+            Dim DiabloProcesses As Process() = Process.GetProcesses
+            For Each Process As Process In DiabloProcesses
+                'If it's a diablo Client
+                If Process.ProcessName = "Diablo II" Then
+                    'If It's on the status asked.
+                    If WrappedFunc.GetClientStatus(Process.Id) = Status Then
+                        Clients.Add(Process)
+                    End If
+                End If
+            Next
+            Return Clients
+        End Function
+
     End Module
 
     Namespace WrappedFunc
 
         Public Module WrappedFunc
-
             Public Function GetMyPosition(Optional ByVal DiabloPID As Integer = 0) As Point
 
                 Dim MemEditor As New MEC.MemEdit
@@ -196,6 +214,10 @@ Namespace Memory.Misc
                 Return PlayerStats
             End Function
 
+            Public Function GetClientStatus(Optional ByVal DiabloPID As Integer = 0) As OutOfGameState
+                Dim Memoryzer As New Memory.Misc.RawFunctions(DiabloPID)
+                Return Memoryzer.GetState()
+            End Function
         End Module
 
         Public Enum OutOfGameState
@@ -508,7 +530,7 @@ Namespace Memory.Misc
         ''' </summary> 
         ''' <param name="code"></param> 
         ''' <returns></returns> 
-        Public Function GetUnit(ByVal code As UniqueMonster) As UnitAny
+        Public Function GetUnit(ByVal code As WrappedFunc.UniqueMonster) As UnitAny
             Dim room1 As Room1 = Tools.ByteToStruct(Reader.ReadMemoryAOB(Me.GetCurrentAct.pRoom1, Marshal.SizeOf(GetType(Room1))), GetType(Room1))
 
             While True
@@ -595,7 +617,7 @@ Namespace Memory.Misc
             Return tempList
         End Function
 
-        Public Function GetMonsterData(ByVal code As UniqueMonster) As MonsterData
+        Public Function GetMonsterData(ByVal code As WrappedFunc.UniqueMonster) As MonsterData
             Return Tools.ByteToStruct(Reader.ReadMemoryAOB(Me.GetUnit(code).ptrMonsterData, Marshal.SizeOf(GetType(MonsterData))), GetType(MonsterData))
         End Function
         Public Function GetMonsterData(ByVal monster As UnitAny) As MonsterData
@@ -632,7 +654,7 @@ Namespace Memory.Misc
             Return tempList
         End Function
 
-        Public Function GetState() As WrappedFunc
+        Public Function GetState() As WrappedFunc.OutOfGameState
             Dim controls As List(Of Control) = Me.GetControls()
 
             For Each control As Control In controls
@@ -640,25 +662,51 @@ Namespace Memory.Misc
                 Dim text As String = New System.Text.UnicodeEncoding().GetString(control.wText)
 
                 If text.Contains("CHANNEL") Then
-                    Return OutOfGameState.Lobby
+                    Return WrappedFunc.OutOfGameState.Lobby
                 End If
 
                 If text.Contains("CONVERT TO") Then
-                    Return OutOfGameState.CharacterSelect
+                    Return WrappedFunc.OutOfGameState.CharacterSelect
                 End If
 
                 If text.Contains("LOG IN") Then
-                    Return OutOfGameState.Login
+                    Return WrappedFunc.OutOfGameState.Login
                 End If
 
                 If text.Contains("GATEWAY") Then
-                    Return OutOfGameState.Start
+                    Return WrappedFunc.OutOfGameState.Start
 
                 End If
             Next
 
-            Return OutOfGameState.None
+            Return WrappedFunc.OutOfGameState.None
         End Function
+
+        'Enchants shit need testing.
+        '
+        'public List<Enchant> GetMonsterEnchants(NPCCode code)
+        '{
+        '    return this.GetMonsterEnchants(this.GetUnit(code));
+        '}
+        'public List<Enchant> GetMonsterEnchants(UniqueMonster code)
+        '{
+        '    return this.GetMonsterEnchants(this.GetUnit(code));
+        '}
+        'public List<Enchant> GetMonsterEnchants(UnitAny monster)
+        '{
+        '    return this.GetMonsterEnchants(this.GetMonsterData(monster));
+        '}
+        'public List<Enchant> GetMonsterEnchants(MonsterData monster)
+        '{
+        '    List<Enchant> tempList = new List<Enchant>();
+        '    
+        '    foreach (byte b in monster.anEnchants) {
+        '        tempList.Add((Enchant)b);
+        '    }
+        '    
+        '    return tempList;
+        '}
+        '
 
     End Class
 
@@ -854,35 +902,13 @@ Namespace Memory.Misc.RawStructs
         Public wName As String
     End Structure
 
-    ' 
-    ' [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)] 
-    ' public struct MonsterData 
-    ' { 
-    ' [MarshalAs(UnmanagedType.ByValArray, SizeConst = 22)] 
-    ' public byte[] _1; 
-    '
-    ' public byte Flags; 
-    '
-    ' public UInt16 _2; 
-    ' public uint _3; 
-    '
-    ' [MarshalAs(UnmanagedType.ByValArray, SizeConst = 9)] 
-    ' public byte[] anEnchants; 
-    ' public byte _4; 
-    ' public UInt16 wUniqueNo; 
-    ' public byte _5; 
-    '
-    ' [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 28)] 
-    ' public string wName; 
-    ' } 
-    '
-
     <Flags()> _
     Public Enum MonsterDataFlags
         None
         Minion = 10
         Champion = 16
     End Enum
+
 End Namespace
 
 Namespace Memory.Misc.RawStructs

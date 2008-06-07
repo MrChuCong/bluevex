@@ -97,6 +97,7 @@
     <Compile Include="Interfaces\IGUI.vb" />
     <Compile Include="Interfaces\IModules.vb" />
     <Compile Include="Misc\CollisionMap.vb" />
+    <Compile Include="Misc\Macro.vb" />
     <Compile Include="Misc\MemEdit.vb" />
     <Compile Include="Misc\MemoryHelper.vb" />
     <Compile Include="Misc\Structures.vb" />
