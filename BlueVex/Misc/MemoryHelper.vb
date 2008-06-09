@@ -221,7 +221,7 @@ Namespace Memory.Misc
         End Module
 
         Public Enum OutOfGameState
-            None
+            InGame
             Lobby
             CharacterSelect
             Login
@@ -679,34 +679,33 @@ Namespace Memory.Misc
                 End If
             Next
 
-            Return WrappedFunc.OutOfGameState.None
+            Return WrappedFunc.OutOfGameState.InGame
         End Function
 
         'Enchants shit need testing.
-        '
-        'public List<Enchant> GetMonsterEnchants(NPCCode code)
-        '{
-        '    return this.GetMonsterEnchants(this.GetUnit(code));
-        '}
-        'public List<Enchant> GetMonsterEnchants(UniqueMonster code)
-        '{
-        '    return this.GetMonsterEnchants(this.GetUnit(code));
-        '}
-        'public List<Enchant> GetMonsterEnchants(UnitAny monster)
-        '{
-        '    return this.GetMonsterEnchants(this.GetMonsterData(monster));
-        '}
-        'public List<Enchant> GetMonsterEnchants(MonsterData monster)
-        '{
-        '    List<Enchant> tempList = new List<Enchant>();
-        '    
-        '    foreach (byte b in monster.anEnchants) {
-        '        tempList.Add((Enchant)b);
-        '    }
-        '    
-        '    return tempList;
-        '}
-        '
+
+        Public Function GetMonsterEnchants(ByVal code As NPCCode) As List(Of Byte)
+            Return Me.GetMonsterEnchants(Me.GetUnit(code))
+        End Function
+
+        Public Function GetMonsterEnchants(ByVal code As Misc.WrappedFunc.UniqueMonster) As List(Of Byte)
+            Return Me.GetMonsterEnchants(Me.GetUnit(code))
+        End Function
+
+        Public Function GetMonsterEnchants(ByVal monster As UnitAny) As List(Of Byte)
+            Return Me.GetMonsterEnchants(Me.GetMonsterData(monster))
+        End Function
+
+        Public Function GetMonsterEnchants(ByVal monster As MonsterData) As List(Of Byte)
+            'Dim tempList As New List(Of Enchant)
+            Dim tempList As New List(Of Byte)
+            For Each b As Byte In monster.anEnchants
+                'tempList.Add(DirectCast(b, Enchant))
+                tempList.Add(b)
+            Next
+
+            Return tempList
+        End Function
 
     End Class
 
@@ -1304,4 +1303,27 @@ Namespace Memory.Misc.Structs
         Dim Xp As Long
 
     End Structure
+
+    Public Enum Enchants
+
+        ExtraStrong = 5
+        ExtraFast = 6
+        Cursed = 7
+        MagicResistant = 8
+        FireEnchanted = 9
+        Champion = 16
+        LightningEnchanted = 17
+        ColdEnchanted = 18
+        Thief = 24
+        ManaBurn = 25
+        Teleportation = 26
+        SpectralHit = 27
+        StoneSkin = 28
+        MultipleShots = 29
+        Ghostly = 36
+        Fanatic = 37
+        Possessed = 38
+        Berserker = 39
+
+    End Enum
 End Namespace

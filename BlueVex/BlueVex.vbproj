@@ -37,9 +37,9 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2Data, Version=0.9.2605.13312, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="D2Packets, Version=0.9.2611.22224, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="ETUtils, Version=1.0.2610.21028, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="D2Data, Version=0.9.2838.7701, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="D2Packets, Version=0.9.3082.22030, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ETUtils, Version=1.0.2838.7700, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -101,6 +101,7 @@
     <Compile Include="Misc\MemEdit.vb" />
     <Compile Include="Misc\MemoryHelper.vb" />
     <Compile Include="Misc\Structures.vb" />
+    <Compile Include="Misc\Testing.vb" />
     <Compile Include="Module Hosts\ChatModuleHost.vb" />
     <Compile Include="Module Hosts\GameModuleHost.vb" />
     <Compile Include="Module Hosts\RealmModuleHost.vb" />
