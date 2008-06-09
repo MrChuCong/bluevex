@@ -9,9 +9,9 @@ class HostChatModule :
 public:
 	HostChatModule(IProxy* proxy);
 	void __stdcall Destroy();
+	void __stdcall Update();
 	void _stdcall OnRelayDataToServer(IPacket* packet, const IModule* owner);
 	void _stdcall OnRelayDataToClient(IPacket* packet, const IModule* owner);
-	void _stdcall Update();
 
 private:
 	IProxy* _proxy;

@@ -30,6 +30,19 @@ void	BlueVexWrapper::DestroyPlugin()
 	_managedPlugin->DestroyPlugin();
 }
 
+void	IBlueVexWrapper::Update(IBlueVexWrapper *instance)
+{
+	instance->UpdatePlugin();
+}
+
+void	BlueVexWrapper::UpdatePlugin()
+{
+	if(_GameModule)_GameModule->Update();
+	if(_ChatModule)_ChatModule->Update();
+	if(_RealmModule)_RealmModule->Update();
+	_managedPlugin->UpdatePlugin();
+}
+
 void	BlueVexWrapper::RelayToClient(const unsigned char* bytes, int length, IProxy* proxy, IModule* module) //System::IntPtr _proxy, System::IntPtr _module, 
 {
 	IPacket* packet = proxy->CreatePacket(bytes, length);

@@ -43,7 +43,7 @@ extern "C"
 {
 	__declspec(dllexport) PluginInfo* __stdcall InitPlugin(RedVexInfo* Funcs)
 	{
-		Funcs->WriteLog("BlueVex Diablo II Proxy\nCore Beta 5.2 April 25 2008\n(c) 2008 by Pleh\n");
+		Funcs->WriteLog("BlueVex Diablo II Proxy\nCore Beta 5.3 June 2008\n(c) 2008 by Pleh\n");
 
 		IBlueVexWrapper *wrapper = IBlueVexWrapper::CreateInstance();
 		wrapper->InitPlugin(Funcs);

@@ -15,6 +15,11 @@ void __stdcall HostGameModule::Destroy()
 	delete this;
 }
 
+void __stdcall HostGameModule::Update()
+{
+	IBlueVexWrapper::Update(wrapper);
+}
+
 void HostGameModule::OnRelayDataToServer(IPacket* packet, const IModule* owner)
 {
 	const unsigned char* bytes = static_cast<const unsigned char*>(packet->GetData());
@@ -25,9 +30,4 @@ void HostGameModule::OnRelayDataToClient(IPacket* packet, const IModule* owner)
 {
 	const unsigned char* bytes = static_cast<const unsigned char*>(packet->GetData());
 	wrapper->OnRelayGameDataToClient(bytes,packet->GetSize(),packet);
-}
-
-void HostGameModule::Update()
-{
-
 }
