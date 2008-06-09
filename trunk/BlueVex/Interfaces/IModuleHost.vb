@@ -22,12 +22,16 @@ Public MustInherit Class IModuleHost
     Sub Destroy()
         'Add Dispose Code Here
         For Each obj As Object In LoadedModules
-            'MsgBox(obj.GetType.Name)
             obj.destroy()
-
         Next
         LoadedModules.Clear()
 
+    End Sub
+
+    Sub Update()
+        For Each obj As Object In LoadedModules
+            obj.update()
+        Next
     End Sub
 
     Sub OnRelayDataToServer(ByVal bytes() As Byte, ByVal PacketPointer As IntPtr, ByVal Funcs As IntPtr)
@@ -61,9 +65,7 @@ Public MustInherit Class IModuleHost
         End If
     End Sub
 
-    Sub Update()
 
-    End Sub
 
     MustOverride Sub InterptetPacketToServer(ByRef Packet As Packet)
     MustOverride Sub InterptetPacketToClient(ByRef Packet As Packet)
