@@ -1,0 +1,9 @@
+bin\Debug\D2Packets.dll
+bin\Debug\D2Packets.pdb
+bin\Debug\D2Data.dll
+bin\Debug\ETUtils.dll
+bin\Debug\ETUtils.pdb
+bin\Debug\D2Data.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\D2Packets.dll
+obj\Debug\D2Packets.pdb

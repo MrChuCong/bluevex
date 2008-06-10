@@ -4,6 +4,7 @@ Public Class GameModuleHost
     Inherits IModuleHost
     Implements IGame
 
+
 #Region " Base Functions "
 
     Sub New(ByVal Funcs As IntPtr)
@@ -135,6 +136,7 @@ Public Class GameModuleHost
     Public Event OnUseInventoryItem(ByVal Packet As GameClient.UseInventoryItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseInventoryItem
     Public Event OnWalkToLocation(ByVal Packet As GameClient.WalkToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToLocation
     Public Event OnWalkToTarget(ByVal Packet As GameClient.WalkToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToTarget
+
     Public Event OnWardenResponse(ByVal Packet As GameClient.WardenResponse, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWardenResponse
     Public Event OnWaypointInteract(ByVal Packet As GameClient.WaypointInteract, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWaypointInteract
 
@@ -151,7 +153,7 @@ Public Class GameModuleHost
     Public Event OnAssignPlayer(ByVal Packet As GameServer.AssignPlayer, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignPlayer
     Public Event OnAssignPlayerCorpse(ByVal Packet As GameServer.AssignPlayerCorpse, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignPlayerCorpse
     Public Event OnAssignPlayerToParty(ByVal Packet As GameServer.AssignPlayerToParty, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignPlayerToParty
-    Public Event OnAssignSkill(ByVal Packet As GameServer.AssignSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignSkill
+    Public Event OnAssignSkill(ByVal Packet As GameServer.Assignskill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignSkill
     Public Event OnAssignSkillHotkey(ByVal Packet As GameServer.AssignSkillHotkey, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignSkillHotkey
     Public Event OnAssignWarp(ByVal Packet As GameServer.AssignWarp, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignWarp
     Public Event OnAttributeNotification(ByVal Packet As GameServer.AttributeNotification, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAttributeNotification
@@ -171,13 +173,12 @@ Public Class GameModuleHost
     Public Event OnOwnedItemAction(ByVal Packet As GameServer.OwnedItemAction, ByRef Flag As Packet.PacketFlag) Implements IGame.OnOwnedItemAction
     '**************
     Public Event OnItemAction(ByVal Packet As GameServer.ItemAction, ByRef Flag As Packet.PacketFlag) Implements IGame.OnItemAction
-
     Public Event OnItemTriggerSkill(ByVal Packet As GameServer.ItemTriggerSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnItemTriggerSkill
     Public Event OnLoadAct(ByVal Packet As GameServer.LoadAct, ByRef Flag As Packet.PacketFlag) Implements IGame.OnLoadAct
     Public Event OnLoadDone(ByVal Packet As GameServer.LoadDone, ByRef Flag As Packet.PacketFlag) Implements IGame.OnLoadDone
     Public Event OnMapAdd(ByVal Packet As GameServer.MapAdd, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMapAdd
     Public Event OnMapRemove(ByVal Packet As GameServer.MapRemove, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMapRemove
-    Public Event OnMercAttributeNotification(ByVal Packet As GameServer.MercAttributeNotification, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercAttributeNotification
+    Public Event OnMercAttributeNotification(ByVal Packet As GameServer.MercAttribute, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercAttributeNotification
     Public Event OnMercForHire(ByVal Packet As GameServer.MercForHire, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercForHire
     Public Event OnMercForHireListStart(ByVal Packet As GameServer.MercForHireListStart, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercForHireListStart
     Public Event OnMercGainExperience(ByVal Packet As GameServer.MercGainExperience, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercGainExperience
@@ -390,8 +391,10 @@ Public Class GameModuleHost
                 RaiseEvent OnUseInventoryItem(New GameClient.UseInventoryItem(Packet.Data), Flag)
             Case D2Packets.GameClientPacket.WalkToLocation
                 RaiseEvent OnWalkToLocation(New GameClient.WalkToLocation(Packet.Data), Flag)
+
             Case D2Packets.GameClientPacket.WalkToTarget
                 RaiseEvent OnWalkToTarget(New GameClient.WalkToTarget(Packet.Data), Flag)
+
             Case D2Packets.GameClientPacket.WardenResponse
                 RaiseEvent OnWardenResponse(New GameClient.WardenResponse(Packet.Data), Flag)
             Case D2Packets.GameClientPacket.WaypointInteract
@@ -426,8 +429,8 @@ Public Class GameModuleHost
                 RaiseEvent OnAssignPlayerCorpse(New GameServer.AssignPlayerCorpse(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.AssignPlayerToParty
                 RaiseEvent OnAssignPlayerToParty(New GameServer.AssignPlayerToParty(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignSkill
-                RaiseEvent OnAssignSkill(New GameServer.AssignSkill(Packet.Data), Flag)
+            Case D2Packets.GameServerPacket.Assignskill
+                RaiseEvent OnAssignSkill(New GameServer.Assignskill(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.AssignSkillHotkey
                 RaiseEvent OnAssignSkillHotkey(New GameServer.AssignSkillHotkey(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.AssignWarp
@@ -481,13 +484,13 @@ Public Class GameModuleHost
             Case D2Packets.GameServerPacket.MercAttributeWord
                 RaiseEvent OnMercAttributeNotification(New GameServer.MercAttributeWord(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.MercByteToExperience
-                RaiseEvent OnGainExperience(New GameServer.MercByteToExperience(Packet.Data), Flag)
+                RaiseEvent OnMercGainExperience(New GameServer.MercByteToExperience(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.MercForHire
                 RaiseEvent OnMercForHire(New GameServer.MercForHire(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.MercForHireListStart
                 RaiseEvent OnMercForHireListStart(New GameServer.MercForHireListStart(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.MercWordToExperience
-                RaiseEvent OnGainExperience(New GameServer.MercWordToExperience(Packet.Data), Flag)
+                RaiseEvent OnMercGainExperience(New GameServer.MercWordToExperience(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.MonsterAttack
                 RaiseEvent OnMonsterAttack(New GameServer.MonsterAttack(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.NPCAction
@@ -508,12 +511,10 @@ Public Class GameModuleHost
                 RaiseEvent OnNPCWantsInteract(New GameServer.NPCWantsInteract(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.OpenWaypoint
                 RaiseEvent OnOpenWaypoint(New GameServer.OpenWaypoint(Packet.Data), Flag)
-
-                'Pleh says this crash...
+                '***********************
             Case D2Packets.GameServerPacket.OwnedItemAction
                 RaiseEvent OnOwnedItemAction(New GameServer.OwnedItemAction(Packet.Data), Flag)
                 '***********************
-
             Case D2Packets.GameServerPacket.PartyMemberPulse
                 RaiseEvent OnPartyMemberPulse(New GameServer.PartyMemberPulse(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.PartyMemberUpdate
@@ -626,6 +627,10 @@ Public Class GameModuleHost
 #End Region
 
 #Region " Chat Methods "
+
+    Public Sub Echo(ByVal Message As String) Implements IGame.Echo
+        Dim Echoer As New GameClient.SendMessage(D2Data.GameMessageType.GameMessage, Message)
+    End Sub
 
     Public Sub SendMessage(ByVal Message As String) Implements IGame.SendMessage
         Dim PacketObject As New GameClient.SendMessage(D2Data.GameMessageType.GameMessage, Message)
