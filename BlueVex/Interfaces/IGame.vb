@@ -95,7 +95,7 @@ Public Interface IGame
     'Event OnSendMessage(ByVal Packet As GameClient.SendMessage)
     Sub SendMessage(ByVal Message As String)
     Sub ReceiveMessage(ByVal Name As String, ByVal Message As String)
-
+    Sub Echo(ByVal Message As String)
 
 #End Region
 
@@ -214,7 +214,7 @@ Public Interface IGame
     Event OnLoadDone(ByVal Packet As GameServer.LoadDone, ByRef Flag As Packet.PacketFlag)
     Event OnMapAdd(ByVal Packet As GameServer.MapAdd, ByRef Flag As Packet.PacketFlag)
     Event OnMapRemove(ByVal Packet As GameServer.MapRemove, ByRef Flag As Packet.PacketFlag)
-    Event OnMercAttributeNotification(ByVal Packet As GameServer.MercAttributeNotification, ByRef Flag As Packet.PacketFlag)
+    Event OnMercAttributeNotification(ByVal Packet As GameServer.MercAttribute, ByRef Flag As Packet.PacketFlag)
     Event OnMercForHire(ByVal Packet As GameServer.MercForHire, ByRef Flag As Packet.PacketFlag)
     Event OnMercForHireListStart(ByVal Packet As GameServer.MercForHireListStart, ByRef Flag As Packet.PacketFlag)
     Event OnMercGainExperience(ByVal Packet As GameServer.MercGainExperience, ByRef Flag As Packet.PacketFlag)
