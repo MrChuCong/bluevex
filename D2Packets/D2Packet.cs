@@ -240,46 +240,44 @@ namespace D2Packets
 
 		static D2Packet()
 		{
+
             BSPacketTypes[0x00] = typeof(BnetServer.KeepAlive);
             BSPacketTypes[0x0A] = typeof(BnetServer.EnterChatResponse);
             BSPacketTypes[0x0B] = typeof(BnetServer.ChannelList);
-			BSPacketTypes[0x0F] = typeof(BnetServer.ChatEvent);
+            BSPacketTypes[0x0F] = typeof(BnetServer.ChatEvent);
             BSPacketTypes[0x15] = typeof(BnetServer.AdInfo);
             BSPacketTypes[0x25] = typeof(BnetServer.BnetPing);
             BSPacketTypes[0x33] = typeof(BnetServer.FileTimeInfo);
-            BSPacketTypes[0x3A] = typeof(BnetServer.BnetLogonResponse);
-			BSPacketTypes[0x3E] = typeof(BnetServer.RealmLogonResponse);
+            BSPacketTypes[0x3a] = typeof(BnetServer.BnetLogonResponse);
+            BSPacketTypes[0x3e] = typeof(BnetServer.RealmLogonResponse);
             BSPacketTypes[0x40] = typeof(BnetServer.QueryRealmsResponse);
             BSPacketTypes[0x46] = typeof(BnetServer.NewsInfo);
-            BSPacketTypes[0x4A] = typeof(BnetServer.ExtraWorkInfo);
-            BSPacketTypes[0x4C] = typeof(BnetServer.RequiredExtraWorkInfo);
+            BSPacketTypes[0x4a] = typeof(BnetServer.ExtraWorkInfo);
+            BSPacketTypes[0x4c] = typeof(BnetServer.RequiredExtraWorkInfo);
             BSPacketTypes[0x50] = typeof(BnetServer.BnetConnectionResponse);
             BSPacketTypes[0x51] = typeof(BnetServer.BnetAuthResponse);
 
 
-
             BCPacketTypes[0x00] = typeof(BnetClient.KeepAlive);
-            BCPacketTypes[0x10] = typeof(BnetClient.LeaveChat);
-            BCPacketTypes[0x15] = typeof(BnetClient.AdInfoRequest);
-            BCPacketTypes[0x1C] = typeof(BnetClient.StartGame);
-            BCPacketTypes[0x1F] = typeof(BnetClient.LeaveGame);
-            BCPacketTypes[0x21] = typeof(BnetClient.DisplayAd);
-            BCPacketTypes[0x22] = typeof(BnetClient.NotifyJoin);
-            BCPacketTypes[0x25] = typeof(BnetClient.BnetPong);
-            BCPacketTypes[0x33] = typeof(BnetClient.FileTimeRequest);
-            BCPacketTypes[0x3A] = typeof(BnetClient.BnetLogonRequest);
-            BCPacketTypes[0x3E] = typeof(BnetClient.RealmLogonRequest);
-            BCPacketTypes[0x40] = typeof(BnetClient.QueryRealms);
-            BCPacketTypes[0x46] = typeof(BnetClient.NewsInfoRequest);
-            BCPacketTypes[0x4B] = typeof(BnetClient.ExtraWorkResponse);
-            BCPacketTypes[0x50] = typeof(BnetClient.BnetConnectionRequest);
-            BCPacketTypes[0x51] = typeof(BnetClient.BnetAuthRequest);
             BCPacketTypes[0x0A] = typeof(BnetClient.EnterChatRequest);
             BCPacketTypes[0x0B] = typeof(BnetClient.ChannelListRequest);
             BCPacketTypes[0x0C] = typeof(BnetClient.JoinChannel);
             BCPacketTypes[0x0E] = typeof(BnetClient.ChatCommand);
-
-
+            BCPacketTypes[0x10] = typeof(BnetClient.LeaveChat);
+            BCPacketTypes[0x15] = typeof(BnetClient.AdInfoRequest);
+            BCPacketTypes[0x1c] = typeof(BnetClient.StartGame);
+            BCPacketTypes[0x1f] = typeof(BnetClient.LeaveGame);
+            BCPacketTypes[0x21] = typeof(BnetClient.DisplayAd);
+            BCPacketTypes[0x22] = typeof(BnetClient.NotifyJoin);
+            BCPacketTypes[0x25] = typeof(BnetClient.BnetPong);
+            BCPacketTypes[0x33] = typeof(BnetClient.FileTimeRequest);
+            BCPacketTypes[0x3a] = typeof(BnetClient.BnetLogonRequest);
+            BCPacketTypes[0x3e] = typeof(BnetClient.RealmLogonRequest);
+            BCPacketTypes[0x40] = typeof(BnetClient.QueryRealms);
+            BCPacketTypes[0x46] = typeof(BnetClient.NewsInfoRequest);
+            BCPacketTypes[0x4b] = typeof(BnetClient.ExtraWorkResponse);
+            BCPacketTypes[0x50] = typeof(BnetClient.BnetConnectionRequest);
+            BCPacketTypes[0x51] = typeof(BnetClient.BnetAuthRequest);
 
             RSPacketTypes[0x01] = typeof(RealmServer.RealmStartupResponse);
             RSPacketTypes[0x02] = typeof(RealmServer.CharacterCreationResponse);
@@ -289,204 +287,201 @@ namespace D2Packets
             RSPacketTypes[0x06] = typeof(RealmServer.GameInfo);
             RSPacketTypes[0x07] = typeof(RealmServer.CharacterLogonResponse);
             RSPacketTypes[0x0A] = typeof(RealmServer.CharacterDeletionResponse);
-			RSPacketTypes[0x12] = typeof(RealmServer.MessageOfTheDay);
-			RSPacketTypes[0x14] = typeof(RealmServer.GameCreationQueue);
+            RSPacketTypes[0x0B] = typeof(RealmServer.MessageOfTheDay);
+            RSPacketTypes[0x14] = typeof(RealmServer.GameCreationQueue);
             RSPacketTypes[0x18] = typeof(RealmServer.CharacterUpgradeResponse);
-			RSPacketTypes[0x19] = typeof(RealmServer.CharacterList);
-			
+            RSPacketTypes[0x19] = typeof(RealmServer.CharacterList);
 
-
-			RCPacketTypes[0x01] = typeof(RealmClient.RealmStartupRequest);
-			RCPacketTypes[0x02] = typeof(RealmClient.CharacterCreationRequest);
-			RCPacketTypes[0x03] = typeof(RealmClient.CreateGameRequest);
-			RCPacketTypes[0x04] = typeof(RealmClient.JoinGameRequest);
-			RCPacketTypes[0x05] = typeof(RealmClient.GameListRequest);
-			RCPacketTypes[0x06] = typeof(RealmClient.GameInfoRequest);
-			RCPacketTypes[0x07] = typeof(RealmClient.CharacterLogonRequest);
-			RCPacketTypes[0x0A] = typeof(RealmClient.CharacterDeletionRequest);
+            RCPacketTypes[0x01] = typeof(RealmClient.RealmStartupRequest);
+            RCPacketTypes[0x02] = typeof(RealmClient.CharacterCreationRequest);
+            RCPacketTypes[0x03] = typeof(RealmClient.CreateGameRequest);
+            RCPacketTypes[0x04] = typeof(RealmClient.JoinGameRequest);
+            RCPacketTypes[0x05] = typeof(RealmClient.GameListRequest);
+            RCPacketTypes[0x06] = typeof(RealmClient.GameInfoRequest);
+            RCPacketTypes[0x07] = typeof(RealmClient.CharacterLogonRequest);
+            RCPacketTypes[0x0A] = typeof(RealmClient.CharacterDeletionRequest);
             RCPacketTypes[0x12] = typeof(RealmClient.MessageOfTheDayRequest);
-			RCPacketTypes[0x13] = typeof(RealmClient.CancelGameCreation);
-			RCPacketTypes[0x18] = typeof(RealmClient.CharacterUpgradeRequest);
+            RCPacketTypes[0x13] = typeof(RealmClient.CancelGameCreation);
+            RCPacketTypes[0x18] = typeof(RealmClient.CharacterUpgradeRequest);
             RCPacketTypes[0x19] = typeof(RealmClient.CharacterListRequest);
-			
 
-
-			GSPacketTypes[0x00] = typeof(GameServer.GameLoading);
-			GSPacketTypes[0x01] = typeof(GameServer.GameLogonReceipt);
-			GSPacketTypes[0x02] = typeof(GameServer.GameLogonSuccess);
-			GSPacketTypes[0x03] = typeof(GameServer.LoadAct);
-			GSPacketTypes[0x04] = typeof(GameServer.LoadDone);
-			GSPacketTypes[0x05] = typeof(GameServer.UnloadDone);
-			GSPacketTypes[0x06] = typeof(GameServer.GameLogoutSuccess);
-			GSPacketTypes[0x07] = typeof(GameServer.MapAdd);
-			GSPacketTypes[0x08] = typeof(GameServer.MapRemove);
-			GSPacketTypes[0x09] = typeof(GameServer.AssignWarp);
-			GSPacketTypes[0x0A] = typeof(GameServer.RemoveGroundUnit);
-			GSPacketTypes[0x0B] = typeof(GameServer.GameHandshake);
-			GSPacketTypes[0x0C] = typeof(GameServer.NPCGetHit);
-			GSPacketTypes[0x0D] = typeof(GameServer.PlayerStop);
+            GSPacketTypes[0x00] = typeof(GameServer.GameLoading);
+            GSPacketTypes[0x01] = typeof(GameServer.GameLogonReceipt);
+            GSPacketTypes[0x02] = typeof(GameServer.GameLogonSuccess);
+            GSPacketTypes[0x03] = typeof(GameServer.LoadAct);
+            GSPacketTypes[0x04] = typeof(GameServer.LoadDone);
+            GSPacketTypes[0x05] = typeof(GameServer.UnloadDone);
+            GSPacketTypes[0x06] = typeof(GameServer.GameLogoutSuccess);
+            GSPacketTypes[0x07] = typeof(GameServer.MapAdd);
+            GSPacketTypes[0x08] = typeof(GameServer.MapRemove);
+            GSPacketTypes[0x09] = typeof(GameServer.AssignWarp);
+            GSPacketTypes[0x0A] = typeof(GameServer.RemoveGroundUnit);
+            GSPacketTypes[0x0B] = typeof(GameServer.GameHandshake);
+            GSPacketTypes[0x0C] = typeof(GameServer.NPCGetHit);
+            GSPacketTypes[0x0D] = typeof(GameServer.PlayerStop);
             GSPacketTypes[0x0E] = typeof(GameServer.SetGameObjectMode);
-			GSPacketTypes[0x0F] = typeof(GameServer.PlayerMove);
+            GSPacketTypes[0x0F] = typeof(GameServer.PlayerMove);
             GSPacketTypes[0x10] = typeof(GameServer.PlayerMoveToTarget);
-			GSPacketTypes[0x11] = typeof(GameServer.ReportKill);
-			GSPacketTypes[0x15] = typeof(GameServer.PlayerReassign);
-			GSPacketTypes[0x19] = typeof(GameServer.SmallGoldAdd);
-			GSPacketTypes[0x1A] = typeof(GameServer.ByteToExperience);
-			GSPacketTypes[0x1B] = typeof(GameServer.WordToExperience);
-			GSPacketTypes[0x1C] = typeof(GameServer.DWordToExperience);
-			GSPacketTypes[0x1D] = typeof(GameServer.AttributeByte);
-			GSPacketTypes[0x1E] = typeof(GameServer.AttributeWord);
-			GSPacketTypes[0x1F] = typeof(GameServer.AttributeDWord);
+            GSPacketTypes[0x11] = typeof(GameServer.ReportKill);
+            GSPacketTypes[0x15] = typeof(GameServer.PlayerReassign);
+            GSPacketTypes[0x19] = typeof(GameServer.SmallGoldAdd);
+            GSPacketTypes[0x1a] = typeof(GameServer.ByteToExperience);
+            GSPacketTypes[0x1b] = typeof(GameServer.WordToExperience);
+            GSPacketTypes[0x1c] = typeof(GameServer.DWordToExperience);
+            GSPacketTypes[0x1d] = typeof(GameServer.AttributeByte);
+            GSPacketTypes[0x1E] = typeof(GameServer.AttributeWord);
+            GSPacketTypes[0x1f] = typeof(GameServer.AttributeDWord);
             GSPacketTypes[0x20] = typeof(GameServer.PlayerAttributeNotification);
             GSPacketTypes[0x21] = typeof(GameServer.UpdateSkill);
-			GSPacketTypes[0x22] = typeof(GameServer.UpdatePlayerItemSkill);
-			GSPacketTypes[0x23] = typeof(GameServer.Assignskill);
-			GSPacketTypes[0x26] = typeof(GameServer.GameMessage);
+            GSPacketTypes[0x22] = typeof(GameServer.UpdatePlayerItemSkill);
+            GSPacketTypes[0x23] = typeof(GameServer.AssignSkill);
+            GSPacketTypes[0x26] = typeof(GameServer.GameMessage);
             GSPacketTypes[0x27] = typeof(GameServer.NPCInfo);
             GSPacketTypes[0x28] = typeof(GameServer.UpdateQuestInfo);
             GSPacketTypes[0x29] = typeof(GameServer.UpdateGameQuestLog);
-			GSPacketTypes[0x2A] = typeof(GameServer.TransactionComplete);
-            GSPacketTypes[0x2C] = typeof(GameServer.PlaySound);
-            GSPacketTypes[0x3E] = typeof(GameServer.UpdateItemStats);
-			GSPacketTypes[0x3F] = typeof(GameServer.UseStackableItem);
-			GSPacketTypes[0x42] = typeof(GameServer.PlayerClearCursor);
-			GSPacketTypes[0x47] = typeof(GameServer.Relator1);
-			GSPacketTypes[0x48] = typeof(GameServer.Relator2);
-			GSPacketTypes[0x4C] = typeof(GameServer.UnitUseSkillOnTarget);
-			GSPacketTypes[0x4D] = typeof(GameServer.UnitUseSkill);
-			GSPacketTypes[0x4E] = typeof(GameServer.MercForHire);
-			GSPacketTypes[0x4F] = typeof(GameServer.MercForHireListStart);
-			GSPacketTypes[0x51] = typeof(GameServer.AssignGameObject);
+            GSPacketTypes[0x2a] = typeof(GameServer.TransactionComplete);
+            GSPacketTypes[0x2c] = typeof(GameServer.PlaySound);
+            GSPacketTypes[0x3e] = typeof(GameServer.UpdateItemStats);
+            GSPacketTypes[0x3f] = typeof(GameServer.UseStackableItem);
+            GSPacketTypes[0x42] = typeof(GameServer.PlayerClearCursor);
+            GSPacketTypes[0x47] = typeof(GameServer.Relator1);
+            GSPacketTypes[0x48] = typeof(GameServer.Relator2);
+            GSPacketTypes[0x4c] = typeof(GameServer.UnitUseSkillOnTarget);
+            GSPacketTypes[0x4d] = typeof(GameServer.UnitUseSkill);
+            GSPacketTypes[0x4e] = typeof(GameServer.MercForHire);
+            GSPacketTypes[0x4f] = typeof(GameServer.MercForHireListStart);
+            GSPacketTypes[0x51] = typeof(GameServer.AssignGameObject);
             GSPacketTypes[0x52] = typeof(GameServer.UpdateQuestLog);
-			GSPacketTypes[0x53] = typeof(GameServer.PartyRefresh);
-			GSPacketTypes[0x59] = typeof(GameServer.AssignPlayer);
-			GSPacketTypes[0x5A] = typeof(GameServer.InformationMessage);
-			GSPacketTypes[0x5B] = typeof(GameServer.PlayerInGame);
-            GSPacketTypes[0x5C] = typeof(GameServer.PlayerLeaveGame);
-            GSPacketTypes[0x5D] = typeof(GameServer.QuestItemState);
-			GSPacketTypes[0x60] = typeof(GameServer.PortalInfo);
-			GSPacketTypes[0x63] = typeof(GameServer.OpenWaypoint);
+            GSPacketTypes[0x53] = typeof(GameServer.PartyRefresh);
+            GSPacketTypes[0x59] = typeof(GameServer.AssignPlayer);
+            GSPacketTypes[0x5A] = typeof(GameServer.InformationMessage);
+            GSPacketTypes[0x5b] = typeof(GameServer.PlayerInGame);
+            GSPacketTypes[0x5c] = typeof(GameServer.PlayerLeaveGame);
+            GSPacketTypes[0x5d] = typeof(GameServer.QuestItemState);
+            GSPacketTypes[0x60] = typeof(GameServer.PortalInfo);
+            GSPacketTypes[0x63] = typeof(GameServer.OpenWaypoint);
             GSPacketTypes[0x65] = typeof(GameServer.PlayerKillCount);
-			GSPacketTypes[0x67] = typeof(GameServer.NPCMove);
-			GSPacketTypes[0x68] = typeof(GameServer.NPCMoveToTarget);
+            GSPacketTypes[0x67] = typeof(GameServer.NPCMove);
+            GSPacketTypes[0x68] = typeof(GameServer.NPCMoveToTarget);
             GSPacketTypes[0x69] = typeof(GameServer.SetNPCMode);
-			GSPacketTypes[0x6B] = typeof(GameServer.NPCAction);
-			GSPacketTypes[0x6C] = typeof(GameServer.MonsterAttack);
-			GSPacketTypes[0x6D] = typeof(GameServer.NPCStop);
+            GSPacketTypes[0x6b] = typeof(GameServer.NPCAction);
+            GSPacketTypes[0x6c] = typeof(GameServer.MonsterAttack);
+            GSPacketTypes[0x6d] = typeof(GameServer.NPCStop);
             GSPacketTypes[0x74] = typeof(GameServer.PlayerCorpseVisible);
-			GSPacketTypes[0x75] = typeof(GameServer.AboutPlayer);
+            GSPacketTypes[0x75] = typeof(GameServer.AboutPlayer);
             GSPacketTypes[0x76] = typeof(GameServer.PlayerInSight);
-			GSPacketTypes[0x77] = typeof(GameServer.UpdateItemUI);
-			GSPacketTypes[0x78] = typeof(GameServer.AcceptTrade);
-			GSPacketTypes[0x79] = typeof(GameServer.GoldTrade);
-			GSPacketTypes[0x7A] = typeof(GameServer.SummonAction);
-			GSPacketTypes[0x7B] = typeof(GameServer.AssignSkillHotkey);
-			GSPacketTypes[0x7C] = typeof(GameServer.UseSpecialItem);
-            GSPacketTypes[0x7D] = typeof(GameServer.SetItemState);
-			GSPacketTypes[0x7F] = typeof(GameServer.PartyMemberUpdate);
-			GSPacketTypes[0x81] = typeof(GameServer.AssignMerc);
-			GSPacketTypes[0x82] = typeof(GameServer.PortalOwnership);
-			GSPacketTypes[0x8A] = typeof(GameServer.NPCWantsInteract);
-			GSPacketTypes[0x8B] = typeof(GameServer.PlayerPartyRelationship);
-			GSPacketTypes[0x8C] = typeof(GameServer.PlayerRelationship);
-			GSPacketTypes[0x8D] = typeof(GameServer.AssignPlayerToParty);
-			GSPacketTypes[0x8E] = typeof(GameServer.AssignPlayerCorpse);
-			GSPacketTypes[0x8F] = typeof(GameServer.Pong);
-			GSPacketTypes[0x90] = typeof(GameServer.PartyMemberPulse);
-			GSPacketTypes[0x94] = typeof(GameServer.SkillsLog);
-			GSPacketTypes[0x95] = typeof(GameServer.PlayerLifeManaChange);
-			GSPacketTypes[0x96] = typeof(GameServer.WalkVerify);
+            GSPacketTypes[0x77] = typeof(GameServer.UpdateItemUI);
+            GSPacketTypes[0x78] = typeof(GameServer.AcceptTrade);
+            GSPacketTypes[0x79] = typeof(GameServer.GoldTrade);
+            GSPacketTypes[0x7a] = typeof(GameServer.SummonAction);
+            GSPacketTypes[0x7b] = typeof(GameServer.AssignSkillHotkey);
+            GSPacketTypes[0x7c] = typeof(GameServer.UseSpecialItem);
+            GSPacketTypes[0x7d] = typeof(GameServer.SetItemState);
+            GSPacketTypes[0x7f] = typeof(GameServer.PartyMemberUpdate);
+            GSPacketTypes[0x81] = typeof(GameServer.AssignMerc);
+            GSPacketTypes[0x82] = typeof(GameServer.PortalOwnership);
+            GSPacketTypes[0x8a] = typeof(GameServer.NPCWantsInteract);
+            GSPacketTypes[0x8b] = typeof(GameServer.PlayerPartyRelationship);
+            GSPacketTypes[0x8C] = typeof(GameServer.PlayerRelationship);
+            GSPacketTypes[0x8d] = typeof(GameServer.AssignPlayerToParty);
+            GSPacketTypes[0x8e] = typeof(GameServer.AssignPlayerCorpse);
+            GSPacketTypes[0x8f] = typeof(GameServer.Pong);
+            GSPacketTypes[0x90] = typeof(GameServer.PartyMemberPulse);
+            GSPacketTypes[0x94] = typeof(GameServer.SkillsLog);
+            GSPacketTypes[0x95] = typeof(GameServer.PlayerLifeManaChange);
+            GSPacketTypes[0x96] = typeof(GameServer.WalkVerify);
             GSPacketTypes[0x97] = typeof(GameServer.SwitchWeaponSet);
             GSPacketTypes[0x99] = typeof(GameServer.ItemTriggerSkill);
-			GSPacketTypes[0x9C] = typeof(GameServer.WorldItemAction);
-			GSPacketTypes[0x9D] = typeof(GameServer.OwnedItemAction);
-			GSPacketTypes[0x9E] = typeof(GameServer.MercAttributeByte);
-			GSPacketTypes[0x9F] = typeof(GameServer.MercAttributeWord);
-			GSPacketTypes[0xA0] = typeof(GameServer.MercAttributeDWord);
-            GSPacketTypes[0xA1] = typeof(GameServer.MercByteToExperience);
-            GSPacketTypes[0xA2] = typeof(GameServer.MercWordToExperience);
-			GSPacketTypes[0xA7] = typeof(GameServer.DelayedState);
-			GSPacketTypes[0xA8] = typeof(GameServer.SetState);
-			GSPacketTypes[0xA9] = typeof(GameServer.EndState);
-			GSPacketTypes[0xAA] = typeof(GameServer.AddUnit);
-			GSPacketTypes[0xAB] = typeof(GameServer.NPCHeal);
-			GSPacketTypes[0xAC] = typeof(GameServer.AssignNPC);
-			GSPacketTypes[0xAE] = typeof(GameServer.WardenCheck);
-			GSPacketTypes[0xAF] = typeof(GameServer.RequestLogonInfo);
-			GSPacketTypes[0xB0] = typeof(GameServer.GameOver);
-			
-			GCPacketTypes[0x01] = typeof(GameClient.WalkToLocation);
+            GSPacketTypes[0x9c] = typeof(GameServer.WorldItemAction);
+            GSPacketTypes[0x9d] = typeof(GameServer.OwnedItemAction);
+            GSPacketTypes[0x9e] = typeof(GameServer.MercAttributeByte);
+            GSPacketTypes[0x9f] = typeof(GameServer.MercAttributeWord);
+            GSPacketTypes[0xA0] = typeof(GameServer.MercAttributeDWord);
+            GSPacketTypes[0xa1] = typeof(GameServer.MercByteToExperience);
+            GSPacketTypes[0xa2] = typeof(GameServer.MercWordToExperience);
+            GSPacketTypes[0xa7] = typeof(GameServer.DelayedState);
+            GSPacketTypes[0xa8] = typeof(GameServer.SetState);
+            GSPacketTypes[0xa9] = typeof(GameServer.EndState);
+            GSPacketTypes[0xAA] = typeof(GameServer.AddUnit);
+            GSPacketTypes[0xab] = typeof(GameServer.NPCHeal);
+            GSPacketTypes[0xac] = typeof(GameServer.AssignNPC);
+            GSPacketTypes[0xae] = typeof(GameServer.WardenCheck);
+            GSPacketTypes[0xaf] = typeof(GameServer.RequestLogonInfo);
+            GSPacketTypes[0xb0] = typeof(GameServer.GameOver);
+
+            GCPacketTypes[0x01] = typeof(GameClient.WalkToLocation);
             GCPacketTypes[0x02] = typeof(GameClient.WalkToTarget);
-			GCPacketTypes[0x03] = typeof(GameClient.RunToLocation);
+            GCPacketTypes[0x03] = typeof(GameClient.RunToLocation);
             GCPacketTypes[0x04] = typeof(GameClient.RunToTarget);
-			GCPacketTypes[0x05] = typeof(GameClient.CastLeftSkill);
-			GCPacketTypes[0x06] = typeof(GameClient.CastLeftSkillOnTarget);
-			GCPacketTypes[0x07] = typeof(GameClient.CastLeftSkillOnTargetStopped);
-			GCPacketTypes[0x08] = typeof(GameClient.RecastLeftSkill);
-			GCPacketTypes[0x09] = typeof(GameClient.RecastLeftSkillOnTarget);
-			GCPacketTypes[0x0A] = typeof(GameClient.RecastLeftSkillOnTargetStopped);
-			GCPacketTypes[0x0C] = typeof(GameClient.CastRightSkill);
-			GCPacketTypes[0x0D] = typeof(GameClient.CastRightSkillOnTarget);
-			GCPacketTypes[0x0E] = typeof(GameClient.CastRightSkillOnTargetStopped);
-			GCPacketTypes[0x0F] = typeof(GameClient.RecastRightSkill);
-			GCPacketTypes[0x10] = typeof(GameClient.RecastRightSkillOnTarget);
-			GCPacketTypes[0x11] = typeof(GameClient.RecastRightSkillOnTargetStopped);
-			GCPacketTypes[0x13] = typeof(GameClient.UnitInteract);
+            GCPacketTypes[0x05] = typeof(GameClient.CastLeftSkill);
+            GCPacketTypes[0x06] = typeof(GameClient.CastLeftSkillOnTarget);
+            GCPacketTypes[0x07] = typeof(GameClient.CastLeftSkillOnTargetStopped);
+            GCPacketTypes[0x08] = typeof(GameClient.RecastLeftSkill);
+            GCPacketTypes[0x09] = typeof(GameClient.RecastLeftSkillOnTarget);
+            GCPacketTypes[0x0A] = typeof(GameClient.RecastLeftSkillOnTargetStopped);
+            GCPacketTypes[0x0B] = typeof(GameClient.CastRightSkill);
+            GCPacketTypes[0x0C] = typeof(GameClient.CastRightSkillOnTarget);
+            GCPacketTypes[0x0D] = typeof(GameClient.CastRightSkillOnTargetStopped);
+            GCPacketTypes[0x0E] = typeof(GameClient.RecastRightSkill);
+            GCPacketTypes[0x10] = typeof(GameClient.RecastRightSkillOnTarget);
+            GCPacketTypes[0x11] = typeof(GameClient.RecastRightSkillOnTargetStopped);
+            GCPacketTypes[0x13] = typeof(GameClient.UnitInteract);
             GCPacketTypes[0x14] = typeof(GameClient.SendOverheadMessage);
-			GCPacketTypes[0x15] = typeof(GameClient.SendMessage);
-			GCPacketTypes[0x16] = typeof(GameClient.PickItem);
-			GCPacketTypes[0x17] = typeof(GameClient.DropItem);
+            GCPacketTypes[0x15] = typeof(GameClient.SendMessage);
+            GCPacketTypes[0x16] = typeof(GameClient.PickItem);
+            GCPacketTypes[0x17] = typeof(GameClient.DropItem);
             GCPacketTypes[0x18] = typeof(GameClient.DropItemToContainer);
             GCPacketTypes[0x19] = typeof(GameClient.PickItemFromContainer);
-			GCPacketTypes[0x1A] = typeof(GameClient.EquipItem);
-			GCPacketTypes[0x1D] = typeof(GameClient.SwapEquippedItem);
-			GCPacketTypes[0x1C] = typeof(GameClient.UnequipItem);
-			GCPacketTypes[0x1F] = typeof(GameClient.SwapContainerItem);
-			GCPacketTypes[0x20] = typeof(GameClient.UseInventoryItem);
-			GCPacketTypes[0x21] = typeof(GameClient.StackItems);
-			GCPacketTypes[0x23] = typeof(GameClient.AddBeltItem);
-			GCPacketTypes[0x24] = typeof(GameClient.RemoveBeltItem);
-			GCPacketTypes[0x25] = typeof(GameClient.SwapBeltItem);
-			GCPacketTypes[0x26] = typeof(GameClient.UseBeltItem);
-			GCPacketTypes[0x27] = typeof(GameClient.IdentifyItem);
+            GCPacketTypes[0x1a] = typeof(GameClient.EquipItem);
+            GCPacketTypes[0x1d] = typeof(GameClient.SwapEquippedItem);
+            GCPacketTypes[0x1c] = typeof(GameClient.UnequipItem);
+            GCPacketTypes[0x1f] = typeof(GameClient.SwapContainerItem);
+            GCPacketTypes[0x20] = typeof(GameClient.UseInventoryItem);
+            GCPacketTypes[0x21] = typeof(GameClient.StackItems);
+            GCPacketTypes[0x23] = typeof(GameClient.AddBeltItem);
+            GCPacketTypes[0x24] = typeof(GameClient.RemoveBeltItem);
+            GCPacketTypes[0x25] = typeof(GameClient.SwapBeltItem);
+            GCPacketTypes[0x26] = typeof(GameClient.UseBeltItem);
+            GCPacketTypes[0x27] = typeof(GameClient.IdentifyItem);
             GCPacketTypes[0x29] = typeof(GameClient.EmbedItem);
-			GCPacketTypes[0x2A] = typeof(GameClient.ItemToCube);
-			GCPacketTypes[0x2F] = typeof(GameClient.TownFolkInteract);
-			GCPacketTypes[0x30] = typeof(GameClient.TownFolkCancelInteraction);
+            GCPacketTypes[0x2a] = typeof(GameClient.ItemToCube);
+            GCPacketTypes[0x2f] = typeof(GameClient.TownFolkInteract);
+            GCPacketTypes[0x30] = typeof(GameClient.TownFolkCancelInteraction);
             GCPacketTypes[0x31] = typeof(GameClient.DisplayQuestMessage);
-			GCPacketTypes[0x32] = typeof(GameClient.BuyItem);
-			GCPacketTypes[0x33] = typeof(GameClient.SellItem);
-			GCPacketTypes[0x34] = typeof(GameClient.CainIdentifyItems);
-			GCPacketTypes[0x35] = typeof(GameClient.TownFolkRepair);
-			GCPacketTypes[0x36] = typeof(GameClient.HireMercenary);
-			GCPacketTypes[0x37] = typeof(GameClient.IdentifyGambleItem);
+            GCPacketTypes[0x32] = typeof(GameClient.BuyItem);
+            GCPacketTypes[0x33] = typeof(GameClient.SellItem);
+            GCPacketTypes[0x34] = typeof(GameClient.CainIdentifyItems);
+            GCPacketTypes[0x35] = typeof(GameClient.TownFolkRepair);
+            GCPacketTypes[0x36] = typeof(GameClient.HireMercenary);
+            GCPacketTypes[0x37] = typeof(GameClient.IdentifyGambleItem);
             GCPacketTypes[0x38] = typeof(GameClient.TownFolkMenuSelect);
-			GCPacketTypes[0x3A] = typeof(GameClient.IncrementAttribute);
-			GCPacketTypes[0x3B] = typeof(GameClient.IncrementSkill);
-			GCPacketTypes[0x3C] = typeof(GameClient.SelectSkill);
-            GCPacketTypes[0x3D] = typeof(GameClient.HoverUnit);
-			GCPacketTypes[0x3F] = typeof(GameClient.SendCharacterSpeech);
-			GCPacketTypes[0x40] = typeof(GameClient.RequestQuestLog);
+            GCPacketTypes[0x3a] = typeof(GameClient.IncrementAttribute);
+            GCPacketTypes[0x3b] = typeof(GameClient.IncrementSkill);
+            GCPacketTypes[0x3C] = typeof(GameClient.SelectSkill);
+            GCPacketTypes[0x3d] = typeof(GameClient.HoverUnit);
+            GCPacketTypes[0x3f] = typeof(GameClient.SendCharacterSpeech);
+            GCPacketTypes[0x40] = typeof(GameClient.RequestQuestLog);
             GCPacketTypes[0x41] = typeof(GameClient.Respawn);
-			GCPacketTypes[0x49] = typeof(GameClient.WaypointInteract);
-            GCPacketTypes[0x4B] = typeof(GameClient.RequestReassign);
-			GCPacketTypes[0x4F] = typeof(GameClient.ClickButton);
-			GCPacketTypes[0x50] = typeof(GameClient.DropGold);
+            GCPacketTypes[0x49] = typeof(GameClient.WaypointInteract);
+            GCPacketTypes[0x4b] = typeof(GameClient.RequestReassign);
+            GCPacketTypes[0x4f] = typeof(GameClient.ClickButton);
+            GCPacketTypes[0x50] = typeof(GameClient.DropGold);
             GCPacketTypes[0x51] = typeof(GameClient.SetSkillHotkey);
             GCPacketTypes[0x58] = typeof(GameClient.CloseQuest);
-			GCPacketTypes[0x59] = typeof(GameClient.GoToTownFolk);
-			GCPacketTypes[0x5D] = typeof(GameClient.SetPlayerRelation);
-			GCPacketTypes[0x5E] = typeof(GameClient.PartyRequest);
-			GCPacketTypes[0x5F] = typeof(GameClient.UpdatePosition);
-			GCPacketTypes[0x60] = typeof(GameClient.SwitchWeapons);
-			GCPacketTypes[0x61] = typeof(GameClient.ChangeMercEquipment);
-			GCPacketTypes[0x62] = typeof(GameClient.ResurrectMerc);
+            GCPacketTypes[0x59] = typeof(GameClient.GoToTownFolk);
+            GCPacketTypes[0x5d] = typeof(GameClient.SetPlayerRelation);
+            GCPacketTypes[0x5e] = typeof(GameClient.PartyRequest);
+            GCPacketTypes[0x5f] = typeof(GameClient.UpdatePosition);
+            GCPacketTypes[0x60] = typeof(GameClient.SwitchWeapons);
+            GCPacketTypes[0x61] = typeof(GameClient.ChangeMercEquipment);
+            GCPacketTypes[0x62] = typeof(GameClient.ResurrectMerc);
             GCPacketTypes[0x63] = typeof(GameClient.InventoryItemToBelt);
             GCPacketTypes[0x66] = typeof(GameClient.WardenResponse);
-			GCPacketTypes[0x68] = typeof(GameClient.GameLogonRequest);
-			GCPacketTypes[0x69] = typeof(GameClient.ExitGame);
-			GCPacketTypes[0x6B] = typeof(GameClient.EnterGame);
-			GCPacketTypes[0x6D] = typeof(GameClient.Ping);
+            GCPacketTypes[0x68] = typeof(GameClient.GameLogonRequest);
+            GCPacketTypes[0x69] = typeof(GameClient.ExitGame);
+            GCPacketTypes[0x6b] = typeof(GameClient.EnterGame);
+            GCPacketTypes[0x6d] = typeof(GameClient.Ping);
+
 		}
 
         public const int BS_PACKET_COUNT = (int)BnetServerPacket.Invalid;
@@ -609,6 +604,84 @@ namespace D2Packets
         public override string ToString()
         {
             return StringUtils.ToFormatedInfoString(this, false, ": ", ", ");
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CDKeyInfo
+    {
+        public readonly uint Length;
+        public readonly uint ProductValue;
+        public readonly uint PublicValue;
+        public readonly uint Unknown;
+        public readonly byte[] Hash;
+        public CDKeyInfo(byte[] data, int offset)
+        {
+            this.Length = BitConverter.ToUInt32(data, offset);
+            this.ProductValue = BitConverter.ToUInt32(data, offset + 4);
+            this.PublicValue = BitConverter.ToUInt32(data, offset + 8);
+            this.Unknown = BitConverter.ToUInt32(data, offset + 12);
+            this.Hash = new byte[20];
+            Array.Copy(data, offset + 0x10, this.Hash, 0, 20);
+        }
+    }
+
+    public class GameQuestInfo
+{
+    // Fields
+    public GameQuestState State;
+    public QuestType Type;
+
+    // Methods
+    public GameQuestInfo(QuestType type, GameQuestState state)
+    {
+        this.Type = type;
+        this.State = state;
+    }
+
+    public override string ToString()
+    {
+        return string.Format("{0}: {1}", this.Type, this.State);
+    }
+}
+    
+    public class QuestLog
+    {
+        // Fields
+        public int State;
+        public QuestType Type;
+
+        // Methods
+        public QuestLog(QuestType type, int state)
+        {
+            this.Type = type;
+            this.State = state;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}", this.Type, this.State.ToString("x2"));
+        }
+    }
+
+    public class QuestInfo
+    {
+        // Fields
+        public QuestStanding Standing;
+        public QuestState State;
+        public QuestType Type;
+
+        // Methods
+        public QuestInfo(QuestType type, QuestState state, QuestStanding standing)
+        {
+            this.Type = type;
+            this.State = state;
+            this.Standing = standing;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}. {2}", this.Type, this.State, this.Standing);
         }
     }
 
