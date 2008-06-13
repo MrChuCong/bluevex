@@ -42,6 +42,8 @@ Public Class Macro
         'Key down 
         WM_KEYUP = 257
         'Key up 
+        WM_CHAR = 258
+        'Char Down
     End Enum
 
     ''' <summary> 
@@ -267,7 +269,7 @@ Public Class Macro
 
     Public Sub SendString(ByVal TheString As String)
         For i As Integer = 0 To TheString.Length - 1
-            SendKey(Char.GetNumericValue(TheString(i)))
+            SendMessage(hWnd, WMessages.WM_CHAR, Microsoft.VisualBasic.Asc(TheString.Chars(i)), &H1E0001)
         Next
     End Sub
     Public Sub SendClick(ByVal X As Integer, ByVal Y As Integer, Optional ByVal LeftClick As Boolean = True, Optional ByVal DoubleClick As Boolean = False)
@@ -308,12 +310,12 @@ Public Class Macro
 
     Public Sub LoginToCharSelect(ByVal Username As String, ByVal Password As String)
         'Click On Name textbox
-        SendClick(400, 340)
+        SendClick(400, 340, , True)
         'Send the Name string
         SendString(Username)
         Threading.Thread.Sleep(50)
         'Click on Pass textbox
-        SendClick(390, 390)
+        SendClick(390, 390, , True)
         'Send the Pass string
         SendString(Password)
         Threading.Thread.Sleep(50)
@@ -388,7 +390,7 @@ Public Class Macro
         SendClick(430, 480)
     End Sub
 
-    Public Sub LobbyToCreateGame(ByVal Name As String, ByVal Password As String, ByVal Description As String, ByVal Difficulty As Integer)
+    Public Sub CreateGameFromLobby(ByVal Name As String, ByVal Password As String, ByVal Description As String, ByVal Difficulty As D2Data.GameDifficulty)
         'Create Button
         SendClick(590, 460)
         Threading.Thread.Sleep(50)
@@ -401,11 +403,11 @@ Public Class Macro
         SendString(Password)
         Threading.Thread.Sleep(50)
         Select Case Difficulty
-            Case 1 'Normal
+            Case D2Data.GameDifficulty.Normal
                 SendClick(440, 377)
-            Case 2 'Nightmare
+            Case D2Data.GameDifficulty.Nightmare
                 SendClick(567, 377)
-            Case 3 'Hell
+            Case D2Data.GameDifficulty.Hell
                 SendClick(708, 377)
         End Select
         Threading.Thread.Sleep(50)
@@ -432,15 +434,15 @@ Public Class Macro
         SendClick(710, 460)
     End Sub
 
-    Public Sub LobbyToInGame(ByVal GameName As String, Optional ByVal GamePassword As String = "")
+    Public Sub JoinGameFromLobby(ByVal GameName As String, Optional ByVal GamePassword As String = "")
 
         LobbyToJoinGame()
-        EnterJoinGameInfos(GameName, GamePassword)
+        SendJoinGameInfos(GameName, GamePassword)
         'Join Game Button
         SendClick(635, 140)
     End Sub
 
-    Public Sub EnterJoinGameInfos(ByVal GameName As String, Optional ByVal GamePassword As String = "")
+    Public Sub SendJoinGameInfos(ByVal GameName As String, Optional ByVal GamePassword As String = "")
         'GameName Textbox
         SendClick(445, 140)
         SendString(GameName)

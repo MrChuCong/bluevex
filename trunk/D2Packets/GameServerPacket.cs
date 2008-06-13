@@ -33,7 +33,7 @@ namespace D2Packets
         AttributeDWord = 0x1f,
         PlayerAttributeNotification = 0x20,
         UpdateSkill = 0x21,
-        UpdateItemSkill = 0x22,
+        UpdatePlayerItemSkill = 0x22,
         AssignSkill = 0x23,
         GameMessage = 0x26,
         NPCInfo = 0x27,
