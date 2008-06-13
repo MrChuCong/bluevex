@@ -178,7 +178,7 @@ Public Class GameModuleHost
     Public Event OnLoadDone(ByVal Packet As GameServer.LoadDone, ByRef Flag As Packet.PacketFlag) Implements IGame.OnLoadDone
     Public Event OnMapAdd(ByVal Packet As GameServer.MapAdd, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMapAdd
     Public Event OnMapRemove(ByVal Packet As GameServer.MapRemove, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMapRemove
-    Public Event OnMercAttributeNotification(ByVal Packet As GameServer.MercAttribute, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercAttributeNotification
+    Public Event OnMercAttributeNotification(ByVal Packet As GameServer.MercAttributeNotification, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercAttributeNotification
     Public Event OnMercForHire(ByVal Packet As GameServer.MercForHire, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercForHire
     Public Event OnMercForHireListStart(ByVal Packet As GameServer.MercForHireListStart, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercForHireListStart
     Public Event OnMercGainExperience(ByVal Packet As GameServer.MercGainExperience, ByRef Flag As Packet.PacketFlag) Implements IGame.OnMercGainExperience
@@ -599,6 +599,8 @@ Public Class GameModuleHost
                 RaiseEvent OnUpdateItemStats(New GameServer.UpdateItemStats(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.UpdateItemUI
                 RaiseEvent OnUpdateItemUI(New GameServer.UpdateItemUI(Packet.Data), Flag)
+            Case D2Packets.GameServerPacket.UpdatePlayerItemSkill
+                RaiseEvent OnUpdatePlayerItemSkill(New GameServer.UpdatePlayerItemSkill(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.UpdateQuestInfo
                 RaiseEvent OnUpdateQuestInfo(New GameServer.UpdateQuestInfo(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.UpdateQuestLog
@@ -628,10 +630,6 @@ Public Class GameModuleHost
 
 #Region " Chat Methods "
 
-    Public Sub Echo(ByVal Message As String) Implements IGame.Echo
-        Dim Echoer As New GameClient.SendMessage(D2Data.GameMessageType.GameMessage, Message)
-    End Sub
-
     Public Sub SendMessage(ByVal Message As String) Implements IGame.SendMessage
         Dim PacketObject As New GameClient.SendMessage(D2Data.GameMessageType.GameMessage, Message)
         SendPacket(PacketObject.Data)
@@ -640,6 +638,11 @@ Public Class GameModuleHost
     Public Sub ReceiveMessage(ByVal Name As String, ByVal Message As String) Implements IGame.ReceiveMessage
         Dim PacketObject As New GameServer.GameMessage(D2Data.GameMessageType.GameMessage, &H2, Name, Message)
         ReceivePacket(PacketObject.Data)
+    End Sub
+
+    Public Sub Echo(ByVal Message As String) Implements IGame.Echo
+        Dim Echoer As New GameServer.GameMessage(D2Data.GameMessageType.GameMessage, Message)
+        ReceivePacket(Echoer.Data)
     End Sub
 
     Sub HandleSentMessagePacket(ByRef Packet As Packet)

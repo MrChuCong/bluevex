@@ -31,7 +31,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\RedVex\</OutputPath>
+    <OutputPath>..\..\..\BlueVex Testing\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
@@ -41,10 +41,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\BlueVex Testing\D2Data.dll</HintPath>
     </Reference>
-    <Reference Include="D2Packets, Version=0.9.3082.23249, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="D2Packets, Version=0.9.3083.33453, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\D2Smells Source\D2Packets\bin\Debug\D2Packets.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\BlueVex Testing\D2Packets.dll</HintPath>
     </Reference>
     <Reference Include="ETUtils, Version=1.0.2610.21028, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -98,20 +97,19 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalModule.vb" />
-    <Compile Include="Misc\Interfaces\IChat.vb" />
-    <Compile Include="Misc\Interfaces\IModuleHost.vb" />
-    <Compile Include="Misc\Interfaces\Packet.vb" />
-    <Compile Include="Misc\Interfaces\IRealm.vb" />
+    <Compile Include="Interfaces\IChat.vb" />
+    <Compile Include="Interfaces\IGame.vb" />
+    <Compile Include="Interfaces\IGUI.vb" />
+    <Compile Include="Interfaces\IModuleHost.vb" />
+    <Compile Include="Interfaces\IModules.vb" />
+    <Compile Include="Interfaces\IRealm.vb" />
+    <Compile Include="Interfaces\Packet.vb" />
     <Compile Include="Misc\HotKeyLib.vb" />
-    <Compile Include="Misc\Interfaces\IGame.vb" />
-    <Compile Include="Misc\Interfaces\IGUI.vb" />
-    <Compile Include="Misc\Interfaces\IModules.vb" />
     <Compile Include="Misc\CollisionMap.vb" />
     <Compile Include="Misc\Macro.vb" />
     <Compile Include="Misc\MemEdit.vb" />
     <Compile Include="Misc\MemoryHelper.vb" />
     <Compile Include="Misc\Structures.vb" />
-    <Compile Include="Misc\Testing.vb" />
     <Compile Include="Module Hosts\ChatModuleHost.vb" />
     <Compile Include="Module Hosts\GameModuleHost.vb" />
     <Compile Include="Module Hosts\RealmModuleHost.vb" />

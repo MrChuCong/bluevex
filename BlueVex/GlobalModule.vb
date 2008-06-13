@@ -533,4 +533,24 @@ Public Module GameHelpers
         End If
     End Function
 
+    Public Structure ChatColors
+
+        Public Const MessedUpWhite As String = "ÿc."
+        Public Const BrightWhite As String = "ÿc/"
+        Public Const Purple As String = "ÿc;"
+        Public Const DarkGreen As String = "ÿc:"
+        Public Const LightGrey As String = "ÿc0"
+        Public Const Red As String = "ÿc1"
+        Public Const SetGreen As String = "ÿc2"
+        Public Const MagicBlue As String = "ÿc3"
+        Public Const UniqueGold As String = "ÿc4"
+        Public Const SocketedGrey As String = "ÿc5"
+        Public Const Black As String = "ÿc6"
+        Public Const Tan As String = "ÿc7"
+        Public Const CraftedOrange As String = "ÿc8"
+        Public Const RareYellow As String = "ÿc9"
+        Private b As Byte
+    End Structure
+
+
 End Module

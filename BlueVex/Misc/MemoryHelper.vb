@@ -366,7 +366,7 @@ Namespace Memory.Misc
         End Function
 
         Public Function GetPlayerUnit() As UnitAny
-            Dim PlayerPointer As IntPtr = Reader.ReadMemoryInt(CInt(D2client.BaseAddress) + 1163744)
+            Dim PlayerPointer As IntPtr = Reader.ReadMemoryInt(CInt(D2client.BaseAddress) + &H11C1E0)
             Return Tools.Tools.ByteToStruct(Reader.ReadMemoryAOB(PlayerPointer, Marshal.SizeOf(GetType(UnitAny))), GetType(UnitAny))
         End Function
 
@@ -681,8 +681,6 @@ Namespace Memory.Misc
 
             Return WrappedFunc.OutOfGameState.InGame
         End Function
-
-        'Enchants shit need testing.
 
         Public Function GetMonsterEnchants(ByVal code As NPCCode) As List(Of Byte)
             Return Me.GetMonsterEnchants(Me.GetUnit(code))
