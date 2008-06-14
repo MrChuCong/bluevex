@@ -20,6 +20,9 @@ Namespace Memory.Misc
 
     Public Module Other
 
+        ''' <summary> 
+        ''' Get the Client in which the player is at a certain position.
+        ''' </summary> 
         Public Function ClientPIDFromPos(ByVal PositionFromPackets As Point) As Integer
             Dim Pos As Point = PositionFromPackets
             Dim MemEditor As New MEC.MemEdit
@@ -37,7 +40,9 @@ Namespace Memory.Misc
             Return Nothing
         End Function
 
-        '**** Needs Testing *****
+        ''' <summary> 
+        ''' Return all clients with the specified Status.
+        ''' </summary> 
         Public Function ClientPIDFromStatus(ByVal Status As WrappedFunc.OutOfGameState) As List(Of Process)
             Dim Clients As New List(Of Process)
 
@@ -56,25 +61,18 @@ Namespace Memory.Misc
 
     End Module
 
+
     Namespace WrappedFunc
 
         Public Module WrappedFunc
             Public Function GetMyPosition(Optional ByVal DiabloPID As Integer = 0) As Point
 
-                Dim MemEditor As New MEC.MemEdit
+                Dim MemEditor As New MEC.MemEdit(DiabloPID)
                 Dim d2client As System.Diagnostics.ProcessModule
                 Dim dwUnitAddr As Int32
                 Dim Dwtemp As Int32
 
-                If DiabloPID = 0 Then
-                    If MemEditor.mOpenDiabloProcess = IntPtr.Zero Then
-                        Return Nothing
-                    End If
-                Else
-                    If MemEditor.mOpenDiabloProcess(DiabloPID) = IntPtr.Zero Then
-                        Return Nothing
-                    End If
-                End If
+                If MemEditor.Success = False Then Return Nothing
 
                 d2client = MemEditor.GetModule("D2Client.dll")
                 If d2client Is Nothing Then Return Nothing
@@ -90,23 +88,13 @@ Namespace Memory.Misc
             End Function
             Public Function GetAreaID(Optional ByVal DiabloPID As Integer = 0) As Long
 
-                Dim MemEditor As New MEC.MemEdit
+                Dim MemEditor As New MEC.MemEdit(DiabloPID)
                 Dim d2client As System.Diagnostics.ProcessModule
                 Dim dwUnitAddr As Int32
                 Dim Dwtemp As Int32
                 Dim AreaId As Long
 
-                'User specified one, let's use it
-                If DiabloPID <> 0 Then
-                    If MemEditor.mOpenDiabloProcess(DiabloPID) = IntPtr.Zero Then
-                        Return Nothing
-                    End If
-                Else
-                    'Fuck that shit! Let's find one for him.
-                    If MemEditor.mOpenDiabloProcess = IntPtr.Zero Then
-                        Return Nothing
-                    End If
-                End If
+                If MemEditor.Success = False Then Return Nothing
 
                 d2client = MemEditor.GetModule("D2Client.dll")
                 If d2client Is Nothing Then Return Nothing
@@ -299,9 +287,12 @@ Namespace Memory.Misc
 
     End Namespace
 
+    ''' <summary> 
+    ''' Not User-Friendly.
+    ''' </summary> 
     Public Class RawFunctions
 
-        Public Reader As New MEC.MemEdit
+        Public Reader As MEC.MemEdit
         Dim D2client As System.Diagnostics.ProcessModule
         Dim D2Win As System.Diagnostics.ProcessModule
 
@@ -355,8 +346,8 @@ Namespace Memory.Misc
             MAXPOISONRESIST = &H2E0000
         End Enum
 
-        Public Sub New(Optional ByVal D2PID As Integer = 0)
-            Me.Reader.mOpenDiabloProcess(D2PID)
+        Public Sub New(Optional ByVal DiabloPID As Integer = 0)
+            Me.Reader = New MEC.MemEdit(DiabloPID)
             D2client = Reader.GetModule("D2Client.dll")
             D2Win = Reader.GetModule("D2Win.dll")
         End Sub

@@ -100,7 +100,7 @@ Namespace Memory.Pathing
 
         Dim LevelNo As Integer
 
-        Dim MemEditor As New MEC.MemEdit
+        Dim MemEditor As MEC.MemEdit
 
 
 #Region "Private"
@@ -253,18 +253,9 @@ Namespace Memory.Pathing
 
         Public Function GetMapFromMemory(Optional ByVal DiabloPID As Integer = 0) As MapInfo_t
             Dim Dwtemp As Long
+            MemEditor = New MEC.MemEdit(DiabloPID)
 
-            'User specified one, let's use it
-            If DiabloPID <> 0 Then
-                If MemEditor.mOpenDiabloProcess(DiabloPID) = IntPtr.Zero Then
-                    Return Nothing
-                End If
-            Else
-                'Fuck that shit! Let's find one for him.
-                If MemEditor.mOpenDiabloProcess = IntPtr.Zero Then
-                    Return Nothing
-                End If
-            End If
+            If MemEditor.Success = False Then Return Nothing
 
             D2client = MemEditor.GetModule("D2Client.dll")
             D2common = MemEditor.GetModule("D2Common.dll")

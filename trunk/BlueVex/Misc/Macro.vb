@@ -2,27 +2,26 @@
 Imports System.Runtime.InteropServices
 Imports System.Diagnostics
 
-
-
 Public Class Macro
 
     'Function to get the Handle
-    Dim DiabloProcess As New Memory.MEC.MemEdit
-
+    Dim DiabloProcess As Memory.MEC.MemEdit
+    Dim Delay As Integer
 
     'We will use the handle to send messages.
     Dim hWnd As IntPtr
 
-    Sub New(Optional ByVal DiabloPID As Integer = 0)
-        DiabloProcess.mOpenDiabloProcess(DiabloPID)
+    Sub New(Optional ByVal DiabloPID As Integer = 0, Optional ByVal DelayAfterClicks As Integer = 0)
+        DiabloProcess = New Memory.MEC.MemEdit(DiabloPID)
         hWnd = DiabloProcess.netProcHandle.MainWindowHandle
+        Delay = DelayAfterClicks
     End Sub
 
     <DllImport("user32.dll", CharSet:=CharSet.Auto, SetLastError:=False)> _
     Private Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As IntPtr
     End Function
 
-    '''summary> 
+    ''' <summary> 
     ''' Virtual Messages 
     ''' </summary> 
     Private Enum WMessages As Integer
@@ -254,7 +253,6 @@ Public Class Macro
         'Zoom key 
     End Enum
 
-
     ''' <summary> 
     ''' MakeLParam Macro 
     ''' </summary> 
@@ -262,16 +260,26 @@ Public Class Macro
         Return ((HiWord << 16) Or (LoWord And 65535))
     End Function
 
+    ''' <summary> 
+    ''' Send a Key to specified Window
+    ''' </summary> 
     Public Sub SendKey(ByVal Key As Keys)
         SendMessage(hWnd, WMessages.WM_KEYDOWN, Key, 0)
         SendMessage(hWnd, WMessages.WM_KEYUP, Key, 0)
     End Sub
 
+    ''' <summary> 
+    ''' Send Characters to specified window.
+    ''' </summary> 
     Public Sub SendString(ByVal TheString As String)
         For i As Integer = 0 To TheString.Length - 1
             SendMessage(hWnd, WMessages.WM_CHAR, Microsoft.VisualBasic.Asc(TheString.Chars(i)), &H1E0001)
         Next
     End Sub
+
+    ''' <summary> 
+    ''' Simulate click
+    ''' </summary> 
     Public Sub SendClick(ByVal X As Integer, ByVal Y As Integer, Optional ByVal LeftClick As Boolean = True, Optional ByVal DoubleClick As Boolean = False)
 
         Dim LParam As Integer = MakeLParam(X, Y)
@@ -297,37 +305,53 @@ Public Class Macro
 
     End Sub
 
+    ''' <summary> 
+    ''' Exit a Game the Manual Way
+    ''' </summary> 
     Public Sub ExitGame()
         SendKey(Keys.VK_ESCAPE)
         SendKey(Keys.VK_UP)
         SendKey(Keys.VK_RETURN)
     End Sub
 
+    ''' <summary> 
+    ''' Welcome Screen to Login Screen
+    ''' </summary> 
     Public Sub StartToLogin()
         'Clicks the Battle.Net button
         SendClick(400, 355)
     End Sub
 
+    ''' <summary> 
+    ''' Login To B.net with specified Account
+    ''' </summary> 
     Public Sub LoginToCharSelect(ByVal Username As String, ByVal Password As String)
         'Click On Name textbox
         SendClick(400, 340, , True)
+        Threading.Thread.Sleep(Delay)
         'Send the Name string
         SendString(Username)
-        Threading.Thread.Sleep(50)
         'Click on Pass textbox
         SendClick(390, 390, , True)
+        Threading.Thread.Sleep(Delay)
         'Send the Pass string
         SendString(Password)
-        Threading.Thread.Sleep(50)
         'Connect Button
         SendClick(400, 470)
     End Sub
 
+    ''' <summary> 
+    ''' Return To Welcome Screen from char select
+    ''' </summary> 
     Public Sub CharSelectToStart()
         'Exit Button
         SendClick(90, 550)
     End Sub
 
+    ''' <summary> 
+    ''' Select A character and join the Lobby
+    ''' (0,1,2,3,4,5,6,7 from top left corner to bottom right.)
+    ''' </summary> 
     Public Sub CharSelectToLobby(ByVal CharPos As Integer)
         'Select the right char
         Select Case CharPos
@@ -381,27 +405,41 @@ Public Class Macro
                 '___|_X_
                 SendClick(440, 425, , True)
         End Select
+        Threading.Thread.Sleep(Delay)
         'Join Lobby
-        'SendClick(700, 560)
+        SendClick(700, 560)
     End Sub
 
+    ''' <summary> 
+    ''' Return to Char Select Screen
+    ''' </summary> 
     Public Sub LobbyToCharSelect()
         'Press Exit Button
         SendClick(430, 480)
     End Sub
 
+    ''' <summary> 
+    ''' Create a game from anywhere in the lobby
+    ''' </summary> 
     Public Sub CreateGameFromLobby(ByVal Name As String, ByVal Password As String, ByVal Description As String, ByVal Difficulty As D2Data.GameDifficulty)
         'Create Button
         SendClick(590, 460)
-        Threading.Thread.Sleep(50)
+        Threading.Thread.Sleep(Delay)
+
         'Name TextBox
         SendClick(460, 155)
+        Threading.Thread.Sleep(Delay)
+
         SendString(Name)
         Threading.Thread.Sleep(50)
+
         'PassWord textBox
         SendClick(450, 210)
+        Threading.Thread.Sleep(Delay)
+
         SendString(Password)
         Threading.Thread.Sleep(50)
+
         Select Case Difficulty
             Case D2Data.GameDifficulty.Normal
                 SendClick(440, 377)
@@ -410,19 +448,25 @@ Public Class Macro
             Case D2Data.GameDifficulty.Hell
                 SendClick(708, 377)
         End Select
-        Threading.Thread.Sleep(50)
+
+        Threading.Thread.Sleep(Delay)
         SendClick(690, 420)
     End Sub
 
+
+    ''' <summary> 
+    ''' Join a channel, if left blank go in default one.
+    ''' </summary> 
     Public Sub LobbyToChannel(Optional ByVal ChannelName As String = "")
         'Enter Chat
         SendClick(90, 470)
-
+        Threading.Thread.Sleep(Delay)
         'User didn't specify a channel, we use battle.net's one
         If ChannelName = "" Then Exit Sub
 
         'Channel
         SendClick(570, 480)
+        Threading.Thread.Sleep(Delay)
 
         'Write ChannelName
         SendString(ChannelName)
@@ -430,10 +474,16 @@ Public Class Macro
         SendClick(710, 415)
     End Sub
 
+    ''' <summary> 
+    ''' Go To Join Game Screen
+    ''' </summary> 
     Public Sub LobbyToJoinGame()
         SendClick(710, 460)
     End Sub
 
+    ''' <summary> 
+    ''' Join a game from anywhere in the lobby
+    ''' </summary> 
     Public Sub JoinGameFromLobby(ByVal GameName As String, Optional ByVal GamePassword As String = "")
 
         LobbyToJoinGame()
@@ -442,9 +492,12 @@ Public Class Macro
         SendClick(635, 140)
     End Sub
 
+
+    ''' <summary> 
+    ''' Write Join Game Infos to Screen
+    ''' </summary> 
     Public Sub SendJoinGameInfos(ByVal GameName As String, Optional ByVal GamePassword As String = "")
         'GameName Textbox
-        SendClick(445, 140)
         SendString(GameName)
         Threading.Thread.Sleep(50)
         'Password TextBox
@@ -452,10 +505,16 @@ Public Class Macro
         SendString(GamePassword)
     End Sub
 
+    ''' <summary>
+    ''' Click the Please Wait Button
+    ''' </summary> 
     Public Sub ClickPleaseWaitButton()
         SendClick(400, 330)
     End Sub
 
+    ''' <summary> 
+    ''' Return to welcome screen from the Lobby
+    ''' </summary> 
     Public Sub LobbyToStart()
         LobbyToCharSelect()
         'Exit Button

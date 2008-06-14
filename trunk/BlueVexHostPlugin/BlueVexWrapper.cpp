@@ -43,6 +43,7 @@ void	BlueVexWrapper::UpdatePlugin()
 	_managedPlugin->UpdatePlugin();
 }
 
+
 void	BlueVexWrapper::RelayToClient(const unsigned char* bytes, int length, IProxy* proxy, IModule* module) //System::IntPtr _proxy, System::IntPtr _module, 
 {
 	IPacket* packet = proxy->CreatePacket(bytes, length);

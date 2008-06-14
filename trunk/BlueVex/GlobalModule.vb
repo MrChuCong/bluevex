@@ -12,16 +12,11 @@ Public Module GlobalModule
 
     Public Diablo2WindowHandles As New Collections.Generic.SortedList(Of String, IntPtr)
 
-    'Public Delegate Sub DestroyDelegate(ByVal client As tcpProxy)
     Public Enum ProxyType
         Chat = 1
         Realm = 2
         Game = 3
     End Enum
-
-    'Public ChatListener As TcpProxyListener
-    'Public RealmListener As TcpProxyListener
-    'Public GameListener As TcpProxyListener
 
     Public LastCreateGameTime As DateTime
     Public GameCount As Integer = 0
@@ -533,24 +528,56 @@ Public Module GameHelpers
         End If
     End Function
 
+
     Public Structure ChatColors
 
+        ''' <summary> 
+        ''' Hard to read.
+        ''' </summary> 
         Public Const MessedUpWhite As String = "ÿc."
         Public Const BrightWhite As String = "ÿc/"
+        ''' <summary> 
+        ''' Sexy!
+        ''' </summary> 
         Public Const Purple As String = "ÿc;"
         Public Const DarkGreen As String = "ÿc:"
         Public Const LightGrey As String = "ÿc0"
+        ''' <summary>
+        ''' Hostile Red 
+        ''' </summary> 
         Public Const Red As String = "ÿc1"
-        Public Const SetGreen As String = "ÿc2"
-        Public Const MagicBlue As String = "ÿc3"
-        Public Const UniqueGold As String = "ÿc4"
-        Public Const SocketedGrey As String = "ÿc5"
+        ''' <summary> 
+        ''' Set Green
+        ''' </summary> 
+        Public Const Green As String = "ÿc2"
+        ''' <summary>
+        ''' Magic Blue 
+        ''' </summary> 
+        Public Const Blue As String = "ÿc3"
+        ''' <summary> 
+        ''' Unique Gold
+        ''' </summary> 
+        Public Const Gold As String = "ÿc4"
+        ''' <summary> 
+        ''' Socketed Grey
+        ''' </summary> 
+        Public Const Grey As String = "ÿc5"
+        ''' <summary> 
+        ''' Almost Invisible
+        ''' </summary> 
         Public Const Black As String = "ÿc6"
+
         Public Const Tan As String = "ÿc7"
-        Public Const CraftedOrange As String = "ÿc8"
-        Public Const RareYellow As String = "ÿc9"
+        ''' <summary> 
+        ''' Crafted Orange
+        ''' </summary> 
+        Public Const Orange As String = "ÿc8"
+
+        ''' <summary> 
+        ''' Rare Yellow
+        ''' </summary> 
+        Public Const Yellow As String = "ÿc9"
         Private b As Byte
     End Structure
-
 
 End Module
