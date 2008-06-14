@@ -40,6 +40,7 @@ Public Class Plugin
     End Sub
     Public Sub UpdatePlugin()
         'When the whole BluevexHost gets the Update.
+
     End Sub
 End Class
 

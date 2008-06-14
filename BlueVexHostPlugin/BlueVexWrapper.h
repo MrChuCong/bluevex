@@ -38,7 +38,9 @@ public:
     
     void    InitPlugin(RedVexInfo* Funcs);
 	void    DestroyPlugin();
+
 	void    UpdatePlugin();
+
 	void    InitGameModule(IProxy* proxy, IModule* module);
 	void	OnRelayGameDataToClient(const unsigned char* bytes,int length,IPacket* packet);
 	void	OnRelayGameDataToServer(const unsigned char* bytes,int length,IPacket* packet);

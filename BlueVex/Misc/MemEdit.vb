@@ -1,13 +1,7 @@
-﻿'''<AuthorInformation>
-''' Author: Estx
-''' E-mail: webmaster@digilitepc.com
-''' WebURL: http://www.digilitepc.com/
-'''</AuthorInformation>
-'''<copyright> Copyright © 2008 DigiLite PC </copyright>
-'''<terms> Free to redistribute and modify as long as credit is given </terms>
-Imports System
+﻿Imports System
 Imports System.Runtime.InteropServices
 Imports System.Diagnostics
+
 Namespace Memory
 
     Namespace MEC
@@ -31,8 +25,12 @@ Namespace Memory
             End Sub
         End Structure
 
+        ''' <summary>
+        ''' Easy-to-use class to deal with memory.
+        ''' </summary> 
         Public Class MemEdit
             Implements IDisposable
+            Public Success As Boolean = False
 
 #Region "Declares"
 
@@ -47,19 +45,19 @@ Namespace Memory
 
 #Region "Process Handling"
 
-            Public Function mOpenDiabloProcess(Optional ByVal DiabloPID As Integer = 0) As IntPtr
+            Sub New(Optional ByVal DiabloPID As Integer = 0)
                 Dim D2HWND As Integer = Tools.FindWindow("Diablo II", Nothing)
 
                 If D2HWND < 1 Then
                     lastError = "Diablo window not found"
-                    Return IntPtr.Zero
+                    Success = False
+                    Exit Sub
                 End If
 
                 If DiabloPID <> 0 Then
                     'PID defined! No need to find it :D
                     netProcHandle = Process.GetProcessById(DiabloPID)
                     hProc = Tools.OpenProcess(dwAllAccess, False, CInt(netProcHandle.Id))
-                    Return hProc
                 Else
                     Try
                         'No PID? We Got to find a random one :(
@@ -72,15 +70,16 @@ Namespace Memory
                                 netProcHandle = Process.GetProcessById(Process.Id)
                                 'Open It
                                 hProc = Tools.OpenProcess(dwAllAccess, False, CInt(netProcHandle.Id))
-                                Return hProc
+                                Success = False
                             End If
                         Next
                     Catch ex As Exception
-                        lastError = "Failed to Open Diablo's Process."
-                        Return IntPtr.Zero
+                        Success = False
+                        Exit Sub
                     End Try
                 End If
-            End Function
+            End Sub
+
             Public Function mCloseProcess() As Int32
                 If hProc <> IntPtr.Zero Then
                     Return Tools.CloseHandle(hProc)
