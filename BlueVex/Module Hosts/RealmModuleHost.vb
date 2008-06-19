@@ -98,8 +98,9 @@ Public Class RealmModuleHost
     Overrides Sub InterptetPacketToServer(ByRef Packet As Packet)
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
+        Packet.Data = CutBytes(Packet.Data, 0, 2)
 
-        Select Case Packet.Data(2)
+        Select Case Packet.Data(0)
             Case D2Packets.RealmClientPacket.CancelGameCreation
                 RaiseEvent OnCancelGameCreation(New RealmClient.CancelGameCreation(Packet.Data), Flag)
             Case D2Packets.RealmClientPacket.CharacterCreationRequest
@@ -137,31 +138,33 @@ Public Class RealmModuleHost
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
 
-        Select Case Packet.Data(2)
+        Packet.Data = CutBytes(Packet.Data, 0, 2)
+
+        Select Case Packet.Data(0)
             Case D2Packets.RealmServerPacket.CharacterCreationResponse
-                RaiseEvent OnCharacterCreationResponse(New RealmServer.CharacterCreationResponse(Packet.Data), flag)
+                RaiseEvent OnCharacterCreationResponse(New RealmServer.CharacterCreationResponse(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.CharacterDeletionResponse
-                RaiseEvent OnCharacterDeletionResponse(New RealmServer.CharacterDeletionResponse(Packet.Data), flag)
+                RaiseEvent OnCharacterDeletionResponse(New RealmServer.CharacterDeletionResponse(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.CharacterList
-                RaiseEvent OnCharacterList(New RealmServer.CharacterList(Packet.Data), flag)
+                RaiseEvent OnCharacterList(New RealmServer.CharacterList(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.CharacterLogonResponse
-                RaiseEvent OnCharacterLogonResponse(New RealmServer.CharacterLogonResponse(Packet.Data), flag)
+                RaiseEvent OnCharacterLogonResponse(New RealmServer.CharacterLogonResponse(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.CharacterUpgradeResponse
-                RaiseEvent OnCharacterUpgradeResponse(New RealmServer.CharacterUpgradeResponse(Packet.Data), flag)
+                RaiseEvent OnCharacterUpgradeResponse(New RealmServer.CharacterUpgradeResponse(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.CreateGameResponse
-                RaiseEvent OnCreateGameResponse(New RealmServer.CreateGameResponse(Packet.Data), flag)
+                RaiseEvent OnCreateGameResponse(New RealmServer.CreateGameResponse(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.GameCreationQueue
-                RaiseEvent OnGameCreationQueue(New RealmServer.GameCreationQueue(Packet.Data), flag)
+                RaiseEvent OnGameCreationQueue(New RealmServer.GameCreationQueue(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.GameInfo
-                RaiseEvent OnGameInfo(New RealmServer.GameInfo(Packet.Data), flag)
+                RaiseEvent OnGameInfo(New RealmServer.GameInfo(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.GameList
-                RaiseEvent OnGameList(New RealmServer.GameList(Packet.Data), flag)
+                RaiseEvent OnGameList(New RealmServer.GameList(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.JoinGameResponse
-                RaiseEvent OnJoinGameResponse(New RealmServer.JoinGameResponse(Packet.Data), flag)
+                RaiseEvent OnJoinGameResponse(New RealmServer.JoinGameResponse(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.MessageOfTheDay
-                RaiseEvent OnMessageOfTheDay(New RealmServer.MessageOfTheDay(Packet.Data), flag)
+                RaiseEvent OnMessageOfTheDay(New RealmServer.MessageOfTheDay(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.RealmStartupResponse
-                RaiseEvent OnRealmStartupResponse(New RealmServer.RealmStartupResponse(Packet.Data), flag)
+                RaiseEvent OnRealmStartupResponse(New RealmServer.RealmStartupResponse(Packet.Data), Flag)
         End Select
 
         If Packet.Flag <> Flag Then

@@ -70,7 +70,7 @@ Namespace Memory.Pathing
               ByRef lpThreadId As Integer) As Integer
 
         Private Const MEM_RELEASE = &H8000&
-        Private Const MEM_COMMIT As Long = &H1000&
+        Private Const MEM_COMMIT = &H1000&
         Private Const PAGE_EXECUTE_READWRITE = &H40
 
 #End Region
@@ -100,7 +100,7 @@ Namespace Memory.Pathing
 
         Dim LevelNo As Integer
 
-        Dim MemEditor As MEC.MemEdit
+        Dim MemEditor As MemEditor
 
 
 #Region "Private"
@@ -253,7 +253,7 @@ Namespace Memory.Pathing
 
         Public Function GetMapFromMemory(Optional ByVal DiabloPID As Integer = 0) As MapInfo_t
             Dim Dwtemp As Long
-            MemEditor = New MEC.MemEdit(DiabloPID)
+            MemEditor = New MemEditor(DiabloPID)
 
             If MemEditor.Success = False Then Return Nothing
 
@@ -261,7 +261,13 @@ Namespace Memory.Pathing
             D2common = MemEditor.GetModule("D2Common.dll")
             If D2client Is Nothing Then Return Nothing
 
-            Playerinfo.dwUnitAddr = MemEditor.ReadMemoryLong(D2client.BaseAddress.ToInt32 + &H11C1E0, Len(New Int32))
+            '1.11B
+            'Playerinfo.dwUnitAddr = MemEditor.ReadMemoryLong(D2client.BaseAddress.ToInt32 + &H11C1E0, Len(New Int32))
+
+            '1.12
+            Playerinfo.dwUnitAddr = MemEditor.ReadMemoryLong(D2client.BaseAddress.ToInt32 + &H11C3D0, Len(New Int32))
+
+
             Playerinfo.dwPlayerId = MemEditor.ReadMemoryLong(Playerinfo.dwUnitAddr + &HC, 4)
             Playerinfo.dwActAddr = MemEditor.ReadMemoryLong(Playerinfo.dwUnitAddr + &H1C, 4)
 
@@ -438,7 +444,7 @@ Namespace Memory.Pathing
                 Dim CollMapByte As Byte()
                 Dim pcol As CollMap_t
                 CollMapByte = MemEditor.ReadMemoryAOB(dwCol, Marshal.SizeOf(GetType(CollMap_t)))
-                pcol = Memory.Tools.ByteToStruct(CollMapByte, pcol.GetType)
+                pcol = Tools.ByteToStruct(CollMapByte, pcol.GetType)
 
                 ' ***Building CollisionMap here ***
 
@@ -1078,7 +1084,7 @@ Namespace Memory.Pathing
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
             Dim WpList() As Integer = {&H77, &H9D, &H9C, &H143, &H120, &H192, &HED, &H144, &H18E, &HEE, &H1AD, &H1F0, &H1FF, &H1EE}
             'Switch so User choose his Client Instance.
-            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
+            Dim StartPoint As Point = Wrapped.GetMyPosition(Mapinfo.ClientPID)
 
             'Check if our map contains one of those ids.
             For i As Integer = 0 To WpList.Length - 1
@@ -1094,7 +1100,7 @@ Namespace Memory.Pathing
         End Function
         Public Function PathToObject(ByVal ObjectId As Integer, ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
-            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
+            Dim StartPoint As Point = Wrapped.GetMyPosition(Mapinfo.ClientPID)
             If Mapinfo.Objects.Keys.Contains(ObjectId) Then
                 If Walk Then
                     Return GetWalkPath(StartPoint, Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo)
@@ -1106,7 +1112,7 @@ Namespace Memory.Pathing
         End Function
         Public Function PathToNpc(ByVal NPCId As Integer, ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
-            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
+            Dim StartPoint As Point = Wrapped.GetMyPosition(Mapinfo.ClientPID)
             If Mapinfo.Npcs.Keys.Contains(NPCId) Then
                 If Walk Then
                     Return GetWalkPath(StartPoint, Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo)
@@ -1118,7 +1124,7 @@ Namespace Memory.Pathing
         End Function
         Public Function PathToLevel(ByVal LevelId As Integer, ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
-            Dim StartPoint = Memory.Misc.WrappedFunc.GetMyPosition(Mapinfo.ClientPID)
+            Dim StartPoint As Point = Wrapped.GetMyPosition(Mapinfo.ClientPID)
 
             If Mapinfo.Exits.Keys.Contains(LevelId) Then
 
@@ -1280,7 +1286,7 @@ Namespace Memory.Pathing
 
         Private m_nCX As Integer
         Private m_nCY As Integer
-        Private Const RANGE_INVALID = 10000
+        Private Const RANGE_INVALID As Integer = 10000
 
         Private Enum PathState
             PATH_FAIL = 0 'Failed, error occurred or no available path
@@ -1384,7 +1390,7 @@ Namespace Memory.Pathing
             MakeDistanceTable(Mapinfo)
             'Starting point Not in the Path.
             'Path.Add(ptStart)
-            Dim dwFound = 1
+            Dim dwFound As Integer = 1
             Dim Pos As Point = M_ptstart
             Dim bOK As Boolean
             Dim nRes As Integer = GetBestMove(Pos)

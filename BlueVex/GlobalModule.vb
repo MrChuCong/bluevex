@@ -35,6 +35,48 @@ Public Module GlobalModule
         Return Result
     End Function
 
+    Function CutBytes(ByVal InitialArray As Byte(), ByVal Index As Integer, ByVal Length As Integer) As Byte()
+        'That's the good size
+        Dim Main(InitialArray.Length - Length - 1) As Byte
+
+        'Copy everything before the cutting.
+        For i As Integer = 0 To Index - 1
+            Main(i) = InitialArray(i)
+        Next
+
+        'Jump the cutting space, continue copying.
+        For i As Integer = Index + Length To InitialArray.Length - Length
+            Main(i - Length) = InitialArray(i)
+        Next i
+
+
+        Return Main
+    End Function
+
+    Function PasteBytes(ByVal InitialArray As Byte(), ByVal ToPasteArray As Byte(), ByVal Index As Integer) As Byte()
+        'That's the good size.
+        Dim Main(InitialArray.Length + ToPasteArray.Length) As Byte
+
+        'Copy the ones before the index.
+        For i As Integer = 0 To Index - 1
+            Main(i) = InitialArray(i)
+        Next i
+
+        'Paste the array.
+        For i As Integer = Index To Index + ToPasteArray.Length - 1
+            Main(i) = ToPasteArray(i - Index)
+        Next i
+
+        'Continue copying.
+        Dim i2 As Integer = 0
+        For i As Integer = Index + ToPasteArray.Length To InitialArray.Length + ToPasteArray.Length
+            Main(i) = InitialArray(i - ToPasteArray.Length)
+            i2 += 1
+        Next i
+
+        Return Main
+    End Function
+
 End Module
 
 Public Module Log
@@ -347,7 +389,7 @@ Public Module GameHelpers
         Return Nothing
     End Function
 
-    Public Function isBoss(ByVal type As D2Data.NPCCode)
+    Public Function isBoss(ByVal type As D2Data.NPCCode) As Boolean
 
         Select Case type
 

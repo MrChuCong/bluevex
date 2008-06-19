@@ -4,8 +4,8 @@ D:\Truc J-F\D2\D2Smells Source\D2Packets\bin\Debug\ETUtils.dll
 D:\Truc J-F\D2\D2Smells Source\D2Packets\obj\Debug\ResolveAssemblyReference.cache
 D:\Truc J-F\D2\D2Smells Source\D2Packets\obj\Debug\D2Packets.dll
 D:\Truc J-F\D2\D2Smells Source\D2Packets\obj\Debug\D2Packets.pdb
-D:\Truc J-F\D2\Development\Bluevex\D2Packets\obj\Debug\ResolveAssemblyReference.cache
 D:\Truc J-F\D2\BlueVex Testing\D2Packets.dll
 D:\Truc J-F\D2\BlueVex Testing\D2Packets.pdb
+D:\Truc J-F\D2\Development\Bluevex\D2Packets\obj\Debug\ResolveAssemblyReference.cache
 D:\Truc J-F\D2\Development\Bluevex\D2Packets\obj\Debug\D2Packets.dll
 D:\Truc J-F\D2\Development\Bluevex\D2Packets\obj\Debug\D2Packets.pdb

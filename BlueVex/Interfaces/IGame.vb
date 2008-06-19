@@ -95,7 +95,7 @@ Public Interface IGame
     'Event OnSendMessage(ByVal Packet As GameClient.SendMessage)
     Sub SendMessage(ByVal Message As String)
     Sub ReceiveMessage(ByVal Name As String, ByVal Message As String)
-    Sub Echo(ByVal Message As String)
+    Sub ReceiveMessage(ByVal Message As String)
 
 #End Region
 

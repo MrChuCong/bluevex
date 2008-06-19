@@ -78,22 +78,22 @@ namespace D2Packets
 				+ StringUtils.ToFormatedInfoString(this, includeType, nameValueSeparator, itemSeparator, itemFormat);;
 		}
 
-		public static bool IncludeType = true;
-		public static string NameValueSeparator = ": ";
+		private static bool IncludeType = true;
+        private static string NameValueSeparator = ": ";
 
-		public static string ItemSeparator = "; ";
-		public static string StartFormat = "{0}" + ItemSeparator;
-		public static string ItemFormat = "{0}{1}{2}";
+        private static string ItemSeparator = "; ";
+        private static string StartFormat = "{0}" + ItemSeparator;
+        private static string ItemFormat = "{0}{1}{2}";
 
-		public static string LongItemSeparator = Environment.NewLine + "         ";
-		public static string LongStartFormat = "{0}" + LongItemSeparator;
-		public static string LongItemFormat = "{0}{1,-20}{2}";
+        private static string LongItemSeparator = Environment.NewLine + "         ";
+        private static string LongStartFormat = "{0}" + LongItemSeparator;
+        private static string LongItemFormat = "{0}{1,-20}{2}";
         
         #endregion ToString & co
 
         #region Packet Sizes
-
-        public static readonly int[] GSPacketSizeArray = new int[] {
+        
+        private static readonly int[] GSPacketSizeArray = new int[] {
 		/*	0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F	*/
 /* 0 */		1,   8,   1,   12,  1,   1,   1,   6,   6,   11,  6,   6,   9,   13,  12,  16, 
 /* 1 */		16,  8,   26,  14,  18,  11,  -1,  -1,  15,  2,   2,   3,   5,   3,   4,   6, 
@@ -108,12 +108,12 @@ namespace D2Packets
 /* A */		10,  7,   8,   24,  3,   8,   -1,  7,   -1,  7,   -1,  7,   -1,  0,   -1,  0, 
 /* B */		1
 		};
-
-        public static int GetGSPacketSize(byte[] data)
+    
+        private static int GetGSPacketSize(byte[] data)
         {
             return GetGSPacketSize(data, 0, data.Length);
         }
-        public static int GetGSPacketSize(byte[] data, int offset, int length)
+        private static int GetGSPacketSize(byte[] data, int offset, int length)
         {
             if (data[offset] > GSPacketSizeArray.Length)
                 return 0;
@@ -178,7 +178,7 @@ namespace D2Packets
             return pLen;
         }
 
-        public static readonly int[] GCPacketSizeArray = new int[] {
+        private static readonly int[] GCPacketSizeArray = new int[] {
 		/*	0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F	*/
 /* 0 */		0,   5,   9,   5,   9,   5,   9,   9,   5,   9,   9,   1,   5,   9,   9,   5, 
 /* 1 */		9,   9,   1,   9,   -1,  -1,  13,  5,   17,  5,   9,   9,   3,   9,   9,   17, 
@@ -189,11 +189,11 @@ namespace D2Packets
 /* 6 */		1,   3,   5,   5,   9,   17,  -1,  0,   37,  1,   1,   1,   1,   13,  0,   1,
 		};
 
-        public static int GetGCPacketSize(byte[] data)
+        private static int GetGCPacketSize(byte[] data)
         {
             return GetGCPacketSize(data, 0, data.Length);
         }
-        public static int GetGCPacketSize(byte[] data, int offset, int length)
+        private static int GetGCPacketSize(byte[] data, int offset, int length)
         {
             if (data[offset] >= GCPacketSizeArray.Length)
                 return 0;
@@ -484,30 +484,30 @@ namespace D2Packets
 
 		}
 
-        public const int BS_PACKET_COUNT = (int)BnetServerPacket.Invalid;
-        public const int BS_PACKET_ID = (int)Origin.BattleNetServer;
+        private const int BS_PACKET_COUNT = (int)BnetServerPacket.Invalid;
+        private const int BS_PACKET_ID = (int)Origin.BattleNetServer;
 
-        public const int BC_PACKET_COUNT = (int)BnetClientPacket.Invalid;
-        public const int BC_PACKET_ID = (int)Origin.BattleNetClient;
+        private const int BC_PACKET_COUNT = (int)BnetClientPacket.Invalid;
+        private const int BC_PACKET_ID = (int)Origin.BattleNetClient;
 
-        public const int RS_PACKET_COUNT = (int)RealmServerPacket.Invalid;
-        public const int RS_PACKET_ID = (int)Origin.RealmServer;
+        private const int RS_PACKET_COUNT = (int)RealmServerPacket.Invalid;
+        private const int RS_PACKET_ID = (int)Origin.RealmServer;
 
-        public const int RC_PACKET_COUNT = (int)RealmClientPacket.Invalid;
-        public const int RC_PACKET_ID = (int)Origin.RealmClient;
+        private const int RC_PACKET_COUNT = (int)RealmClientPacket.Invalid;
+        private const int RC_PACKET_ID = (int)Origin.RealmClient;
 
-        public const int GS_PACKET_COUNT = (int)GameServerPacket.Invalid;
-        public const int GS_PACKET_ID = (int)Origin.GameServer;
+        private const int GS_PACKET_COUNT = (int)GameServerPacket.Invalid;
+        private const int GS_PACKET_ID = (int)Origin.GameServer;
 
-        public const int GC_PACKET_COUNT = (int)GameClientPacket.Invalid;
-        public const int GC_PACKET_ID = (int)Origin.GameClient;
+        private const int GC_PACKET_COUNT = (int)GameClientPacket.Invalid;
+        private const int GC_PACKET_ID = (int)Origin.GameClient;
 
-        public static readonly Type[] BSPacketTypes = new Type[BS_PACKET_COUNT];
-        public static readonly Type[] BCPacketTypes = new Type[BC_PACKET_COUNT];
-        public static readonly Type[] RSPacketTypes = new Type[RS_PACKET_COUNT];
-        public static readonly Type[] RCPacketTypes = new Type[RC_PACKET_COUNT];
-        public static readonly Type[] GSPacketTypes = new Type[GS_PACKET_COUNT];
-        public static readonly Type[] GCPacketTypes = new Type[GC_PACKET_COUNT];
+        private static readonly Type[] BSPacketTypes = new Type[BS_PACKET_COUNT];
+        private static readonly Type[] BCPacketTypes = new Type[BC_PACKET_COUNT];
+        private static readonly Type[] RSPacketTypes = new Type[RS_PACKET_COUNT];
+        private static readonly Type[] RCPacketTypes = new Type[RC_PACKET_COUNT];
+        private static readonly Type[] GSPacketTypes = new Type[GS_PACKET_COUNT];
+        private static readonly Type[] GCPacketTypes = new Type[GC_PACKET_COUNT];
 
 		#endregion Packet Types
 	}

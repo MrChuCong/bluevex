@@ -23,7 +23,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\..\BlueVex Testing\</OutputPath>
     <DocumentationFile>BlueVex.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\BlueVex Testing\</OutputPath>
     <DocumentationFile>BlueVex.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="D2Data, Version=0.9.2605.13312, Culture=neutral, processorArchitecture=MSIL">
@@ -105,7 +105,7 @@
     <Compile Include="Misc\HotKeyLib.vb" />
     <Compile Include="Misc\CollisionMap.vb" />
     <Compile Include="Misc\Macro.vb" />
-    <Compile Include="Misc\MemEdit.vb" />
+    <Compile Include="Misc\MemEditor.vb" />
     <Compile Include="Misc\MemoryHelper.vb" />
     <Compile Include="Misc\Structures.vb" />
     <Compile Include="Module Hosts\ChatModuleHost.vb" />

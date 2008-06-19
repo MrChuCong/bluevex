@@ -682,6 +682,7 @@ namespace BnetServer
         }
     }
 
+    
     public DateTime FileTime
     {
         get
@@ -689,7 +690,7 @@ namespace BnetServer
             return this.filetime;
         }
     }
-
+    
     public uint RequestID
     {
         get

@@ -58,6 +58,7 @@ namespace RealmServer
 		InvalidCDKey = 0x7E,	//TESTME: key in use? key banned? key invalid?
 		TemporaryIPBan = 0x7F,	// "Your connection has been temporarily restricted from this realm. Please try to log in at another time"
 	}
+
 	/// <summary>
 	/// RS Packet 0x01 - Realm Startup - Result of connection start request (RC 0x01)
 	/// </summary>

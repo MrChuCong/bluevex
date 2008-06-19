@@ -52,7 +52,7 @@ Public Interface IChat
     Event OnExtraWorkInfo(ByVal packet As BnetServer.ExtraWorkInfo, ByRef Flag As Packet.PacketFlag)
     Event OnFileTimeInfo(ByVal packet As BnetServer.FileTimeInfo, ByRef Flag As Packet.PacketFlag)
     Event OnServerKeepAlive(ByVal packet As BnetServer.KeepAlive, ByRef Flag As Packet.PacketFlag)
-    'Event OnNewsInfo(ByVal packet As BnetServer.NewsInfo, ByRef Flag As Packet.PacketFlag) ' Bugged in D2Packets.dll
+    Event OnNewsInfo(ByVal packet As BnetServer.NewsInfo, ByRef Flag As Packet.PacketFlag) ' Bugged in D2Packets.dll
     Event OnQueryRealmsResponse(ByVal packet As BnetServer.QueryRealmsResponse, ByRef Flag As Packet.PacketFlag)
     Event OnRealmLogonResponse(ByVal packet As BnetServer.RealmLogonResponse, ByRef Flag As Packet.PacketFlag)
     Event OnRequiredExtraWorkInfo(ByVal packet As BnetServer.RequiredExtraWorkInfo, ByRef Flag As Packet.PacketFlag)
