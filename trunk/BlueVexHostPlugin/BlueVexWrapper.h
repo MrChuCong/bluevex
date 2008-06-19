@@ -38,7 +38,6 @@ public:
     
     void    InitPlugin(RedVexInfo* Funcs);
 	void    DestroyPlugin();
-
 	void    UpdatePlugin();
 
 	void    InitGameModule(IProxy* proxy, IModule* module);

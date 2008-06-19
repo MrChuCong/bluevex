@@ -11,7 +11,6 @@ public:
 
 	virtual void    InitPlugin(RedVexInfo* Funcs) = 0;
 	virtual void    DestroyPlugin() = 0;
-
 	virtual void    UpdatePlugin() = 0;
 
 	virtual void    InitGameModule(IProxy* proxy, IModule* module) = 0;
@@ -27,5 +26,6 @@ public:
 	static IBlueVexWrapper	*CreateInstance();
 	static void					Destroy(IBlueVexWrapper *instance);
 	static void					Update(IBlueVexWrapper *instance);
+
 };
 
