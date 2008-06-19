@@ -15,6 +15,12 @@ void __stdcall HostRealmModule::Destroy()
 	delete this;
 }
 
+void __stdcall HostRealmModule::Update()
+{
+	IBlueVexWrapper::Update(wrapper);
+	delete this;
+}
+
 void HostRealmModule::OnRelayDataToServer(IPacket* packet, const IModule* owner)
 {
 	const unsigned char* bytes = static_cast<const unsigned char*>(packet->GetData());
@@ -26,9 +32,4 @@ void HostRealmModule::OnRelayDataToClient(IPacket* packet, const IModule* owner)
 {
 	const unsigned char* bytes = static_cast<const unsigned char*>(packet->GetData());
 	wrapper->OnRelayRealmDataToClient(bytes,packet->GetSize(),packet);
-}
-
-void HostRealmModule::Update()
-{
-	IBlueVexWrapper::Update(wrapper);
 }
