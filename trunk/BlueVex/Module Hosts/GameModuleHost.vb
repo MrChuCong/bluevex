@@ -391,10 +391,8 @@ Public Class GameModuleHost
                 RaiseEvent OnUseInventoryItem(New GameClient.UseInventoryItem(Packet.Data), Flag)
             Case D2Packets.GameClientPacket.WalkToLocation
                 RaiseEvent OnWalkToLocation(New GameClient.WalkToLocation(Packet.Data), Flag)
-
             Case D2Packets.GameClientPacket.WalkToTarget
                 RaiseEvent OnWalkToTarget(New GameClient.WalkToTarget(Packet.Data), Flag)
-
             Case D2Packets.GameClientPacket.WardenResponse
                 RaiseEvent OnWardenResponse(New GameClient.WardenResponse(Packet.Data), Flag)
             Case D2Packets.GameClientPacket.WaypointInteract
@@ -640,7 +638,7 @@ Public Class GameModuleHost
         ReceivePacket(PacketObject.Data)
     End Sub
 
-    Public Sub Echo(ByVal Message As String) Implements IGame.Echo
+    Public Sub ReceiveMessage(ByVal Message As String) Implements IGame.ReceiveMessage
         Dim Echoer As New GameServer.GameMessage(D2Data.GameMessageType.GameMessage, Message)
         ReceivePacket(Echoer.Data)
     End Sub
@@ -648,9 +646,6 @@ Public Class GameModuleHost
     Sub HandleSentMessagePacket(ByRef Packet As Packet)
 
         Dim PacketObject As New GameClient.SendMessage(Packet.Data)
-
-        'There's a plugin for redvex to do this. It's best to Remove it.
-        'If PacketObject.Message.StartsWith(".") And Not PacketObject.Message.StartsWith("..") Then Packet.Flag = Packet.PacketFlag.PacketFlag_Dead
 
         'Usefull function, I will leave it here.
         If PacketObject.Message = ".Map" Then
@@ -662,7 +657,6 @@ Public Class GameModuleHost
             Main.Invoke(New OpenMapFormDelegate(AddressOf OpenMapForm), New Object() {b})
         End If
 
-        'RaiseEvent OnSendMessage(PacketObject)
     End Sub
 
     Delegate Sub OpenMapFormDelegate(ByVal b As Bitmap)

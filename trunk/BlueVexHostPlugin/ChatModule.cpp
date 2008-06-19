@@ -15,11 +15,6 @@ void __stdcall HostChatModule::Destroy()
 	delete this;
 }
 
-void __stdcall HostChatModule::Update()
-{
-	IBlueVexWrapper::Update(wrapper);
-}
-
 void HostChatModule::OnRelayDataToServer(IPacket* packet, const IModule* owner)
 {
 	const unsigned char* bytes = static_cast<const unsigned char*>(packet->GetData());
@@ -33,3 +28,7 @@ void HostChatModule::OnRelayDataToClient(IPacket* packet, const IModule* owner)
 	wrapper->OnRelayChatDataToClient(bytes,packet->GetSize(),packet);
 }
 
+void HostChatModule::Update()
+{
+	IBlueVexWrapper::Update(wrapper);
+}

@@ -98,7 +98,7 @@ Public Class ChatModuleHost
     Public Event OnEnterChatResponse(ByVal packet As BnetServer.EnterChatResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnEnterChatResponse
     Public Event OnExtraWorkInfo(ByVal packet As BnetServer.ExtraWorkInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnExtraWorkInfo
     Public Event OnFileTimeInfo(ByVal packet As BnetServer.FileTimeInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnFileTimeInfo
-    'Public Event OnNewsInfo(ByVal packet As BnetServer.NewsInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnNewsInfo
+    Public Event OnNewsInfo(ByVal packet As BnetServer.NewsInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnNewsInfo
     Public Event OnQueryRealmsResponse(ByVal packet As BnetServer.QueryRealmsResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnQueryRealmsResponse
     Public Event OnRealmLogonResponse(ByVal packet As BnetServer.RealmLogonResponse, ByRef Flag As Packet.PacketFlag) Implements IChat.OnRealmLogonResponse
     Public Event OnRequiredExtraWorkInfo(ByVal packet As BnetServer.RequiredExtraWorkInfo, ByRef Flag As Packet.PacketFlag) Implements IChat.OnRequiredExtraWorkInfo
@@ -111,8 +111,9 @@ Public Class ChatModuleHost
     Overrides Sub InterptetPacketToServer(ByRef Packet As Packet)
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
+        Packet.Data = CutBytes(Packet.Data, 0, 1)
+        Select Case Packet.Data(0)
 
-        Select Case Packet.Data(1)
             Case D2Packets.BnetClientPacket.AdInfoRequest
                 RaiseEvent OnAdInfoRequest(New BnetClient.AdInfoRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.BnetAuthRequest
@@ -164,8 +165,8 @@ Public Class ChatModuleHost
     Overrides Sub InterptetPacketToClient(ByRef Packet As Packet)
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
-
-        Select Case Packet.Data(1)
+        Packet.Data = CutBytes(Packet.Data, 0, 1)
+        Select Case Packet.Data(0)
             Case D2Packets.BnetServerPacket.AdInfo
                 RaiseEvent OnAdInfo(New BnetServer.AdInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.BnetAuthResponse
@@ -187,8 +188,8 @@ Public Class ChatModuleHost
             Case D2Packets.BnetServerPacket.FileTimeInfo
                 RaiseEvent OnFileTimeInfo(New BnetServer.FileTimeInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.NewsInfo
-                Flag = Packet.PacketFlag.PacketFlag_Dead
-                'RaiseEvent OnNewsInfo(New BnetServer.NewsInfo(Packet.Data), Flag)
+                'Flag = Packet.PacketFlag.PacketFlag_Dead
+                RaiseEvent OnNewsInfo(New BnetServer.NewsInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.QueryRealmsResponse
                 RaiseEvent OnQueryRealmsResponse(New BnetServer.QueryRealmsResponse(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.RealmLogonResponse

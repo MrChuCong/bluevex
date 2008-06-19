@@ -1,18 +1,29 @@
 ﻿Imports System
+Imports System.Threading
 Imports System.Runtime.InteropServices
 Imports System.Diagnostics
 
 Public Class Macro
 
     'Function to get the Handle
-    Dim DiabloProcess As Memory.MEC.MemEdit
+    Dim DiabloProcess As Memory.MemEditor
     Dim Delay As Integer
 
     'We will use the handle to send messages.
     Dim hWnd As IntPtr
 
-    Sub New(Optional ByVal DiabloPID As Integer = 0, Optional ByVal DelayAfterClicks As Integer = 0)
-        DiabloProcess = New Memory.MEC.MemEdit(DiabloPID)
+
+    Dim MacroThread As Thread
+
+    Dim Done As Boolean = False
+    Dim Name, Pass, Description, ChannelName As String
+    Dim CharPos, WaitTime As Integer
+    Dim Difficulty As D2Data.GameDifficulty
+
+
+    Sub New(Optional ByVal DiabloPID As Integer = 0, Optional ByVal DelayAfterClicks As Integer = 300)
+        DiabloProcess = New Memory.MemEditor(DiabloPID)
+        If DiabloProcess.Success = False Then Exit Sub
         hWnd = DiabloProcess.netProcHandle.MainWindowHandle
         Delay = DelayAfterClicks
     End Sub
@@ -308,7 +319,19 @@ Public Class Macro
     ''' <summary> 
     ''' Exit a Game the Manual Way
     ''' </summary> 
-    Public Sub ExitGame()
+    Public Sub ExitGame(Optional ByVal TimeBeforeStarting As Integer = 0)
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf ExitGame_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Public Sub ExitGame_t()
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         SendKey(Keys.VK_ESCAPE)
         SendKey(Keys.VK_UP)
         SendKey(Keys.VK_RETURN)
@@ -317,7 +340,20 @@ Public Class Macro
     ''' <summary> 
     ''' Welcome Screen to Login Screen
     ''' </summary> 
-    Public Sub StartToLogin()
+    Public Sub StartToLogin(Optional ByVal TimeBeforeStarting As Integer = 0)
+
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf StartToLogin_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Private Sub StartToLogin_t()
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         'Clicks the Battle.Net button
         SendClick(400, 355)
     End Sub
@@ -325,17 +361,36 @@ Public Class Macro
     ''' <summary> 
     ''' Login To B.net with specified Account
     ''' </summary> 
-    Public Sub LoginToCharSelect(ByVal Username As String, ByVal Password As String)
+    ''' 
+    Public Sub LoginToCharSelect(ByVal Username As String, ByVal Password As String, Optional ByVal TimeBeforeStarting As Integer = 0)
+        Name = Username
+        Pass = Password
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf LoginToCharSelect_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Private Sub LoginToCharSelect_t()
+
+        Dim BufName As String = Name
+        Dim BufPass As String = Pass
+        Dim BufWaitTime As Integer = WaitTime
+
+        Thread.Sleep(BufWaitTime)
         'Click On Name textbox
         SendClick(400, 340, , True)
         Threading.Thread.Sleep(Delay)
         'Send the Name string
-        SendString(Username)
+        SendString(BufName)
         'Click on Pass textbox
         SendClick(390, 390, , True)
         Threading.Thread.Sleep(Delay)
         'Send the Pass string
-        SendString(Password)
+        SendString(BufPass)
+        Threading.Thread.Sleep(300)
         'Connect Button
         SendClick(400, 470)
     End Sub
@@ -343,7 +398,21 @@ Public Class Macro
     ''' <summary> 
     ''' Return To Welcome Screen from char select
     ''' </summary> 
-    Public Sub CharSelectToStart()
+    Public Sub CharSelectToStart(Optional ByVal TimeBeforeStarting As Integer = 0)
+
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf CharSelectToStart_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+
+    End Sub
+
+    Private Sub CharSelectToStart_t()
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         'Exit Button
         SendClick(90, 550)
     End Sub
@@ -352,9 +421,23 @@ Public Class Macro
     ''' Select A character and join the Lobby
     ''' (0,1,2,3,4,5,6,7 from top left corner to bottom right.)
     ''' </summary> 
-    Public Sub CharSelectToLobby(ByVal CharPos As Integer)
+    Public Sub CharSelectToLobby(ByVal CharPos As Integer, Optional ByVal TimeBeforeStarting As Integer = 0)
+        Me.CharPos = CharPos
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf CharSelectToLobby_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Private Sub CharSelectToLobby_t()
+        Dim BufPos As Integer = CharPos
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         'Select the right char
-        Select Case CharPos
+        Select Case BufPos
             Case 0
                 '_X_|___
                 '___|___
@@ -413,7 +496,21 @@ Public Class Macro
     ''' <summary> 
     ''' Return to Char Select Screen
     ''' </summary> 
-    Public Sub LobbyToCharSelect()
+    Public Sub LobbyToCharSelect(Optional ByVal TimeBeforeStarting As Integer = 0)
+
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf LobbyToCharSelect_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+
+    End Sub
+
+    Private Sub LobbyToCharSelect_t()
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         'Press Exit Button
         SendClick(430, 480)
     End Sub
@@ -421,7 +518,27 @@ Public Class Macro
     ''' <summary> 
     ''' Create a game from anywhere in the lobby
     ''' </summary> 
-    Public Sub CreateGameFromLobby(ByVal Name As String, ByVal Password As String, ByVal Description As String, ByVal Difficulty As D2Data.GameDifficulty)
+    Public Sub CreateGameFromLobby(ByVal Name As String, ByVal Password As String, ByVal Description As String, ByVal Difficulty As D2Data.GameDifficulty, Optional ByVal TimeBeforeStarting As Integer = 0)
+        Me.Name = Name
+        Me.Pass = Password
+        Me.Description = Description
+        Me.Difficulty = Difficulty
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf CreateGameFromLobby_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Private Sub CreateGameFromLobby_t()
+        Dim BufName As String = Name
+        Dim BufPass As String = Pass
+        Dim BufDiff As D2Data.GameDifficulty = Difficulty
+
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         'Create Button
         SendClick(590, 460)
         Threading.Thread.Sleep(Delay)
@@ -430,17 +547,17 @@ Public Class Macro
         SendClick(460, 155)
         Threading.Thread.Sleep(Delay)
 
-        SendString(Name)
-        Threading.Thread.Sleep(50)
+        SendString(BufName)
+        Threading.Thread.Sleep(300)
 
         'PassWord textBox
         SendClick(450, 210)
         Threading.Thread.Sleep(Delay)
 
-        SendString(Password)
-        Threading.Thread.Sleep(50)
+        SendString(BufPass)
+        Threading.Thread.Sleep(300)
 
-        Select Case Difficulty
+        Select Case BufDiff
             Case D2Data.GameDifficulty.Normal
                 SendClick(440, 377)
             Case D2Data.GameDifficulty.Nightmare
@@ -453,72 +570,148 @@ Public Class Macro
         SendClick(690, 420)
     End Sub
 
-
     ''' <summary> 
     ''' Join a channel, if left blank go in default one.
     ''' </summary> 
-    Public Sub LobbyToChannel(Optional ByVal ChannelName As String = "")
+    Public Sub LobbyToChannel(Optional ByVal ChannelName As String = "", Optional ByVal TimeBeforeStarting As Integer = 0)
+        Name = ChannelName
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf LobbyToChannel)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Private Sub LobbyToChannel_t()
+        Dim BufChannelName As String = ChannelName
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         'Enter Chat
         SendClick(90, 470)
         Threading.Thread.Sleep(Delay)
-        'User didn't specify a channel, we use battle.net's one
-        If ChannelName = "" Then Exit Sub
+        'User didn't specify a channel, we use bnet one
+        If BufChannelName = "" Then Exit Sub
 
         'Channel
         SendClick(570, 480)
         Threading.Thread.Sleep(Delay)
 
         'Write ChannelName
-        SendString(ChannelName)
-        Threading.Thread.Sleep(50)
+        SendString(BufChannelName)
+        Threading.Thread.Sleep(300)
         SendClick(710, 415)
     End Sub
 
     ''' <summary> 
     ''' Go To Join Game Screen
     ''' </summary> 
-    Public Sub LobbyToJoinGame()
+    Public Sub LobbyToJoinGame(Optional ByVal TimeBeforeStarting As Integer = 0)
+
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf LobbyToJoinGame_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+
+    End Sub
+
+    Private Sub LobbyToJoinGame_t()
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         SendClick(710, 460)
     End Sub
 
     ''' <summary> 
     ''' Join a game from anywhere in the lobby
     ''' </summary> 
-    Public Sub JoinGameFromLobby(ByVal GameName As String, Optional ByVal GamePassword As String = "")
+    Public Sub JoinGameFromLobby(ByVal GameName As String, Optional ByVal GamePassword As String = "", Optional ByVal TimeBeforeStarting As Integer = 0)
 
-        LobbyToJoinGame()
-        SendJoinGameInfos(GameName, GamePassword)
+        Name = GameName
+        Pass = GamePassword
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf JoinGameFromLobby_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Private Sub JoinGameFromLobby_t()
+
+        Dim BufName As String = Name
+        Dim BufPass As String = Pass
+
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
+        'Enter the join game panel
+        LobbyToJoinGame_t()
+        'Let the client handle this.
+        Thread.Sleep(300)
+
+        Name = BufName
+        Pass = BufPass
+        'Send the game informations.
+        SendJoinGameInfos_t()
+        'Let the client handle it.
+        Thread.Sleep(300)
         'Join Game Button
         SendClick(635, 140)
     End Sub
 
-
     ''' <summary> 
     ''' Write Join Game Infos to Screen
     ''' </summary> 
-    Public Sub SendJoinGameInfos(ByVal GameName As String, Optional ByVal GamePassword As String = "")
+    Public Sub SendJoinGameInfos(ByVal GameName As String, Optional ByVal GamePassword As String = "", Optional ByVal TimeBeforeStarting As Integer = 0)
+        Name = GameName
+        Pass = GamePassword
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf SendJoinGameInfos_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+    End Sub
+
+    Private Sub SendJoinGameInfos_t()
+        Dim BufName As String = Name
+        Dim BufPass As String = Pass
+
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
         'GameName Textbox
-        SendString(GameName)
-        Threading.Thread.Sleep(50)
+        SendString(BufName)
+        Threading.Thread.Sleep(300)
         'Password TextBox
         SendClick(635, 140)
-        SendString(GamePassword)
+        SendString(BufPass)
+        Threading.Thread.Sleep(300)
     End Sub
 
     ''' <summary>
     ''' Click the Please Wait Button
     ''' </summary> 
-    Public Sub ClickPleaseWaitButton()
-        SendClick(400, 330)
+    Public Sub ClickPleaseWaitButton(Optional ByVal TimeBeforeStarting As Integer = 0)
+
+        WaitTime = TimeBeforeStarting
+
+        If MacroThread IsNot Nothing Then MacroThread.Abort()
+        MacroThread = New Thread(AddressOf ClickPleaseWaitButton_t)
+        MacroThread.IsBackground = True
+        MacroThread.Start()
+
     End Sub
 
-    ''' <summary> 
-    ''' Return to welcome screen from the Lobby
-    ''' </summary> 
-    Public Sub LobbyToStart()
-        LobbyToCharSelect()
-        'Exit Button
-        CharSelecttostart()
+    Private Sub ClickPleaseWaitButton_t()
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
+        SendClick(400, 330)
     End Sub
 
 End Class
