@@ -8,14 +8,14 @@ Public Class frmMain
 
 #Region " IGUI Implementations "
 
-    Public Sub AddMenuItem(ByVal item As System.Windows.Forms.ToolStripMenuItem) Implements IGUI.AddMenuItem
+    Public Sub AddMenuItem(ByRef item As System.Windows.Forms.ToolStripMenuItem) Implements IGUI.AddMenuItem
         Me.MenuStrip1.Items.Insert(Me.MenuStrip1.Items.Count - 1, item)
     End Sub
 
-    Public Sub ShowForm(ByVal form As System.Windows.Forms.Form) Implements IGUI.ShowForm
+    Public Sub InitForm(ByRef form As System.Windows.Forms.Form) Implements IGUI.InitForm
         form.MdiParent = Me
         form.WindowState = FormWindowState.Maximized
-        form.Show()
+        form.Visible = True
     End Sub
 
 #End Region

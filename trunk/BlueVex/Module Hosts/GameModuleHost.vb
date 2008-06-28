@@ -169,10 +169,9 @@ Public Class GameModuleHost
     Public Event OnGameOver(ByVal Packet As GameServer.GameOver, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGameOver
     Public Event OnGoldTrade(ByVal Packet As GameServer.GoldTrade, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoldTrade
     Public Event OnInformationMessage(ByVal Packet As GameServer.InformationMessage, ByRef Flag As Packet.PacketFlag) Implements IGame.OnInformationMessage
-    '**************
+
     Public Event OnOwnedItemAction(ByVal Packet As GameServer.OwnedItemAction, ByRef Flag As Packet.PacketFlag) Implements IGame.OnOwnedItemAction
-    '**************
-    Public Event OnItemAction(ByVal Packet As GameServer.ItemAction, ByRef Flag As Packet.PacketFlag) Implements IGame.OnItemAction
+
     Public Event OnItemTriggerSkill(ByVal Packet As GameServer.ItemTriggerSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnItemTriggerSkill
     Public Event OnLoadAct(ByVal Packet As GameServer.LoadAct, ByRef Flag As Packet.PacketFlag) Implements IGame.OnLoadAct
     Public Event OnLoadDone(ByVal Packet As GameServer.LoadDone, ByRef Flag As Packet.PacketFlag) Implements IGame.OnLoadDone
@@ -242,6 +241,7 @@ Public Class GameModuleHost
     Public Event OnUseStackableItem(ByVal Packet As GameServer.UseStackableItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseStackableItem
     Public Event OnWalkVerify(ByVal Packet As GameServer.WalkVerify, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkVerify
     Public Event OnWardenCheck(ByVal Packet As GameServer.WardenCheck, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWardenCheck
+    Public Event OnWorldItemAction(ByVal Packet As GameServer.WorldItemAction, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWorldItemAction
 
 #End Region
 
@@ -509,10 +509,8 @@ Public Class GameModuleHost
                 RaiseEvent OnNPCWantsInteract(New GameServer.NPCWantsInteract(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.OpenWaypoint
                 RaiseEvent OnOpenWaypoint(New GameServer.OpenWaypoint(Packet.Data), Flag)
-                '***********************
             Case D2Packets.GameServerPacket.OwnedItemAction
                 RaiseEvent OnOwnedItemAction(New GameServer.OwnedItemAction(Packet.Data), Flag)
-                '***********************
             Case D2Packets.GameServerPacket.PartyMemberPulse
                 RaiseEvent OnPartyMemberPulse(New GameServer.PartyMemberPulse(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.PartyMemberUpdate
@@ -616,7 +614,7 @@ Public Class GameModuleHost
             Case D2Packets.GameServerPacket.WordToExperience
                 RaiseEvent OnGainExperience(New GameServer.WordToExperience(Packet.Data), Flag)
             Case D2Packets.GameServerPacket.WorldItemAction
-                RaiseEvent OnItemAction(New GameServer.WorldItemAction(Packet.Data), Flag)
+                RaiseEvent OnWorldItemAction(New GameServer.WorldItemAction(Packet.Data), Flag)
         End Select
         If Packet.Flag <> Flag Then
             Packet.Flag = Flag
@@ -649,7 +647,7 @@ Public Class GameModuleHost
 
         'Usefull function, I will leave it here.
         If PacketObject.Message = ".Map" Then
-            Dim MapBitmap As New Memory.Pathing.Pather
+            Dim MapBitmap As New Memory.Pathing
             Dim MapInfo As Memory.Pathing.MapInfo_t
             Dim b As Bitmap
             MapInfo = MapBitmap.GetMapFromMemory

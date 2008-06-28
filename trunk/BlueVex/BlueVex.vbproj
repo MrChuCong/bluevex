@@ -15,6 +15,9 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <StartupObject>
+    </StartupObject>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,6 +37,14 @@
     <DocumentationFile>BlueVex.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="D2Data, Version=0.9.2605.13312, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -48,8 +59,16 @@
       <HintPath>..\..\..\BlueVex Testing\ETUtils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AddIn">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -61,6 +80,7 @@
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -103,10 +123,10 @@
     <Compile Include="Interfaces\IRealm.vb" />
     <Compile Include="Interfaces\Packet.vb" />
     <Compile Include="Misc\HotKeyLib.vb" />
-    <Compile Include="Misc\CollisionMap.vb" />
-    <Compile Include="Misc\Macro.vb" />
-    <Compile Include="Misc\MemEditor.vb" />
-    <Compile Include="Misc\MemoryHelper.vb" />
+    <Compile Include="Memory\CollisionMap.vb" />
+    <Compile Include="Memory\Macro.vb" />
+    <Compile Include="Memory\MemEditor.vb" />
+    <Compile Include="Memory\MemoryHelper.vb" />
     <Compile Include="Misc\Structures.vb" />
     <Compile Include="Module Hosts\ChatModuleHost.vb" />
     <Compile Include="Module Hosts\GameModuleHost.vb" />
@@ -166,6 +186,9 @@
       <SubType>
       </SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Memory\D2Structsss.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
 Public Interface IGUI
-    Sub AddMenuItem(ByVal item As ToolStripMenuItem)
-    Sub ShowForm(ByVal form As System.Windows.Forms.Form)
+    Sub AddMenuItem(ByRef item As ToolStripMenuItem)
+    Sub InitForm(ByRef form As System.Windows.Forms.Form)
 End Interface
