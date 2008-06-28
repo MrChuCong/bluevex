@@ -1,3 +1,4 @@
+
 Public Module GlobalModule
 
     Public LogSocketErrors As Boolean = False
@@ -572,7 +573,10 @@ Public Module GameHelpers
 
 
     Public Structure ChatColors
-
+        ''' <summary>
+        ''' Default White
+        ''' </summary>
+        Public Const White As String = "ÿc"
         ''' <summary> 
         ''' Hard to read.
         ''' </summary> 

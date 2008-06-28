@@ -205,10 +205,9 @@ Public Interface IGame
     Event OnGameOver(ByVal Packet As GameServer.GameOver, ByRef Flag As Packet.PacketFlag)
     Event OnGoldTrade(ByVal Packet As GameServer.GoldTrade, ByRef Flag As Packet.PacketFlag)
     Event OnInformationMessage(ByVal Packet As GameServer.InformationMessage, ByRef Flag As Packet.PacketFlag)
-    '****************
+
     Event OnOwnedItemAction(ByVal Packet As GameServer.OwnedItemAction, ByRef Flag As Packet.PacketFlag)
-    '****************
-    Event OnItemAction(ByVal Packet As GameServer.ItemAction, ByRef Flag As Packet.PacketFlag)
+
     Event OnItemTriggerSkill(ByVal Packet As GameServer.ItemTriggerSkill, ByRef Flag As Packet.PacketFlag)
     Event OnLoadAct(ByVal Packet As GameServer.LoadAct, ByRef Flag As Packet.PacketFlag)
     Event OnLoadDone(ByVal Packet As GameServer.LoadDone, ByRef Flag As Packet.PacketFlag)
@@ -278,6 +277,7 @@ Public Interface IGame
     Event OnUseStackableItem(ByVal Packet As GameServer.UseStackableItem, ByRef Flag As Packet.PacketFlag)
     Event OnWalkVerify(ByVal Packet As GameServer.WalkVerify, ByRef Flag As Packet.PacketFlag)
     Event OnWardenCheck(ByVal Packet As GameServer.WardenCheck, ByRef Flag As Packet.PacketFlag)
+    Event OnWorldItemAction(ByVal Packet As GameServer.WorldItemAction, ByRef Flag As Packet.PacketFlag)
 
 #End Region
 

@@ -58,7 +58,7 @@ Public Class frmPluginManager
         Dim GUIModule As IGUIModule
         'Initialize Each Module
         For i As Integer = 1 To AvailableGUIModules.Count
-            GUIModule = DirectCast(AvailableGUIModules(i), IGUIModule)
+            GUIModule = DirectCast(PluginServices.CreateInstance(AvailableGUIModules(i)), IGUIModule)
             Dim lvi As New ListViewItem
             lvi.Text = "GUI"
             lvi.Tag = "GUI"

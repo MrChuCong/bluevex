@@ -65,8 +65,6 @@ Public MustInherit Class IModuleHost
         End If
     End Sub
 
-
-
     MustOverride Sub InterptetPacketToServer(ByRef Packet As Packet)
     MustOverride Sub InterptetPacketToClient(ByRef Packet As Packet)
 

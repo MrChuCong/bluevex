@@ -26,3 +26,12 @@ Added memory.wrappedfunc.GetClientStatus. Which returns the Client's status.
 -Added Macros as a class, "Macro".
 -Added SendKey(Key as integer), SendClick(x,y). For customized Macro
 -Added Every Macro that I could think of. ***
+
+
+-Completly Fixed the CollisionMap
+-Updated all memory offsets.
+-Separated OwneditemAction and WorldItemAction into 2 events.
+-Added the Function GetClientFromCharName(). Which returns the client with the specified Char name.
+-GetRightTalTomb Implemented.
+-Fixed the GUI plugin, you can now show forms.
+-Fixed all the Memory Functions

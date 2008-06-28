@@ -112,8 +112,8 @@ Public Class ChatModuleHost
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
         Packet.Data = CutBytes(Packet.Data, 0, 1)
-        Select Case Packet.Data(0)
 
+        Select Case Packet.Data(0)
             Case D2Packets.BnetClientPacket.AdInfoRequest
                 RaiseEvent OnAdInfoRequest(New BnetClient.AdInfoRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.BnetAuthRequest
@@ -188,7 +188,6 @@ Public Class ChatModuleHost
             Case D2Packets.BnetServerPacket.FileTimeInfo
                 RaiseEvent OnFileTimeInfo(New BnetServer.FileTimeInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.NewsInfo
-                'Flag = Packet.PacketFlag.PacketFlag_Dead
                 RaiseEvent OnNewsInfo(New BnetServer.NewsInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.QueryRealmsResponse
                 RaiseEvent OnQueryRealmsResponse(New BnetServer.QueryRealmsResponse(Packet.Data), Flag)

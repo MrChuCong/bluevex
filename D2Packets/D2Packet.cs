@@ -238,7 +238,7 @@ namespace D2Packets
 
         #region Packet Types
 
-		static D2Packet()
+		 static D2Packet()
 		{
 
             BSPacketTypes[0x00] = typeof(BnetServer.KeepAlive);

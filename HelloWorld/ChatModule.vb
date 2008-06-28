@@ -2,6 +2,7 @@ Public Class ChatModule
     Implements BlueVex.IChatModule
 
 
+
 #Region " Module Info "
 
     Public ReadOnly Property Author() As String Implements BlueVex.IChatModule.Author
@@ -46,10 +47,15 @@ Public Class ChatModule
 
     End Sub
 
-    Private Sub Chat_OnNewsInfoRequest(ByVal Packet As BnetClient.NewsInfoRequest) Handles Chat.OnNewsInfoRequest
+    Public Sub Update() Implements BlueVex.IChatModule.Update
+
+    End Sub
+
+    Private Sub Chat_OnNewsInfoRequest(ByVal Packet As BnetClient.newsinforequest) Handles Chat.OnNewsInfoRequest
         Chat.AddNews("BlueVex" & Chr(10) & "Hello World")
         Chat.AddNews("BlueVex" & Chr(10) & "Hello World2")
     End Sub
+
 
 
 End Class
