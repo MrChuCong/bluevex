@@ -297,4 +297,5 @@ Public Interface IGame
     'Hot Keys
     'Sub RegisterHotKey(ByVal Key As System.Windows.Forms.Keys, ByVal Modifiers As HotKey.HotKeyModifiers)
     'Event OnHotKey(ByVal Key As System.Windows.Forms.Keys, ByVal Modifiers As HotKey.HotKeyModifiers)
+
 End Interface

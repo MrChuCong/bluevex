@@ -4,6 +4,8 @@ Imports System.Net.Sockets
 Public Class frmMain
     Implements IGUI
 
+    Dim LoadedModules As New Collection
+
     Dim newAbout As frmAbout
 
 #Region " IGUI Implementations "
@@ -69,6 +71,7 @@ Public Class frmMain
             GUIModule = DirectCast(PluginServices.CreateInstance(AvailableGUIModules(i)), IGUIModule)
             If Not My.Settings.DisabledModules.Contains(GUIModule.Name) Then
                 GUIModule.Initialize(Me)
+                LoadedModules.Add(GUIModule)
             End If
         Next
     End Sub
