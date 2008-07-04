@@ -651,7 +651,7 @@ Public Class GameModuleHost
             Dim MapInfo As Memory.Pathing.MapInfo_t
             Dim b As Bitmap
             MapInfo = MapBitmap.GetMapFromMemory
-            b = MapBitmap.BitmapFromMapInfo(MapInfo)
+            b = MapBitmap.BitmapFromMapInfo(MapInfo, Color.Blue)
             Main.Invoke(New OpenMapFormDelegate(AddressOf OpenMapForm), New Object() {b})
         End If
 
@@ -668,5 +668,6 @@ Public Class GameModuleHost
     End Sub
 
 #End Region
+
 
 End Class

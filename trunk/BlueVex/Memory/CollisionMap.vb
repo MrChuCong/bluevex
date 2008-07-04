@@ -9,10 +9,10 @@ Namespace Memory
     Public Class Pathing
 
         Public Structure MapInfo_t
-            Public LevelsNear As Structures.OrderedDictionary(Of Long, Exit_T)
-            Public Npcs As Structures.OrderedDictionary(Of Long, Point)
-            Public Objects As Structures.OrderedDictionary(Of Long, Point)
-            Public Exits As Structures.OrderedDictionary(Of Long, Point)
+            Public LevelsNear As Structures.Dicto(Of Long, Exit_T)
+            Public Npcs As Structures.Dicto(Of Long, Entities)
+            Public Objects As Structures.Dicto(Of Long, Entities)
+            Public Exits As Structures.Dicto(Of Long, Point)
             Public MapPosX As Integer
             Public MapPosY As Integer
             Public MapSizeX As Integer
@@ -89,6 +89,12 @@ Namespace Memory
             'Dim dwPlayerId As UInteger
             Dim dwActAddr As UInteger
         End Structure
+
+        Public Structure Entities
+            Dim Pos As Point
+            Dim ID As UInteger
+        End Structure
+
 #End Region
 
         Dim Playerinfo As Playerinfo_t
@@ -264,316 +270,317 @@ Namespace Memory
 
 #Region "Public"
 
-        Public Function GetMapFromMemory(Optional ByVal DiabloPID As Integer = 0) As MapInfo_t
+        Public Function GetMapFromMemory() As MapInfo_t
             Dim Dwtemp As Long
 
-            Try
+            '1.12
+            'D2Client + PlayerUnit
+            Playerinfo.DwUnitAddr = MemEditor.ReadMemoryLong(D2client.BaseAddress.ToInt32 + &H11C3D0, 4)
 
-                '1.12
-                'D2Client + PlayerUnit
-                Playerinfo.DwUnitAddr = MemEditor.ReadMemoryLong(D2client.BaseAddress.ToInt32 + &H11C3D0, 4)
+            'UnitAny - dwUnitId
+            'Playerinfo.dwPlayerId = MemEditor.ReadMemoryInt(Playerinfo.DwUnitAddr + &HC)
 
-                'UnitAny - dwUnitId
-                'Playerinfo.dwPlayerId = MemEditor.ReadMemoryInt(Playerinfo.DwUnitAddr + &HC)
+            'UnitAny - pAct
+            Playerinfo.dwActAddr = MemEditor.ReadMemoryLong(Playerinfo.DwUnitAddr + &H1C, 4)
 
-                'UnitAny - pAct
-                Playerinfo.dwActAddr = MemEditor.ReadMemoryLong(Playerinfo.DwUnitAddr + &H1C, 4)
+            'UnitAny - pPath
+            Dwtemp = MemEditor.ReadMemoryLong(Playerinfo.DwUnitAddr + &H2C, 4)
 
-                'UnitAny - pPath
-                Dwtemp = MemEditor.ReadMemoryLong(Playerinfo.DwUnitAddr + &H2C, 4)
+            'pPath - pRoom1
+            Playerinfo.DwRoomAddr = MemEditor.ReadMemoryLong(Dwtemp + &H1C, 4)
 
-                'pPath - pRoom1
-                Playerinfo.DwRoomAddr = MemEditor.ReadMemoryLong(Dwtemp + &H1C, 4)
+            'Map Information
+            'UnitAny - pPath
+            Dwtemp = MemEditor.ReadMemoryLong(Playerinfo.DwUnitAddr + &H2C, 4)
 
-                'Map Information
-                'UnitAny - pPath
-                Dwtemp = MemEditor.ReadMemoryLong(Playerinfo.DwUnitAddr + &H2C, 4)
+            'pPath - pRoom1
+            Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H1C, 4)
 
-                'pPath - pRoom1
-                Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H1C, 4)
+            'Room1 - pRoom2
+            Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H70, 4)
 
-                'Room1 - pRoom2
-                Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H70, 4)
-
-                'Room2 - pLevel
-                Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H0, 4)
+            'Room2 - pLevel
+            Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H0, 4)
 
 
-                'Put the mapinfo in a buffer so we can easily change datas.
-                Dim BufferMapInfo As New MapInfo_t
-                'Initialize the Arrays
-                BufferMapInfo.LevelsNear = New Structures.OrderedDictionary(Of Long, MapInfo_t.Exit_T)
-                BufferMapInfo.Exits = New Structures.OrderedDictionary(Of Long, Point)
-                BufferMapInfo.Npcs = New Structures.OrderedDictionary(Of Long, Point)
-                BufferMapInfo.Objects = New Structures.OrderedDictionary(Of Long, Point)
+            'Put the mapinfo in a buffer so we can easily change datas.
 
-                'Save the Client's ID
-                BufferMapInfo.ClientPID = MemEditor.netProcHandle.Id
+            Dim BufferMapInfo As New MapInfo_t
+            'Initialize the Arrays
+            BufferMapInfo.LevelsNear = New Structures.Dicto(Of Long, MapInfo_t.Exit_T)
+            BufferMapInfo.Exits = New Structures.Dicto(Of Long, Point)
+            BufferMapInfo.Npcs = New Structures.Dicto(Of Long, Entities)
+            BufferMapInfo.Objects = New Structures.Dicto(Of Long, Entities)
 
-                'Get the General Informations of the map.
+            'Save the Client's ID
+            BufferMapInfo.ClientPID = MemEditor.netProcHandle.Id
 
-                'pLevel - dwLevelNo
-                BufferMapInfo.LevelNo = MemEditor.ReadMemoryLong(Dwtemp + &H94, 4)
+            'Get the General Informations of the map.
 
-                'pLevel - dwPosX
-                BufferMapInfo.MapPosX = MemEditor.ReadMemoryLong(Dwtemp + &H6C, 4)
+            'pLevel - dwLevelNo
+            BufferMapInfo.LevelNo = MemEditor.ReadMemoryLong(Dwtemp + &H94, 4)
 
-                'pLevel - dwPosY
-                BufferMapInfo.MapPosY = MemEditor.ReadMemoryLong(Dwtemp + &H70, 4)
+            'pLevel - dwPosX
+            BufferMapInfo.MapPosX = MemEditor.ReadMemoryLong(Dwtemp + &H6C, 4)
 
-                'pLevel - dwSizeX
-                BufferMapInfo.MapSizeX = MemEditor.ReadMemoryLong(Dwtemp + &H74, 4)
+            'pLevel - dwPosY
+            BufferMapInfo.MapPosY = MemEditor.ReadMemoryLong(Dwtemp + &H70, 4)
 
-                'pLevel - dwSizeY
-                BufferMapInfo.MapSizeY = MemEditor.ReadMemoryLong(Dwtemp + &H78, 4)
+            'pLevel - dwSizeX
+            BufferMapInfo.MapSizeX = MemEditor.ReadMemoryLong(Dwtemp + &H74, 4)
 
-                'If the map has already been loaded
-                If Mapinfo.ContainsKey(LevelNo) Then
-                    'Overwrite it
-                    Mapinfo(LevelNo) = BufferMapInfo
-                Else
-                    'Create it
-                    Mapinfo.Add(LevelNo, BufferMapInfo)
-                End If
+            'pLevel - dwSizeY
+            BufferMapInfo.MapSizeY = MemEditor.ReadMemoryLong(Dwtemp + &H78, 4)
 
-                m_map = New CMatrix(Mapinfo(LevelNo).MapSizeX * 5, Mapinfo(LevelNo).MapSizeY * 5, MAP_DATA_INVALID)
+            'If the map has already been loaded
+            If Mapinfo.ContainsKey(LevelNo) Then
+                'Overwrite it
+                Mapinfo(LevelNo) = BufferMapInfo
+            Else
+                'Create it
+                Mapinfo.Add(LevelNo, BufferMapInfo)
+            End If
 
-                'Preparing to Loop trought all Rooms2
+            m_map = New CMatrix(Mapinfo(LevelNo).MapSizeX * 5, Mapinfo(LevelNo).MapSizeY * 5, MAP_DATA_INVALID)
 
-                'pLevel - pRoom2First
-                Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H21C, 4)
+            'Preparing to Loop trought all Rooms2
 
-                ''''''''''''''''''''''''''''''''
-                '''''''' Get the Units '''''''''
-                ''''''''''''''''''''''''''''''''
-                While Dwtemp
-                    Dim Exitt As Integer = 0
+            'pLevel - pRoom2First
+            Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &H21C, 4)
 
-                    Dim DwRoom As Long = Nothing
-                    Dim MapX As Long = Nothing
-                    Dim MapY As Long = Nothing
+            ''''''''''''''''''''''''''''''''
+            '''''''' Get the Units '''''''''
+            ''''''''''''''''''''''''''''''''
+            While Dwtemp
+                Dim Exitt As Integer = 0
 
-                    Dim AddedRoom As Boolean = False
+                Dim DwRoom As Long = Nothing
+                Dim MapX As Long = Nothing
+                Dim MapY As Long = Nothing
 
+                Dim AddedRoom As Boolean = False
+
+                'Room2 - pRoom1
+                DwRoom = MemEditor.ReadMemoryLong(Dwtemp + &HD8, 4)
+
+                'Room2 - dwPosX
+                MapX = MemEditor.ReadMemoryLong(Dwtemp + &H2C, 4)
+
+                'Room2 - dwPosY
+                MapY = MemEditor.ReadMemoryLong(Dwtemp + &H30, 4)
+
+                If DwRoom = 0 Then
+                    AddedRoom = True
+                    AddRoomData(Mapinfo(LevelNo).LevelNo, MapX, MapY)
                     'Room2 - pRoom1
                     DwRoom = MemEditor.ReadMemoryLong(Dwtemp + &HD8, 4)
+                End If
 
-                    'Room2 - dwPosX
-                    MapX = MemEditor.ReadMemoryLong(Dwtemp + &H2C, 4)
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                ''''''''''''''''''''''''''Find exits Code'''''''''''''''''''''
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                Dim dwRoomsNear As Int32
+                Dim pRoom2Near As Int32
 
-                    'Room2 - dwPosY
-                    MapY = MemEditor.ReadMemoryLong(Dwtemp + &H30, 4)
+                'Room2 - dwRoomsNear
+                dwRoomsNear = MemEditor.ReadMemoryLong(Dwtemp + &H8, 4)
 
-                    If DwRoom = 0 Then
-                        AddedRoom = True
-                        AddRoomData(Mapinfo(LevelNo).LevelNo, MapX, MapY)
-                        'Room2 - pRoom1
-                        DwRoom = MemEditor.ReadMemoryLong(Dwtemp + &HD8, 4)
+                'Room2 - pRoom2Near
+                pRoom2Near = MemEditor.ReadMemoryLong(Dwtemp + &H10, 4)
+
+                For i2 As Integer = 0 To dwRoomsNear - 1
+                    Dim pNear As Int32
+                    Dim pLevel As Int32
+                    Dim dwLevelNo As Int32
+                    Dim dwPosX As Int32
+                    Dim dwPosY As Int32
+                    Dim dwSizeX As Int32
+                    Dim dwSizeY As Int32
+
+                    'Room2 - ???  *** To Check Doesn't seem wrong
+                    pNear = MemEditor.ReadMemoryLong(pRoom2Near + (i2 * 4), 4)
+
+                    'Room2 - pLevel
+                    pLevel = MemEditor.ReadMemoryLong(pNear + &H0, 4)
+
+                    'Level - dwLevelNo
+                    dwLevelNo = MemEditor.ReadMemoryLong(pLevel + &H94, 4)
+                    'Level - PosX
+                    dwPosX = MemEditor.ReadMemoryLong(pLevel + &H6C, 4)
+                    'Level - PosY
+                    dwPosY = MemEditor.ReadMemoryLong(pLevel + &H70, 4)
+                    'Level - SizeX
+                    dwSizeX = MemEditor.ReadMemoryLong(pLevel + &H74, 4)
+                    'Level - SizeY
+                    dwSizeY = MemEditor.ReadMemoryLong(pLevel + &H78, 4)
+
+                    Dim Newlevel As MapInfo_t.Exit_T
+                    Newlevel.First.X = dwPosX * 5
+                    Newlevel.First.Y = dwPosY * 5
+                    Newlevel.Second.X = dwSizeX * 5
+                    Newlevel.Second.Y = dwSizeY * 5
+
+                    If Mapinfo(LevelNo).LevelsNear.Keys.Contains(dwLevelNo) = False Then
+                        Mapinfo(LevelNo).LevelsNear.Add(dwLevelNo, Newlevel)
+                    Else
+                        Mapinfo(LevelNo).LevelsNear.ItemBykey(dwLevelNo) = Newlevel
                     End If
+                Next
 
-                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                    ''''''''''''''''''''''''''Find exits Code'''''''''''''''''''''
-                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                    Dim dwRoomsNear As Int32
-                    Dim pRoom2Near As Int32
 
-                    'Room2 - dwRoomsNear
-                    dwRoomsNear = MemEditor.ReadMemoryLong(Dwtemp + &H8, 4)
+                Dim pUnit As Int32
 
-                    'Room2 - pRoom2Near
-                    pRoom2Near = MemEditor.ReadMemoryLong(Dwtemp + &H10, 4)
+                'Room2 - pPreset
+                pUnit = MemEditor.ReadMemoryLong(Dwtemp + &HC4, 4)
 
-                    For i2 As Integer = 0 To dwRoomsNear - 1
-                        Dim pNear As Int32
-                        Dim pLevel As Int32
-                        Dim dwLevelNo As Int32
-                        Dim dwPosX As Int32
-                        Dim dwPosY As Int32
-                        Dim dwSizeX As Int32
-                        Dim dwSizeY As Int32
 
-                        'Room2 - ???  *** To Check Doesn't seem wrong
-                        pNear = MemEditor.ReadMemoryLong(pRoom2Near + (i2 * 4), 4)
+                While (pUnit <> Nothing)
 
-                        'Room2 - pLevel
-                        pLevel = MemEditor.ReadMemoryLong(pNear + &H0, 4)
+                    Dim dwType As Int32
+                    Dim dwClassId As Int32
+                    Dim dwPosX As Int32
+                    Dim dwPosY As Int32
 
-                        'Level - dwLevelNo
-                        dwLevelNo = MemEditor.ReadMemoryLong(pLevel + &H94, 4)
-                        'Level - PosX
-                        dwPosX = MemEditor.ReadMemoryLong(pLevel + &H6C, 4)
-                        'Level - PosY
-                        dwPosY = MemEditor.ReadMemoryLong(pLevel + &H70, 4)
-                        'Level - SizeX
-                        dwSizeX = MemEditor.ReadMemoryLong(pLevel + &H74, 4)
-                        'Level - SizeY
-                        dwSizeY = MemEditor.ReadMemoryLong(pLevel + &H78, 4)
+                    'PresetUnit - dwType
+                    dwType = MemEditor.ReadMemoryLong(pUnit + &H1C, 4)
+                    'PresetUnit - dwTxtFileNo
+                    dwClassId = MemEditor.ReadMemoryLong(pUnit + &H0, 4)
+                    'PresetUnit - dwPosX
+                    dwPosX = MemEditor.ReadMemoryLong(pUnit + &HC, 4)
+                    'PresetUnit - dwPosY
+                    dwPosY = MemEditor.ReadMemoryLong(pUnit + &H14, 4)
 
-                        Dim Newlevel As MapInfo_t.Exit_T
-                        Newlevel.First.X = dwPosX * 5
-                        Newlevel.First.Y = dwPosY * 5
-                        Newlevel.Second.X = dwSizeX * 5
-                        Newlevel.Second.Y = dwSizeY * 5
-
-                        If Mapinfo(LevelNo).LevelsNear.Keys.Contains(dwLevelNo) = False Then
-                            Mapinfo(LevelNo).LevelsNear.Add(dwLevelNo, Newlevel)
-                        Else
-                            Mapinfo(LevelNo).LevelsNear.ItemBykey(dwLevelNo) = Newlevel
+                    If dwType = UNIT_TYPE_NPC Then
+                        If Mapinfo(LevelNo).Npcs.ContainsKey(dwClassId) = False Then
+                            Dim Buf As New Entities
+                            Buf.Pos = New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY)
+                            Buf.ID = dwClassId
+                            Mapinfo(LevelNo).Npcs.Add(dwClassId, Buf)
                         End If
-                    Next
-
-
-                    Dim pUnit As Int32
-
-                    'Room2 - pPreset
-                    pUnit = MemEditor.ReadMemoryLong(Dwtemp + &HC4, 4)
-
-
-                    While (pUnit <> Nothing)
-
-                        Dim dwType As Int32
-                        Dim dwClassId As Int32
-                        Dim dwPosX As Int32
-                        Dim dwPosY As Int32
-
-                        'PresetUnit - dwType
-                        dwType = MemEditor.ReadMemoryLong(pUnit + &H1C, 4)
-                        'PresetUnit - dwTxtFileNo
-                        dwClassId = MemEditor.ReadMemoryLong(pUnit + &H0, 4)
-                        'PresetUnit - dwPosX
-                        dwPosX = MemEditor.ReadMemoryLong(pUnit + &HC, 4)
-                        'PresetUnit - dwPosY
-                        dwPosY = MemEditor.ReadMemoryLong(pUnit + &H14, 4)
-
-                        If dwType = UNIT_TYPE_NPC Then
-                            If Mapinfo(LevelNo).Npcs.ContainsKey(dwClassId) = False Then
-                                Mapinfo(LevelNo).Npcs.Add(dwClassId, New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY))
-                            End If
-                        ElseIf dwType = UNIT_TYPE_OBJECT Then
-                            If Mapinfo(LevelNo).Objects.ContainsKey(dwClassId) = False Then
-                                Mapinfo(LevelNo).Objects.Add(dwClassId, New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY))
-                            End If
-
-                        ElseIf dwType = UNIT_TYPE_TILE Then
-                            Dim pRoomTile As Int32
-
-                            'Room2 - pRoomTiles To Check
-                            pRoomTile = MemEditor.ReadMemoryLong(Dwtemp + &HC, 4)
-
-                            While pRoomTile <> Nothing
-                                Dim pNum As Int32
-                                Dim nNum As Int32
-
-                                'RoomTile - nNum To Check
-                                pNum = MemEditor.ReadMemoryLong(pRoomTile + &H0, 4)
-                                nNum = MemEditor.ReadMemoryLong(pNum, 4)
-
-                                If nNum = dwClassId Then
-                                    Dim pRoom2 As Int32
-                                    Dim pLevel As Int32
-                                    Dim dwLevelNo As Int32
-
-                                    'RoomTile - pRoom2  To Check
-                                    pRoom2 = MemEditor.ReadMemoryLong(pRoomTile + &H4, 4)
-                                    'Room2 - pLevel
-                                    pLevel = MemEditor.ReadMemoryLong(pRoom2 + &H0, 4)
-                                    'Level - dwLevelNo
-                                    dwLevelNo = MemEditor.ReadMemoryLong(pLevel + &H94, 4)
-
-                                    If Mapinfo(LevelNo).Exits.Keys.Contains(dwLevelNo) = False Then
-                                        Mapinfo(LevelNo).Exits.Add(dwLevelNo, New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY))
-                                    Else
-                                        Mapinfo(LevelNo).Exits.ItemBykey(dwLevelNo) = New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY)
-                                    End If
-
-                                End If
-                                'RoomTile - pNext ToCheck
-                                pRoomTile = MemEditor.ReadMemoryLong(pRoomTile + &H10, 4)
-                            End While
-
+                    ElseIf dwType = UNIT_TYPE_OBJECT Then
+                        If Mapinfo(LevelNo).Objects.ContainsKey(dwClassId) = False Then
+                            Dim Buf As New Entities
+                            Buf.Pos = New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY)
+                            Buf.ID = dwClassId
+                            Mapinfo(LevelNo).Objects.Add(dwClassId, Buf)
                         End If
-                        'PresetUnit - pPresetNext To Check
-                        pUnit = MemEditor.ReadMemoryLong(pUnit + &H18, 4)
-                    End While
 
-                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                    '''''''''''''''''''Come back to the function''''''''''''''''''
-                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    ElseIf dwType = UNIT_TYPE_TILE Then
+                        Dim pRoomTile As Int32
 
-                    'Room1 - pColl
-                    Dim dwCol As Int32
-                    dwCol = MemEditor.ReadMemoryLong(DwRoom + &H50, 4)
+                        'Room2 - pRoomTiles To Check
+                        pRoomTile = MemEditor.ReadMemoryLong(Dwtemp + &HC, 4)
 
-                    Dim CollMapByte As Byte()
-                    Dim pcol As CollMap_t
+                        While pRoomTile <> Nothing
+                            Dim pNum As Int32
+                            Dim nNum As Int32
 
-                    'CollMap - struct
-                    CollMapByte = MemEditor.ReadMemoryAOB(dwCol, Marshal.SizeOf(GetType(CollMap_t)))
+                            'RoomTile - nNum To Check
+                            pNum = MemEditor.ReadMemoryLong(pRoomTile + &H0, 4)
+                            nNum = MemEditor.ReadMemoryLong(pNum, 4)
 
-                    pcol = Tools.BytesToStruct(CollMapByte, pcol.GetType)
+                            If nNum = dwClassId Then
+                                Dim pRoom2 As Int32
+                                Dim pLevel As Int32
+                                Dim dwLevelNo As Int32
 
-                    ' ***Building CollisionMap here ***
+                                'RoomTile - pRoom2  To Check
+                                pRoom2 = MemEditor.ReadMemoryLong(pRoomTile + &H4, 4)
+                                'Room2 - pLevel
+                                pLevel = MemEditor.ReadMemoryLong(pRoom2 + &H0, 4)
+                                'Level - dwLevelNo
+                                dwLevelNo = MemEditor.ReadMemoryLong(pLevel + &H94, 4)
 
-                    Dim X As Integer = pcol.dwPosGameX - Mapinfo(LevelNo).MapPosX * 5
-                    Dim Y As Integer = pcol.dwPosGameY - Mapinfo(LevelNo).MapPosY * 5
-                    Dim Cx As Integer = pcol.dwSizeGameX
-                    Dim Cy As Integer = pcol.dwSizeGameY
-
-                    Dim P As Long = Nothing ' Word
-                    Dim pAddr As Int32 'Dword
-
-                    pAddr = MemEditor.ReadMemoryLong(dwCol + &H20, 4)
-                    P = MemEditor.ReadMemoryByte(pAddr)
-                    pAddr += 2
-
-                    Dim nLimitX As Integer = X + Cx
-                    Dim nLimitY As Integer = Y + Cy
-
-                    If m_map.IsValidIndex(X, Y) Then
-                        Dim i As Integer
-                        Dim j As Integer
-                        For j = Y To nLimitY - 1
-                            For i = X To nLimitX - 1
-                                'Remember the coordinate 
-                                m_map.SetXY(i, j, P)
-                                'If it's an invalid spot but divisible by 2
-                                If m_map.GetAt(i, j) = "1024" Then
-                                    'It's invalid...
-                                    m_map.SetXY(i, j, MAP_DATA_INVALID)
+                                If Mapinfo(LevelNo).Exits.Keys.Contains(dwLevelNo) = False Then
+                                    Mapinfo(LevelNo).Exits.Add(dwLevelNo, New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY))
+                                Else
+                                    Mapinfo(LevelNo).Exits.ItemBykey(dwLevelNo) = New Point(MapX * 5 + dwPosX, MapY * 5 + dwPosY)
                                 End If
-                                P = MemEditor.ReadMemoryInt(pAddr)
-                                pAddr += 2
-                            Next
-                        Next
-                    End If
 
-                    'If we added a room
-                    If AddedRoom Then
-                        'Clear the memory.
-                        RemoveRoomData(Mapinfo(LevelNo).LevelNo, MapX, MapY)
+                            End If
+                            'RoomTile - pNext ToCheck
+                            pRoomTile = MemEditor.ReadMemoryLong(pRoomTile + &H10, 4)
+                        End While
+
                     End If
-                    'Room2 - pRoom2Other
-                    Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &HD4, 4)
+                    'PresetUnit - pPresetNext To Check
+                    pUnit = MemEditor.ReadMemoryLong(pUnit + &H18, 4)
                 End While
-                'Close the memory.
-                MemEditor.mCloseProcess()
 
-                'Put the mapinfo in a buffer so we can easily edit the values.
-                BufferMapInfo = Mapinfo(LevelNo)
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                '''''''''''''''''''Come back to the function''''''''''''''''''
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                'Get the actual Map Size
-                BufferMapInfo.MapSizeX = BufferMapInfo.MapSizeX * 5
-                BufferMapInfo.MapSizeY = BufferMapInfo.MapSizeY * 5
+                'Room1 - pColl
+                Dim dwCol As Int32
+                dwCol = MemEditor.ReadMemoryLong(DwRoom + &H50, 4)
 
-                'Get ready to transfer MapData
-                ReDim BufferMapInfo.Bytes(BufferMapInfo.MapSizeX, BufferMapInfo.MapSizeY)
-                BufferMapInfo.Bytes = m_map.MapData
-                Mapinfo(LevelNo) = BufferMapInfo
+                Dim CollMapByte As Byte()
+                Dim pcol As CollMap_t
 
-                Return Mapinfo(LevelNo)
-            Catch
-                Return New MapInfo_t
-            End Try
+                'CollMap - struct
+                CollMapByte = MemEditor.ReadMemoryAOB(dwCol, Marshal.SizeOf(GetType(CollMap_t)))
+
+                pcol = Tools.BytesToStruct(CollMapByte, pcol.GetType)
+
+                ' ***Building CollisionMap here ***
+
+                Dim X As Integer = pcol.dwPosGameX - Mapinfo(LevelNo).MapPosX * 5
+                Dim Y As Integer = pcol.dwPosGameY - Mapinfo(LevelNo).MapPosY * 5
+                Dim Cx As Integer = pcol.dwSizeGameX
+                Dim Cy As Integer = pcol.dwSizeGameY
+
+                Dim P As Long = Nothing ' Word
+                Dim pAddr As Int32 'Dword
+
+                pAddr = MemEditor.ReadMemoryLong(dwCol + &H20, 4)
+                P = MemEditor.ReadMemoryByte(pAddr)
+                pAddr += 2
+
+                Dim nLimitX As Integer = X + Cx
+                Dim nLimitY As Integer = Y + Cy
+
+                If m_map.IsValidIndex(X, Y) Then
+                    Dim i As Integer
+                    Dim j As Integer
+                    For j = Y To nLimitY - 1
+                        For i = X To nLimitX - 1
+                            'Remember the coordinate 
+                            m_map.SetXY(i, j, P)
+                            'If it's an invalid spot but divisible by 2
+                            If m_map.GetAt(i, j) = "1024" Then
+                                'It's invalid...
+                                m_map.SetXY(i, j, MAP_DATA_INVALID)
+                            End If
+                            P = MemEditor.ReadMemoryInt(pAddr)
+                            pAddr += 2
+                        Next
+                    Next
+                End If
+
+                'If we added a room
+                If AddedRoom Then
+                    'Clear the memory.
+                    RemoveRoomData(Mapinfo(LevelNo).LevelNo, MapX, MapY)
+                End If
+                'Room2 - pRoom2Other
+                Dwtemp = MemEditor.ReadMemoryLong(Dwtemp + &HD4, 4)
+            End While
+
+            'Put the mapinfo in a buffer so we can easily edit the values.
+            BufferMapInfo = Mapinfo(LevelNo)
+
+            'Get the actual Map Size
+            BufferMapInfo.MapSizeX = BufferMapInfo.MapSizeX * 5
+            BufferMapInfo.MapSizeY = BufferMapInfo.MapSizeY * 5
+
+            'Get ready to transfer MapData
+            ReDim BufferMapInfo.Bytes(BufferMapInfo.MapSizeX, BufferMapInfo.MapSizeY)
+            BufferMapInfo.Bytes = m_map.MapData
+            Mapinfo(LevelNo) = BufferMapInfo
+
+            Return Mapinfo(LevelNo)
+
         End Function
 
         Public Function GetPreviousMapInfo(ByVal LevelNo As D2Data.AreaLevel) As MapInfo_t
@@ -612,7 +619,7 @@ Namespace Memory
             oWrite.Close()
         End Sub
 
-        Public Function BitmapFromMapInfo(ByVal MapInfo As MapInfo_t) As Bitmap
+        Public Function BitmapFromMapInfo(ByVal MapInfo As MapInfo_t, ByVal Color As Drawing.Color) As Bitmap
 
             If MapInfo.MapSizeX = 0 Or MapInfo.MapSizeY = 0 Then
                 Return Nothing
@@ -642,7 +649,7 @@ Namespace Memory
             For y As Integer = 0 To LastDownPixel - 1
                 For x As Integer = 0 To LastRightPixel - 1
                     If MapInfo.Bytes(x, y) Mod 2 = 0 Then
-                        b.SetPixel(x, y, Color.Blue)
+                        b.SetPixel(x, y, Color)
                     End If
                 Next
             Next
@@ -1156,9 +1163,9 @@ Namespace Memory
             For i As Integer = 0 To WpList.Length - 1
                 If Mapinfo.Objects.Keys.Contains(WpList(i)) Then
                     If Walk Then
-                        Return GetWalkPath(StartPoint, Mapinfo.Objects.ItemBykey(WpList(i)), Mapinfo)
+                        Return GetWalkPath(StartPoint, Mapinfo.Objects.ItemBykey(WpList(i)).Pos, Mapinfo)
                     Else
-                        Return GetTeleportPath(StartPoint, Mapinfo.Objects.ItemBykey(WpList(i)), Mapinfo, Distance)
+                        Return GetTeleportPath(StartPoint, Mapinfo.Objects.ItemBykey(WpList(i)).Pos, Mapinfo, Distance)
                     End If
                 End If
             Next
@@ -1169,9 +1176,9 @@ Namespace Memory
             Dim StartPoint As Point = Wrapped.GetMyPosition(Mapinfo.ClientPID)
             If Mapinfo.Objects.Keys.Contains(ObjectId) Then
                 If Walk Then
-                    Return GetWalkPath(StartPoint, Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo)
+                    Return GetWalkPath(StartPoint, Mapinfo.Objects.ItemBykey(ObjectId).Pos, Mapinfo)
                 Else
-                    Return GetTeleportPath(StartPoint, Mapinfo.Objects.ItemBykey(ObjectId), Mapinfo, Distance)
+                    Return GetTeleportPath(StartPoint, Mapinfo.Objects.ItemBykey(ObjectId).Pos, Mapinfo, Distance)
                 End If
             End If
             Return Nothing
@@ -1181,9 +1188,9 @@ Namespace Memory
             Dim StartPoint As Point = Wrapped.GetMyPosition(Mapinfo.ClientPID)
             If Mapinfo.Npcs.Keys.Contains(NPCId) Then
                 If Walk Then
-                    Return GetWalkPath(StartPoint, Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo)
+                    Return GetWalkPath(StartPoint, Mapinfo.Npcs.ItemBykey(NPCId).Pos, Mapinfo)
                 Else
-                    Return GetTeleportPath(StartPoint, Mapinfo.Npcs.ItemBykey(NPCId), Mapinfo, Distance)
+                    Return GetTeleportPath(StartPoint, Mapinfo.Npcs.ItemBykey(NPCId).Pos, Mapinfo, Distance)
                 End If
             End If
             Return Nothing

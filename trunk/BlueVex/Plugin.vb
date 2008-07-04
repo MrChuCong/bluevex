@@ -38,9 +38,9 @@ Public Class Plugin
         'This Happens when the Whole BluevexHostPlugin gets Destroyed.
         'MsgBox("Destroy Plugins")
     End Sub
+
     Public Sub UpdatePlugin()
         'When the whole BluevexHost gets the Update.
-
     End Sub
 End Class
 

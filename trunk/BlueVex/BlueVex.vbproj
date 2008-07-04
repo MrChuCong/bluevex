@@ -127,6 +127,7 @@
     <Compile Include="Memory\Macro.vb" />
     <Compile Include="Memory\MemEditor.vb" />
     <Compile Include="Memory\MemoryHelper.vb" />
+    <Compile Include="Misc\Ini.vb" />
     <Compile Include="Misc\Structures.vb" />
     <Compile Include="Module Hosts\ChatModuleHost.vb" />
     <Compile Include="Module Hosts\GameModuleHost.vb" />
