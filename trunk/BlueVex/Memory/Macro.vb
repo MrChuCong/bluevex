@@ -328,7 +328,7 @@ Public Class Macro
         MacroThread.Start()
     End Sub
 
-    Public Sub ExitGame_t()
+    Private Sub ExitGame_t()
         Dim BufWaitTime As Integer = WaitTime
         Thread.Sleep(BufWaitTime)
 
