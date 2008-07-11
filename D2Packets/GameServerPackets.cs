@@ -1816,7 +1816,11 @@ namespace GameServer
                                 case ItemQuality.Unique:
                                     if (this.baseItem.Code != "std")
                                     {
-                                        this.uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12));
+                                        try
+                                        {
+                                            this.uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12));
+                                        }
+                                        catch{}
                                     }
                                     break;
                             }

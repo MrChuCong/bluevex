@@ -118,142 +118,102 @@ Namespace Memory
 
 #Region "Private"
 
+        <StructLayout(LayoutKind.Explicit)> _
+        Private Structure AsmStub
+
+            <FieldOffset(0)> _
+                Dim _Push1 As Byte
+            <FieldOffset(1)> _
+                Dim Param1 As Integer
+
+            <FieldOffset(5)> _
+                Dim _Push2 As Byte
+            <FieldOffset(6)> _
+                Dim Param2 As Integer
+
+            <FieldOffset(10)> _
+                Dim _Push3 As Byte
+            <FieldOffset(11)> _
+                Dim Param3 As Integer
+
+            <FieldOffset(15)> _
+                Dim _Push4 As Byte
+            <FieldOffset(16)> _
+                Dim Param4 As Integer
+
+            <FieldOffset(20)> _
+                Dim _Push5 As Byte
+            <FieldOffset(21)> _
+                Dim Param5 As Integer
+
+            <FieldOffset(25)> _
+                Dim _PushAddr As Byte
+            <FieldOffset(26)> _
+                Dim FuncAddr As Integer
+
+            <FieldOffset(30)> _
+                Dim _FF As Byte
+            <FieldOffset(31)> _
+                Dim _D0 As Byte
+            <FieldOffset(32)> _
+                Dim _C3 As Byte
+
+            Sub New(ByVal RoomAddr As Integer, ByVal Y As Integer, ByVal X As Integer, ByVal LevelNo As Integer, ByVal dwActAddr As Integer, ByVal FuncAddr As Integer)
+
+                _Push1 = &H68
+                Param1 = RoomAddr
+
+                _Push2 = &H68
+                Param2 = Y
+
+                _Push3 = &H68
+                Param3 = X
+
+                _Push4 = &H68
+                Param4 = LevelNo
+
+                _Push5 = &H68
+                Param5 = dwActAddr
+
+                _PushAddr = &HB8
+                Me.FuncAddr = FuncAddr
+
+                _FF = &HFF
+                _D0 = &HD0
+                _C3 = &HC3
+
+            End Sub
+        End Structure
+
         Private Sub AddRoomData(ByVal LevelNo As Long, ByVal X As Long, ByVal Y As Long)
             Try
-                Dim BufferByte As Byte()
+                Dim AsmStub As New AsmStub(Playerinfo.DwRoomAddr, Y, X, LevelNo, Playerinfo.dwActAddr, D2common.BaseAddress.ToInt32 + &H568F0)
 
-                Dim AsmStub As Byte() = _
-                {&H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &HB8, 0, 0, 0, 0, _
-                 &HFF, &HD0, _
-                 &HC3}
 
-                'AsmStub(1) = Playerinfo.dwRoomAddr
-                BufferByte = BitConverter.GetBytes(Playerinfo.DwRoomAddr)
-                Dim i As Integer
-                For i = 1 To BufferByte.Length
-                    If BufferByte(i - 1) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 1)
-                    End If
-                Next
-                'AsmStub(6) = Y
-                BufferByte = BitConverter.GetBytes(Y)
-                For i = 6 To BufferByte.Length + 5
-                    If BufferByte(i - 6) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 6)
-                    End If
-                Next
-                'AsmStub(11) = X
-                BufferByte = BitConverter.GetBytes(X)
-                For i = 11 To BufferByte.Length + 10
-                    If BufferByte(i - 11) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 11)
-                    End If
-                Next
-                'AsmStub(16) = LevelNo
-                BufferByte = BitConverter.GetBytes(LevelNo)
-                For i = 16 To BufferByte.Length + 15
-                    If BufferByte(i - 16) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 16)
-                    End If
-                Next
-                'AsmStub(21) = Playerinfo.dwActAddr
-                BufferByte = BitConverter.GetBytes(Playerinfo.dwActAddr)
-                For i = 21 To BufferByte.Length + 20
-                    If BufferByte(i - 21) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 21)
-                    End If
-                Next
-                'AsmStub(26) = D2common.BaseAddress.ToInt32 + &H568F0
-                BufferByte = BitConverter.GetBytes(D2common.BaseAddress.ToInt32 + &H568F0)
-                For i = 26 To BufferByte.Length + 25
-                    If BufferByte(i - 26) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 26)
-                    End If
-                Next
-
-                Dim Address As Integer = VirtualAllocEx(MemEditor.netProcHandle.Handle.ToInt32, Nothing, (Len(AsmStub(0)) * AsmStub.Length), MEM_COMMIT, PAGE_EXECUTE_READWRITE)
-                MemEditor.WriteMemory(Address, AsmStub)
+                Dim Address As Integer = VirtualAllocEx(MemEditor.netProcHandle.Handle.ToInt32, Nothing, (Marshal.SizeOf(AsmStub)), MEM_COMMIT, PAGE_EXECUTE_READWRITE)
+                MemEditor.WriteMemory(Address, Tools.StructToBytes(AsmStub))
                 Dim Phandle As Long = CreateRemoteThread(MemEditor.netProcHandle.Handle.ToInt32, 0, 4, Address, Nothing, Nothing, Nothing)
                 WaitForSingleObject(Phandle, 10000)
                 CloseHandle(Phandle)
-                VirtualFreeEx(MemEditor.netProcHandle.Handle.ToInt32, Address, (Len(AsmStub(0)) * AsmStub.Length), MEM_RELEASE)
+                VirtualFreeEx(MemEditor.netProcHandle.Handle.ToInt32, Address, (Marshal.SizeOf(AsmStub)), MEM_RELEASE)
             Catch
             End Try
         End Sub
 
         Private Sub RemoveRoomData(ByVal LevelNo As Long, ByVal X As Long, ByVal Y As Long)
-            Try
-                Dim BufferByte As Byte()
-                Dim AsmStub As Byte() = _
-                {&H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &H68, 0, 0, 0, 0, _
-                 &HB8, 0, 0, 0, 0, _
-                 &HFF, &HD0, _
-                 &HC3}
 
-                'AsmStub(1) = Playerinfo.dwRoomAddr
-                BufferByte = BitConverter.GetBytes(Playerinfo.DwRoomAddr)
-                Dim i As Integer
-                For i = 1 To BufferByte.Length
-                    If BufferByte(i - 1) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 1)
-                    End If
-                Next
-                'AsmStub(6) = Y
-                BufferByte = BitConverter.GetBytes(Y)
-                For i = 6 To BufferByte.Length + 5
-                    If BufferByte(i - 6) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 6)
-                    End If
-                Next
-                'AsmStub(11) = X
-                BufferByte = BitConverter.GetBytes(X)
-                For i = 11 To BufferByte.Length + 10
-                    If BufferByte(i - 11) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 11)
-                    End If
-                Next
-                'AsmStub(16) = LevelNo
-                BufferByte = BitConverter.GetBytes(LevelNo)
-                For i = 16 To BufferByte.Length + 15
-                    If BufferByte(i - 16) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 16)
-                    End If
-                Next
-                'AsmStub(21) = Playerinfo.dwActAddr
-                BufferByte = BitConverter.GetBytes(Playerinfo.dwActAddr)
-                For i = 21 To BufferByte.Length + 20
-                    If BufferByte(i - 21) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 21)
-                    End If
-                Next
-                'AsmStub(26) = D2common.BaseAddress.ToInt32 + &H56830
-                BufferByte = BitConverter.GetBytes(D2common.BaseAddress.ToInt32 + &H56830)
-                For i = 26 To BufferByte.Length + 25
-                    If BufferByte(i - 26) <> 0 Then
-                        AsmStub(i) = BufferByte(i - 26)
-                    End If
-                Next
+            Dim AsmStub As New AsmStub(Playerinfo.DwRoomAddr, Y, X, LevelNo, Playerinfo.dwActAddr, D2common.BaseAddress.ToInt32 + &H56830)
 
-                Dim Address As Integer = VirtualAllocEx(MemEditor.netProcHandle.Handle.ToInt32, Nothing, (Len(AsmStub(0)) * AsmStub.Length), MEM_COMMIT, PAGE_EXECUTE_READWRITE)
-                MemEditor.WriteMemory(Address, AsmStub)
-                Dim Phandle As Long = CreateRemoteThread(MemEditor.netProcHandle.Handle.ToInt32, 0, Len(New Int32), Address, Nothing, Nothing, Nothing)
-                WaitForSingleObject(Phandle, 10000)
-                CloseHandle(Phandle)
-                VirtualFreeEx(MemEditor.netProcHandle.Handle.ToInt32, Address, (Len(AsmStub(0)) * AsmStub.Length), MEM_RELEASE)
-            Catch
-            End Try
+            Dim Address As Integer = VirtualAllocEx(MemEditor.netProcHandle.Handle.ToInt32, Nothing, (Marshal.SizeOf(AsmStub)), MEM_COMMIT, PAGE_EXECUTE_READWRITE)
+            MemEditor.WriteMemory(Address, Tools.StructToBytes(AsmStub))
+            Dim Phandle As Long = CreateRemoteThread(MemEditor.netProcHandle.Handle.ToInt32, 0, Len(New Int32), Address, Nothing, Nothing, Nothing)
+            WaitForSingleObject(Phandle, 10000)
+            CloseHandle(Phandle)
+            VirtualFreeEx(MemEditor.netProcHandle.Handle.ToInt32, Address, (Marshal.SizeOf(AsmStub)), MEM_RELEASE)
+
         End Sub
 
-        Private Function InscribeInArray(ByVal Array As Byte(), ByVal Index As Integer, ByVal Value As Object, ByVal Type As System.Type) As Byte()
+        Private Function InscribeInArray(ByVal Array As Byte(), ByVal Index As Integer, ByVal Value As Object) As Byte()
 
             Dim BufferByte As Byte() = BitConverter.GetBytes(Value)
             Dim ArrayBuf As Byte() = Array
@@ -969,6 +929,7 @@ Namespace Memory
 
             Return Nothing
         End Function
+
         Public Function GetWalkPath(ByVal StartPoint As Point, ByVal EndPoint As Point, ByVal Mapinfo As MapInfo_t) As List(Of Point)
 
             Dim Map As CellData(,) = MapInfoToCellData(Mapinfo)
@@ -1195,6 +1156,7 @@ Namespace Memory
             End If
             Return Nothing
         End Function
+
         Public Function PathToLevel(ByVal LevelId As Integer, ByVal Mapinfo As MapInfo_t, ByVal Walk As Boolean, Optional ByVal Distance As Integer = 40) As List(Of Point)
             If Mapinfo.MapSizeX = Nothing Then Return Nothing
             Dim StartPoint As Point = Wrapped.GetMyPosition(Mapinfo.ClientPID)
@@ -1328,13 +1290,39 @@ Namespace Memory
                     Dim iter As MapInfo_t.Exit_T = Mapinfo.LevelsNear.ItemBykey(LevelId)
                     Dim J As Integer = 0
                     While J < nTotalPoints
+
                         If (ptCenters(J).X + Mapinfo.MapPosX * 5) >= iter.First.X - 5 And (ptCenters(J).X + Mapinfo.MapPosX * 5) - 5 <= (iter.First.X + iter.Second.X) Then
                             If (ptCenters(J).Y + Mapinfo.MapPosY * 5) >= iter.First.Y - 5 And (ptCenters(J).Y + Mapinfo.MapPosY * 5) - 5 <= (iter.First.Y + iter.Second.Y) Then
                                 Dim EndPoint As New Point(ptCenters(J).X + Mapinfo.MapPosX * 5, ptCenters(J).Y + Mapinfo.MapPosY * 5)
+
+
                                 If Walk Then
-                                    Return GetWalkPath(StartPoint, EndPoint, Mapinfo)
+                                    Dim ThePath As List(Of Point) = GetWalkPath(StartPoint, EndPoint, Mapinfo)
+
+                                    'Find a Point IN the level.
+                                    Dim ComparePos As Point = StartPoint - EndPoint
+                                    If Math.Abs(ComparePos.X) > Math.Abs(ComparePos.Y) Then
+
+                                        EndPoint.X -= (Math.Abs(ComparePos.X) / ComparePos.X) * 5
+                                    Else
+                                        EndPoint.Y -= (Math.Abs(ComparePos.Y) / ComparePos.Y) * 5
+                                    End If
+                                    ThePath.Add(EndPoint)
+                                    Return ThePath
                                 Else
-                                    Return GetTeleportPath(StartPoint, EndPoint, Mapinfo, Distance)
+                                    Dim ThePath As List(Of Point) = GetTeleportPath(StartPoint, EndPoint, Mapinfo, Distance)
+
+                                    'Find a Point IN the level.
+                                    Dim ComparePos As Point = StartPoint - EndPoint
+                                    If Math.Abs(ComparePos.X) > Math.Abs(ComparePos.Y) Then
+
+                                        EndPoint.X -= (Math.Abs(ComparePos.X) / ComparePos.X) * 5
+                                    Else
+                                        EndPoint.Y -= (Math.Abs(ComparePos.Y) / ComparePos.Y) * 5
+                                    End If
+                                    ThePath.Add(EndPoint)
+                                    Return ThePath
+
                                 End If
                             End If
                         End If

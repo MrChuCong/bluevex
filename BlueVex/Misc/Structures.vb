@@ -14,15 +14,6 @@
             End Set
         End Property
 
-        Default Public Overloads Property Item(ByVal Index As Integer) As TValue
-            Get
-                Return m_dictionary(m_keysInOrder(Index))
-            End Get
-            Set(ByVal value As TValue)
-                m_dictionary(m_keysInOrder(Index)) = value
-            End Set
-        End Property
-
         Public Property ItemBykey(ByVal key As TKey) As TValue
             Get
                 Return m_dictionary(key)

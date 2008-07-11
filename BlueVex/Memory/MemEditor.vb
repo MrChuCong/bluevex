@@ -4,24 +4,7 @@ Imports System.Diagnostics
 
 Namespace Memory
 
-    Structure MemoryRegion
-        Public baseAddress As Long
-        Public dwLength As Long
-        Public Sub New(ByVal lAddress As Long, ByVal lLength As Long)
-            baseAddress = lAddress
-            dwLength = lLength
-        End Sub
-        Public Sub New(ByVal startAddress As Long, ByVal endAddress As Long, ByVal nullVar As Integer)
-            baseAddress = startAddress
-            dwLength = endAddress - startAddress
-        End Sub
-    End Structure
-    Structure vmProtect
-        Public vmAccess As UInteger
-        Public Sub New(ByVal vmpAccess As UInteger)
-            vmAccess = vmpAccess
-        End Sub
-    End Structure
+
 
     ''' <summary>
     ''' Easy-to-use class to deal with memory.
@@ -29,6 +12,26 @@ Namespace Memory
     Public Class MemEditor
         Implements IDisposable
         Public Success As Boolean = False
+
+        Private Structure MemoryRegion
+            Public baseAddress As Long
+            Public dwLength As Long
+            Public Sub New(ByVal lAddress As Long, ByVal lLength As Long)
+                baseAddress = lAddress
+                dwLength = lLength
+            End Sub
+            Public Sub New(ByVal startAddress As Long, ByVal endAddress As Long, ByVal nullVar As Integer)
+                baseAddress = startAddress
+                dwLength = endAddress - startAddress
+            End Sub
+        End Structure
+
+        Private Structure vmProtect
+            Public vmAccess As UInteger
+            Public Sub New(ByVal vmpAccess As UInteger)
+                vmAccess = vmpAccess
+            End Sub
+        End Structure
 
 #Region "Declares"
 
@@ -314,7 +317,8 @@ Namespace Memory
 End Namespace
 
 
-Namespace Tools
+
+Namespace Memory.Tools
     Module Tools
 
         <DllImport("kernel32.dll", SetLastError:=True)> _
@@ -345,9 +349,22 @@ ByVal buffer As Byte(), ByVal size As UInt32, ByRef lpNumberOfBytesWritten As In
 
             Dim Obj As Object = _
                 Marshal.PtrToStructure(MyGC.AddrOfPinnedObject, MyType)
-            Return Obj
             'Free GChandle to avoid memory leaks
             MyGC.Free()
+            Return Obj
+        End Function
+
+        Public Function StructToBytes(ByVal Struct As Object) As Byte()
+            Dim ByteArray() As Byte
+
+            Dim Ptr As IntPtr = Marshal.AllocHGlobal(Marshal.SizeOf(Struct))
+            ReDim ByteArray(Marshal.SizeOf(Struct) - 1)
+            'now copy strcutre to Ptr pointer 
+            Marshal.StructureToPtr(Struct, Ptr, False)
+            Marshal.Copy(Ptr, ByteArray, 0, Marshal.SizeOf(Struct))
+            'now use ByteArray ready for use 
+            Marshal.FreeHGlobal(Ptr)
+            Return ByteArray
         End Function
 
         Public Function DecToHex(ByVal DecVal As Double) As String
