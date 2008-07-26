@@ -78,6 +78,20 @@ Public Module GlobalModule
         Return Main
     End Function
 
+    Function PutInArray(ByVal Array As Byte(), ByVal Index As Integer, ByVal Value As Object) As Byte()
+
+        Dim BufferByte As Byte() = BitConverter.GetBytes(Value)
+        Dim ArrayBuf As Byte() = Array
+
+        For i As Integer = Index To (BufferByte.Length + Index) - 1
+            If BufferByte(i - Index) <> 0 Then
+                ArrayBuf(i) = BufferByte(i - Index)
+            End If
+        Next
+        Return ArrayBuf
+    End Function
+
+
 End Module
 
 Public Module Log

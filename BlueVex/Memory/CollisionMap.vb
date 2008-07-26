@@ -458,12 +458,12 @@ Namespace Memory
                                 End If
 
                             End If
-                            'RoomTile - pNext ToCheck
+                            'RoomTile - pNext
                             pRoomTile = MemEditor.ReadMemoryLong(pRoomTile + &H10, 4)
                         End While
 
                     End If
-                    'PresetUnit - pPresetNext To Check
+                    'PresetUnit - pPresetNext
                     pUnit = MemEditor.ReadMemoryLong(pUnit + &H18, 4)
                 End While
 

@@ -10,8 +10,7 @@ Public Class Macro
     Dim Delay As Integer
 
     'We will use the handle to send messages.
-    Dim hWnd As IntPtr
-
+    Public hWnd As Integer
 
     Dim MacroThread As Thread
 
@@ -20,11 +19,19 @@ Public Class Macro
     Dim CharPos, WaitTime As Integer
     Dim Difficulty As D2Data.GameDifficulty
 
+    Dim TempKey As Keys
 
-    Sub New(Optional ByVal DiabloPID As Integer = 0, Optional ByVal DelayAfterClicks As Integer = 300)
-        DiabloProcess = New Memory.MemEditor(DiabloPID)
-        If DiabloProcess.Success = False Then Exit Sub
-        hWnd = DiabloProcess.netProcHandle.MainWindowHandle
+
+    Sub New(Optional ByVal Hwnd As Integer = 0, Optional ByVal DelayAfterClicks As Integer = 300)
+
+        If Hwnd = 0 Then
+            DiabloProcess = New Memory.MemEditor
+            If DiabloProcess.Success = False Then Exit Sub
+            Hwnd = DiabloProcess.netProcHandle.MainWindowHandle
+        Else
+            Me.hWnd = Hwnd
+        End If
+
         Delay = DelayAfterClicks
     End Sub
 
@@ -274,18 +281,43 @@ Public Class Macro
     ''' <summary> 
     ''' Send a Key to specified Window
     ''' </summary> 
-    Public Sub SendKey(ByVal Key As Keys)
-        SendMessage(hWnd, WMessages.WM_KEYDOWN, Key, 0)
-        SendMessage(hWnd, WMessages.WM_KEYUP, Key, 0)
+    Public Sub SendKey(ByVal Key As Keys, Optional ByVal TimeBeforeStarting As Integer = 0)
+
+        If TimeBeforeStarting > 0 Then
+
+            WaitTime = TimeBeforeStarting
+            TempKey = Key
+            If MacroThread IsNot Nothing Then MacroThread.Abort()
+            MacroThread = New Thread(AddressOf SendKey_t)
+            MacroThread.IsBackground = True
+            MacroThread.Start()
+
+        Else 'Don't mess with threads if we don't have to wait.
+            SendMessage(hWnd, WMessages.WM_KEYDOWN, Key, 0)
+            SendMessage(hWnd, WMessages.WM_KEYUP, Key, 0)
+        End If
+
+    End Sub
+
+    Private Sub SendKey_t()
+        Dim Temkey As Integer = TempKey
+
+        Dim BufWaitTime As Integer = WaitTime
+        Thread.Sleep(BufWaitTime)
+
+        SendMessage(hWnd, WMessages.WM_KEYDOWN, Temkey, 0)
+        SendMessage(hWnd, WMessages.WM_KEYUP, Temkey, 0)
     End Sub
 
     ''' <summary> 
     ''' Send Characters to specified window.
     ''' </summary> 
     Public Sub SendString(ByVal TheString As String)
-        For i As Integer = 0 To TheString.Length - 1
-            SendMessage(hWnd, WMessages.WM_CHAR, Microsoft.VisualBasic.Asc(TheString.Chars(i)), &H1E0001)
-        Next
+        If TheString <> "" Then
+            For i As Integer = 0 To TheString.Length - 1
+                SendMessage(hWnd, WMessages.WM_CHAR, Microsoft.VisualBasic.Asc(TheString.Chars(i)), &H1E0001)
+            Next
+        End If
     End Sub
 
     ''' <summary> 

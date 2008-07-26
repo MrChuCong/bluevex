@@ -34,6 +34,23 @@ Public Class RealmModuleHost
     Public Event OnReceivePacket(ByRef Packet As Packet) Implements IRealm.OnReceivePacket
 
     Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IRealm.SendPacket
+
+        'Make Header and put 0 at the end
+        '(Word) Packet Size
+        '(Byte) Packet ID
+        ' ...   Packet Core
+        'Dim Bufbyte(bytes.Length + 2) As Byte
+
+        'Bufbyte = PutInArray(Bufbyte, 0, Bufbyte.Length)
+
+
+
+        'For i As Integer = 0 To bytes.Length - 1
+        '    Bufbyte(i + 2) = bytes(i)
+        'Next
+
+        'RelayDataToServer(Bufbyte, Bufbyte.Length)
+
         RelayDataToServer(bytes, bytes.Length)
     End Sub
 
@@ -46,6 +63,20 @@ Public Class RealmModuleHost
     End Sub
 
     Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IRealm.ReceivePacket
+
+        'Make Header and put 0 at the end
+        '(Word) Packet Size
+        '(Byte) Packet ID
+        ' ...   Packet Core
+        'Dim Bufbyte(bytes.Length + 2) As Byte
+
+        'Bufbyte = PutInArray(Bufbyte, 0, Bufbyte.Length)
+
+        'For i As Integer = 0 To bytes.Length - 1
+        '    Bufbyte(i + 2) = bytes(i)
+        'Next
+        'RelayDataToClient(Bufbyte, Bufbyte.Length)
+
         RelayDataToClient(bytes, bytes.Length)
     End Sub
 

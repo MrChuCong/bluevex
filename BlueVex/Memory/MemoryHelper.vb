@@ -17,6 +17,7 @@ Imports BlueVex.Memory
 Namespace Memory
 
     Namespace ClientDetection
+
         Public Module z
 
             ''' <summary> 
@@ -58,9 +59,6 @@ Namespace Memory
                 Return Clients
             End Function
 
-            ''' <summary>
-            ''' You have to be in a b.net game
-            ''' </summary>
             Public Function ClientProcessFromCharName(ByVal CharName As String) As Process
 
                 Dim DiabloProcesses As Process() = Process.GetProcesses
@@ -96,12 +94,49 @@ Namespace Memory
 
             End Function
 
+
+            Public Function ClientFromWindowName(ByVal Name As String) As List(Of Process)
+
+                Dim Clients As New List(Of Process)
+                Dim DiabloProcesses As Process() = Process.GetProcesses
+
+                For Each Process As Process In DiabloProcesses
+                    'If it's a diablo Client
+                    If Process.ProcessName = "Diablo II" Then
+                        'Name we search.
+                        If Process.MainWindowTitle.ToLower = Name.ToLower Then
+                            Clients.Add(Process)
+                        End If
+                    End If
+                Next
+                Return Clients
+            End Function
+
         End Module
+
     End Namespace
 
     Namespace Wrapped
 
         Public Module Functions
+
+            Public Function GetClientsCharName() As List(Of String)
+                Dim BufNames As New List(Of String)
+
+                Dim ListClient As List(Of Process) = ClientDetection.GetDiabloClients()
+
+                For i As Integer = 0 To ListClient.Count - 1
+                    Dim TempName As String = Wrapped.GetMyPlayerName(ListClient(i).Id)
+                    'If the name is selected.
+                    If Not TempName = "" Then
+                        'If client is past the Char Select screen.
+                        If GetClientStatus(ListClient(i).Id) < OutOfGameState.CharacterSelect Then
+                            BufNames.Add(TempName.ToLower)
+                        End If
+                    End If
+                Next
+                Return BufNames
+            End Function
 
             ''' <summary>
             ''' Get the Player Name when you're in Chat/Game
@@ -461,13 +496,16 @@ Namespace Memory
 
 
             Public Reader As MemEditor
+
             Dim D2client As System.Diagnostics.ProcessModule
             Dim D2Win As System.Diagnostics.ProcessModule
+            Dim D2Launch As System.Diagnostics.ProcessModule
 
             Public Sub New(Optional ByVal DiabloPID As Integer = 0)
                 Me.Reader = New MemEditor(DiabloPID)
                 D2client = Reader.GetModule("D2Client.dll")
                 D2Win = Reader.GetModule("D2Win.dll")
+                D2Launch = Reader.GetModule("D2Launch.dll")
             End Sub
 
             Public Function IsInGame() As Boolean
@@ -610,9 +648,12 @@ Namespace Memory
 
             Public Function GetGameInfo() As Structures.GameInfo
                 Try
-                    Dim GameInfoPointer As IntPtr = Reader.ReadMemoryInt(CInt(D2client.BaseAddress) + &H11B908)
-
+                    'Based On D2Client, get Value In Game
+                    'Dim GameInfoPointer As IntPtr = Reader.ReadMemoryInt(CInt(D2client.BaseAddress) + &H11B908)
+                    'Based On D2Launch, Gets Value when Diablo Launched.
+                    Dim GameInfoPointer As IntPtr = Reader.ReadMemoryInt(CInt(D2Launch.BaseAddress) + &H25ACC)
                     Return Reader.ReadMemoryStruct(GameInfoPointer, GetType(Structures.GameInfo))
+
                 Catch ex As Exception
                     Return New Structures.GameInfo
                 End Try
