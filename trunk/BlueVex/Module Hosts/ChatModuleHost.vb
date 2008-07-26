@@ -36,6 +36,26 @@ Public Class ChatModuleHost
     Public Event OnReceivePacket(ByRef Packet As Packet) Implements IChat.OnReceivePacket
 
     Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IChat.SendPacket
+
+        'Make the Header
+        '(Byte) 0xFF
+        '(Byte) Packet ID
+        '(Word) Packet Size
+        '  ...  Packet Core 
+        'Dim Bufbyte(length + 3) As Byte
+        'Bufbyte(0) = &HFF
+        ''PacketID
+        'Bufbyte(1) = bytes(0)
+        ''Packet Length
+        'Bufbyte = PutInArray(Bufbyte, 2, Bufbyte.Length)
+
+        ''Copy the Packet's core
+        'For i As Integer = 0 To bytes.Length - 2
+        '    Bufbyte(4 + i) = bytes(1 + i)
+        'Next
+
+        'RelayDataToServer(Bufbyte, Bufbyte.Length)
+
         RelayDataToServer(bytes, bytes.Length)
     End Sub
 
@@ -48,6 +68,26 @@ Public Class ChatModuleHost
     End Sub
 
     Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IChat.ReceivePacket
+
+        'Make the Header
+        '(Byte) 0xFF
+        '(Byte) Packet ID
+        '(Word) Packet Size
+        '  ...  Packet Core 
+        'Dim Bufbyte(length + 3) As Byte
+        'Bufbyte(0) = &HFF
+        ''PacketID
+        'Bufbyte(1) = bytes(0)
+        ''Packet Length
+        'Bufbyte = PutInArray(Bufbyte, 2, Bufbyte.Length)
+
+        ''Copy the Packet's core
+        'For i As Integer = 0 To bytes.Length - 2
+        '    Bufbyte(4 + i) = bytes(1 + i)
+        'Next
+
+        'RelayDataToClient(Bufbyte, Bufbyte.Length)
+
         RelayDataToClient(bytes, bytes.Length)
     End Sub
 
@@ -256,6 +296,8 @@ Public Class ChatModuleHost
 
         ReceivePacket(Buffer)
     End Sub
+
+
 
 #End Region
 

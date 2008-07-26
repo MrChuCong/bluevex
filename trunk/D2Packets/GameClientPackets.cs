@@ -3337,8 +3337,6 @@ public class UseInventoryItem : GCPacket
 }
 
  
-
- 
 public class WalkToLocation : GoToLocation
 {
     // Fields

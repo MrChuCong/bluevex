@@ -317,9 +317,8 @@ Namespace Memory
 End Namespace
 
 
-
 Namespace Memory.Tools
-    Module Tools
+    Public Module Tools
 
         <DllImport("kernel32.dll", SetLastError:=True)> _
 Public Function OpenProcess(ByVal dwDesiredAccess As UInt32, ByVal bInheritHandle As Boolean, ByVal dwProcessId As UInt32) As IntPtr
@@ -340,6 +339,14 @@ ByVal buffer As Byte(), ByVal size As UInt32, ByRef lpNumberOfBytesWritten As In
         End Function
         Public Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Integer
         Public Declare Function GetWindowThreadProcessId Lib "user32" (ByVal hwnd As Long, ByRef lpdwProcessId As Long) As Long
+
+        Private Declare Function SendMessageByString Lib "user32" Alias "SendMessageA" (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, ByVal lParam As String) As Integer
+        Private Const WM_SETTEXT As Short = &HCS
+
+
+        Public Sub SetWindowName(ByVal Hwnd As Integer, ByVal NewName As String)
+            SendMessageByString(Hwnd, WM_SETTEXT, 0, NewName)
+        End Sub
 
         Public Function BytesToStruct(ByVal Buff() As Byte, ByVal MyType As System.Type) As Object
 
