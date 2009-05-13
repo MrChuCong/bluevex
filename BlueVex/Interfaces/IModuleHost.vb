@@ -29,6 +29,7 @@ Public MustInherit Class IModuleHost
     End Sub
 
     Sub Update()
+
         For Each obj As Object In LoadedModules
             obj.update()
         Next

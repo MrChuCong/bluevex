@@ -1,7 +1,5 @@
 Public Class ChatModule
-    Implements BlueVex.IChatModule
-
-
+    Implements bluevex.ichatmodule
 
 #Region " Module Info "
 

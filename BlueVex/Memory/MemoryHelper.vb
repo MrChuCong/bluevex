@@ -30,7 +30,7 @@ Namespace Memory
                 Dim DiabloProcesses As Process() = Process.GetProcesses
                 For Each Process As Process In DiabloProcesses
                     'It works no matter the window name.
-                    If Process.ProcessName = "Diablo II" Then
+                    If Process.MainModule.FileVersionInfo.InternalName = "Diablo II" Then
                         'Sometime the packets are not that accurate. Range of 7 Units.
                         If InRange(Wrapped.GetMyPosition(Process.Id), Pos, 7) Then
                             Return Process
@@ -49,7 +49,7 @@ Namespace Memory
                 Dim DiabloProcesses As Process() = Process.GetProcesses
                 For Each Process As Process In DiabloProcesses
                     'If it's a diablo Client
-                    If Process.ProcessName = "Diablo II" Then
+                    If Process.MainModule.FileVersionInfo.InternalName = "Diablo II" Then
                         'If It's on the status asked.
                         If Wrapped.GetClientStatus(Process.Id) = Status Then
                             Clients.Add(Process)
@@ -63,15 +63,17 @@ Namespace Memory
 
                 Dim DiabloProcesses As Process() = Process.GetProcesses
                 For Each Process As Process In DiabloProcesses
+
                     'If it's a diablo Client
-                    If Process.ProcessName = "Diablo II" Then
+                    If Process.MainModule.ModuleName = "Game.exe" Then
                         'If It's on the status asked.
                         If Wrapped.GetMyPlayerName(Process.Id).ToLower.Contains(CharName.ToLower) Then
                             Return Process
                         End If
                     End If
+
                 Next
-                Return New Process
+                Return Nothing
             End Function
 
             ''' <summary>
@@ -86,14 +88,13 @@ Namespace Memory
 
                 For Each Process As Process In DiabloProcesses
                     'If it's a diablo Client
-                    If Process.ProcessName = "Diablo II" Then
+                    If Process.MainModule.FileVersionInfo.InternalName = "Diablo II" Then
                         Clients.Add(Process)
                     End If
                 Next
                 Return Clients
 
             End Function
-
 
             Public Function ClientFromWindowName(ByVal Name As String) As List(Of Process)
 
@@ -102,7 +103,7 @@ Namespace Memory
 
                 For Each Process As Process In DiabloProcesses
                     'If it's a diablo Client
-                    If Process.ProcessName = "Diablo II" Then
+                    If Process.MainModule.FileVersionInfo.InternalName = "Diablo II" Then
                         'Name we search.
                         If Process.MainWindowTitle.ToLower = Name.ToLower Then
                             Clients.Add(Process)
