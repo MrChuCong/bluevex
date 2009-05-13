@@ -149,6 +149,7 @@ Public Class ChatModuleHost
 #Region " Packet Event Raisers "
 
     Overrides Sub InterptetPacketToServer(ByRef Packet As Packet)
+
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
         Packet.Data = CutBytes(Packet.Data, 0, 1)
@@ -296,8 +297,6 @@ Public Class ChatModuleHost
 
         ReceivePacket(Buffer)
     End Sub
-
-
 
 #End Region
 

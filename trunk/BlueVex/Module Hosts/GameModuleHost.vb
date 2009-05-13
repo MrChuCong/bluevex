@@ -18,9 +18,11 @@ Public Class GameModuleHost
             GameModule = DirectCast(PluginServices.CreateInstance(AvailableGameModules(i)), IGameModule)
             If My.Settings.DisabledModules Is Nothing Then My.Settings.DisabledModules = New Collections.Specialized.StringCollection
             If Not My.Settings.DisabledModules.Contains(GameModule.Name) Then
+
                 Log.WriteLine("Loading " & GameModule.Name)
                 GameModule.Initialize(Me)
                 LoadedModules.Add(GameModule)
+
             End If
         Next
     End Sub

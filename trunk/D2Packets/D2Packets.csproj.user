@@ -15,6 +15,6 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartAction>Program</StartAction>
-    <StartProgram>D:\Truc J-F\D2\BlueVex Testing\rvt.exe</StartProgram>
+    <StartProgram>C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\BlueVex Testing\rvt.exe</StartProgram>
   </PropertyGroup>
 </Project>
