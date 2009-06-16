@@ -1,0 +1,3 @@
+Fix:
+
+Find an efficient way to detect DII, no matter the kind of launcher

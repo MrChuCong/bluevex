@@ -17,7 +17,7 @@
     </UpgradeBackupLocation>
     <StartupObject>
     </StartupObject>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,15 +50,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\BlueVex Testing\D2Data.dll</HintPath>
     </Reference>
-    <Reference Include="D2Packets, Version=0.9.3083.33453, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\BlueVex Testing\D2Packets.dll</HintPath>
-    </Reference>
+    <Reference Include="D2PacketsVB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="ETUtils, Version=1.0.2610.21028, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\BlueVex Testing\ETUtils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -74,6 +74,7 @@
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,51 @@
+D:\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\ResolveAssemblyReference.cache
+D:\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.Resources.resources
+D:\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.vbproj.GenerateResource.Cache
+D:\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.dll
+D:\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.xml
+D:\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.pdb
+D:\Truc J-F\D2\ClientLess\D2PacketsVB.dll
+D:\Truc J-F\D2\ClientLess\D2PacketsVB.pdb
+D:\Truc J-F\D2\ClientLess\D2PacketsVB.xml
+D:\Truc J-F\D2\ClientLess\D-Tox\D2PacketsVB.dll
+D:\Truc J-F\D2\ClientLess\D-Tox\D2PacketsVB.pdb
+D:\Truc J-F\D2\ClientLess\D-Tox\D2PacketsVB.xml
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D-Tox\D2PacketsVB.dll
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D-Tox\D2PacketsVB.pdb
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D-Tox\D2PacketsVB.xml
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.Resources.resources
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.vbproj.GenerateResource.Cache
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.dll
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.xml
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.pdb
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.dll
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.pdb
+C:\Documents and Settings\J-F\Desktop\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.xml
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.dll
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.pdb
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.xml
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.Resources.resources
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.vbproj.GenerateResource.Cache
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.dll
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.xml
+C:\Documents and Settings\Jf\Desktop\Truc J-F\D2\ClientLess\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.pdb
+D:\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.dll
+D:\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.pdb
+D:\Truc J-F\D2\ClientLess\Dbot Release\D2PacketsVB.xml
+D:\Truc J-F\D2\Development\Bluevex\Dbot Release\D2PacketsVB.dll
+D:\Truc J-F\D2\Development\Bluevex\Dbot Release\D2PacketsVB.pdb
+D:\Truc J-F\D2\Development\Bluevex\Dbot Release\D2PacketsVB.xml
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\ResolveAssemblyReference.cache
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.Resources.resources
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.vbproj.GenerateResource.Cache
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.dll
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.xml
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.pdb
+D:\Truc J-F\D2\Development\Bluevex\RedVex\D2PacketsVB.dll
+D:\Truc J-F\D2\Development\Bluevex\RedVex\D2PacketsVB.pdb
+D:\Truc J-F\D2\Development\Bluevex\RedVex\D2PacketsVB.xml
+D:\Truc J-F\D2\BlueVex Testing\D2PacketsVB.dll
+D:\Truc J-F\D2\BlueVex Testing\D2PacketsVB.pdb
+D:\Truc J-F\D2\BlueVex Testing\D2PacketsVB.xml

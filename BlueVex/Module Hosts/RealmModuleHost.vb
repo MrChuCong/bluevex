@@ -1,3 +1,5 @@
+Imports D2PacketsVB
+
 Public Class RealmModuleHost
     Inherits IModuleHost
     Implements IRealm
@@ -64,19 +66,6 @@ Public Class RealmModuleHost
 
     Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IRealm.ReceivePacket
 
-        'Make Header and put 0 at the end
-        '(Word) Packet Size
-        '(Byte) Packet ID
-        ' ...   Packet Core
-        'Dim Bufbyte(bytes.Length + 2) As Byte
-
-        'Bufbyte = PutInArray(Bufbyte, 0, Bufbyte.Length)
-
-        'For i As Integer = 0 To bytes.Length - 1
-        '    Bufbyte(i + 2) = bytes(i)
-        'Next
-        'RelayDataToClient(Bufbyte, Bufbyte.Length)
-
         RelayDataToClient(bytes, bytes.Length)
     End Sub
 
@@ -129,9 +118,8 @@ Public Class RealmModuleHost
     Overrides Sub InterptetPacketToServer(ByRef Packet As Packet)
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
-        Packet.Data = CutBytes(Packet.Data, 0, 2)
 
-        Select Case Packet.Data(0)
+        Select Case Packet.Data(2)
             Case D2Packets.RealmClientPacket.CancelGameCreation
                 RaiseEvent OnCancelGameCreation(New RealmClient.CancelGameCreation(Packet.Data), Flag)
             Case D2Packets.RealmClientPacket.CharacterCreationRequest
@@ -153,7 +141,9 @@ Public Class RealmModuleHost
             Case D2Packets.RealmClientPacket.JoinGameRequest
                 RaiseEvent OnJoinGameRequest(New RealmClient.JoinGameRequest(Packet.Data), Flag)
             Case D2Packets.RealmClientPacket.MessageOfTheDayRequest
+
                 RaiseEvent OnMessageOfTheDayRequest(New RealmClient.MessageOfTheDayRequest(Packet.Data), Flag)
+
             Case D2Packets.RealmClientPacket.RealmStartupRequest
                 RaiseEvent OnRealmStartupRequest(New RealmClient.RealmStartupRequest(Packet.Data), Flag)
         End Select
@@ -169,9 +159,7 @@ Public Class RealmModuleHost
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
 
-        Packet.Data = CutBytes(Packet.Data, 0, 2)
-
-        Select Case Packet.Data(0)
+        Select Case Packet.Data(2)
             Case D2Packets.RealmServerPacket.CharacterCreationResponse
                 RaiseEvent OnCharacterCreationResponse(New RealmServer.CharacterCreationResponse(Packet.Data), Flag)
             Case D2Packets.RealmServerPacket.CharacterDeletionResponse

@@ -1,0 +1,159 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+D2PacketsVB
+</name>
+</assembly>
+<members>
+<member name="T:D2PacketsVB.RealmServer.RSPacket">
+	<summary>
+ Base class for Battle.net Client Packets
+ </summary>
+</member><member name="F:D2PacketsVB.RealmServer.RealmCharacterActionResult.CharacterOverlap">
+	<summary>
+ Character already exists or account already has maximum number of characters (currently 8)
+ </summary>
+</member><member name="F:D2PacketsVB.RealmServer.RealmCharacterActionResult.InvalidCharacterName">
+	<summary>
+ Character name is longer than 15 characters or contains illegal characters.
+ </summary>
+</member><member name="F:D2PacketsVB.RealmServer.RealmCharacterActionResult.CharacterNotFound">
+	<summary>
+ Invalid character name specified for action
+ </summary>
+</member><member name="F:D2PacketsVB.RealmServer.RealmCharacterActionResult.CharacterDoesNotExist">
+	<summary>
+ Invalid character name specified for character deletion
+ </summary>
+</member><member name="F:D2PacketsVB.RealmServer.RealmCharacterActionResult.Failed">
+	<summary>
+ The action (logon, upgrade, etc. has failed for an unspecified reason)
+ </summary>
+</member><member name="F:D2PacketsVB.RealmServer.RealmCharacterActionResult.CharacterExpired">
+	<summary>
+ Cannot perform any action but delete on expired characters...
+ </summary>
+</member><member name="F:D2PacketsVB.RealmServer.RealmCharacterActionResult.CharacterAlreadyExpansion">
+	<summary>
+ When trying to upgrade the character
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.RealmStartupResponse">
+	<summary>
+ RS Packet 0x01 - Realm Startup - Result of connection start request (RC 0x01)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.CharacterCreationResponse">
+	<summary>
+ RS Packet 0x02 - Character Creation Response - Result of character creation request (reply to RC 0x02)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.CreateGameResponse">
+	<summary>
+ RS Packet 0x03 - Create Game - Reply to join request (RC 0x04)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.JoinGameResponse">
+	<summary>
+ RS Packet 0x04 - Join Game - Reply to join request (RC 0x04)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.GameList">
+	<summary>
+ RS Packet 0x05 - Game List - Availiable game to list (sent once for each game, in reply to RC 0x05)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.GameInfo">
+	<summary>
+ RS Packet 0x06 - Game Info - Provides information about a particular game (reply to RC 0x06)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.CharacterLogonResponse">
+	<summary>
+ RS Packet 0x07 - Character Logon Response - Character log attempt result, sent in reply to RC 0x07
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.CharacterDeletionResponse">
+	<summary>
+ RS Packet 0x0A - Character Deletion Response - Result of character deletion, sent in reply to RC 0x0A
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.MessageOfTheDay">
+	<summary>
+ RS Packet 0x12 - Message of the Day - Sent after logon in reply to RC 0x12.
+ More like message of the year ^^
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.GameCreationQueue">
+	<summary>
+ RS Packet 0x14 - Game Creation Queue - Initinialise waiting queue or update queue position.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.CharacterUpgradeResponse">
+	<summary>
+ RS Packet 0x18 - CharacterUpgradeResult - Character upgrade attempt result, sent in reply to RC 0x18
+ </summary>
+</member><member name="T:D2PacketsVB.RealmServer.CharacterList">
+	<summary>
+ RS Packet 0x19 - Character List - Request a list of characters for the current account (with timestamps)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.RCPacket">
+	<summary>
+ Base class for Battle.net Client Packets
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.RealmStartupRequest">
+	<summary>
+ RC Packet 0x01 - Realm Startup Request - Request realm connection startup using the information from Bnet server.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.CharacterCreationRequest">
+	<summary>
+ RC Packet 0x02 - Character Creation Request - Request creation of a new realm character in the current account.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.CreateGameRequest">
+	<summary>
+ RC Packet 0x03 - Create Game Request - Request to join a game - Must be sent after sucessful game creation
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.JoinGameRequest">
+	<summary>
+ RC Packet 0x04 - Join Game Request - Request to join a game - Must be sent after sucessful game creation
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.GameListRequest">
+	<summary>
+ RC Packet 0x05 - Game List Request - Request a list of availiable games.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.GameInfoRequest">
+	<summary>
+ RC Packet 0x06 - Game Info Request - Request information for a particular game.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.CharacterLogonRequest">
+	<summary>
+ RC Packet 0x07 - Character Logon Request - Requests picking a character (sucess bringing you to lobby...)
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.CharacterDeletionRequest">
+	<summary>
+ RC Packet 0x0A - Character Deletion Request - Request deletion of a realm character in the current account.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.MessageOfTheDayRequest">
+	<summary>
+ RC Packet 0x12 - Message Of The Day Request - Sent after logon to request RS 0x12
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.CancelGameCreation">
+	<summary>
+ RC Packet 0x13 - Cancel Game Creation - Cancels a currently pending game creation.
+ Note: pressing the cancel button after the game was created and client attempts to join won't trigger this packet.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.CharacterUpgradeRequest">
+	<summary>
+ RC Packet 0x18 - Character Upgrade Request - Requests upgrading a chracter from classic to expansion.
+ </summary>
+</member><member name="T:D2PacketsVB.RealmClient.CharacterListRequest">
+	<summary>
+ RC Packet 0x19 - Character List Request - Request a list of characters for the current account (with timestamps)
+ </summary>
+</member><member name="T:D2PacketsVB.D2Packets.D2Packet">
+	<summary>
+ Base class for Diablo II Packets
+ </summary>
+</member><member name="T:D2PacketsVB.GameClient.SellItem">
+	<summary>
+ To Check
+ </summary>
+	<remarks></remarks>
+</member><member name="T:D2PacketsVB.GameClient.TownFolkRepair">
+	<summary>
+ To Check
+ </summary>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

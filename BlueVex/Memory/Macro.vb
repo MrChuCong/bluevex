@@ -610,7 +610,7 @@ Public Class Macro
         WaitTime = TimeBeforeStarting
 
         If MacroThread IsNot Nothing Then MacroThread.Abort()
-        MacroThread = New Thread(AddressOf LobbyToChannel)
+        MacroThread = New Thread(AddressOf LobbyToChannel_t)
         MacroThread.IsBackground = True
         MacroThread.Start()
     End Sub

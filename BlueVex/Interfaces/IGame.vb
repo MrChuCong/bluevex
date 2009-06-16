@@ -1,3 +1,5 @@
+Imports D2PacketsVB
+
 Public Interface IGame
     Sub WriteToLog(ByVal Text As String)
 
@@ -122,8 +124,10 @@ Public Interface IGame
     Event OnEquipItem(ByVal Packet As GameClient.EquipItem, ByRef Flag As Packet.PacketFlag)
     Event OnExitGame(ByVal Packet As GameClient.ExitGame, ByRef Flag As Packet.PacketFlag)
     Event OnGameLogonRequest(ByVal Packet As GameClient.GameLogonRequest, ByRef Flag As Packet.PacketFlag)
+
     Event OnGoToLocation(ByVal Packet As GameClient.GoToLocation, ByRef Flag As Packet.PacketFlag)
     Event OnGoToTarget(ByVal Packet As GameClient.GoToTarget, ByRef Flag As Packet.PacketFlag)
+
     Event OnGoToTownFolk(ByVal Packet As GameClient.GoToTownFolk, ByRef Flag As Packet.PacketFlag)
     Event OnHireMercenary(ByVal Packet As GameClient.HireMercenary, ByRef Flag As Packet.PacketFlag)
     Event OnHoverUnit(ByVal Packet As GameClient.HoverUnit, ByRef Flag As Packet.PacketFlag)
