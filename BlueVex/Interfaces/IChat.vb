@@ -1,5 +1,4 @@
-Imports D2PacketsVB
-Imports D2PacketsVB.D2Packets
+Imports D2Packets
 
 Public Interface IChat
     Sub WriteToLog(ByVal Text As String)

@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Text
 Imports D2Data
-Imports D2PacketsVB.D2Packets
+Imports D2Packets
 Imports ETUtils
 Imports System.Collections.Generic
 
@@ -13,7 +13,7 @@ Namespace GameServer
 
         Public ReadOnly PacketID As GameServerPacket
 
-        Public Sub New(ByVal Id As GameClientPacket)
+        Public Sub New(ByVal Id As GameClient.GameClientPacket)
             Me.PacketID = Id
         End Sub
 
@@ -4772,19 +4772,19 @@ Label_003E:
     Public Class UpdateGameQuestLog
         Inherits GSPacket
         ' Fields
-        Protected m_quests As GameQuestInfo()
+        Protected m_quests As Struct.GameQuestInfo()
 
         ' Methods
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.m_quests = New GameQuestInfo(40) {}
+            Me.m_quests = New Struct.GameQuestInfo(40) {}
             For i As Integer = 0 To 40
-                Me.m_quests(i) = New GameQuestInfo(DirectCast(i, QuestType), BitConverter.ToUInt16(data, 1 + (i * 2)))
+                Me.m_quests(i) = New Struct.GameQuestInfo(DirectCast(i, QuestType), BitConverter.ToUInt16(data, 1 + (i * 2)))
             Next
         End Sub
 
         ' Properties
-        Public ReadOnly Property Quests() As GameQuestInfo()
+        Public ReadOnly Property Quests() As Struct.GameQuestInfo()
             Get
                 Return Me.m_quests
             End Get
@@ -4972,7 +4972,7 @@ Label_003E:
         Inherits GSPacket
         ' Fields
         Public Shared ReadOnly NULL_UInt32 As UInteger
-        Protected m_quests As QuestInfo()
+        Protected m_quests As Struct.QuestInfo()
         Protected m_type As QuestInfoUpdateType
         Protected m_uid As UInteger
 
@@ -4981,14 +4981,14 @@ Label_003E:
             MyBase.New(data)
             Me.m_type = data(1)
             Me.m_uid = BitConverter.ToUInt32(data, 2)
-            Me.m_quests = New QuestInfo(40) {}
+            Me.m_quests = New Struct.QuestInfo(40) {}
             For i As Integer = 0 To 40
-                Me.m_quests(i) = New QuestInfo(DirectCast(i, QuestType), data(6 + (i * 2)), data(7 + (i * 2)))
+                Me.m_quests(i) = New Struct.QuestInfo(DirectCast(i, QuestType), data(6 + (i * 2)), data(7 + (i * 2)))
             Next
         End Sub
 
         ' Properties
-        Public ReadOnly Property Quests() As QuestInfo()
+        Public ReadOnly Property Quests() As Struct.QuestInfo()
             Get
                 Return Me.m_quests
             End Get
@@ -5016,19 +5016,19 @@ Label_003E:
     Public Class UpdateQuestLog
         Inherits GSPacket
         ' Fields
-        Protected m_quests As QuestLog()
+        Protected m_quests As Struct.QuestLog()
 
         ' Methods
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.m_quests = New QuestLog(40) {}
+            Me.m_quests = New Struct.QuestLog(40) {}
             For i As Integer = 0 To 40
-                Me.m_quests(i) = New QuestLog(DirectCast(i, QuestType), data(i + 1))
+                Me.m_quests(i) = New Struct.QuestLog(DirectCast(i, QuestType), data(i + 1))
             Next
         End Sub
 
         ' Properties
-        Public ReadOnly Property Quests() As QuestLog()
+        Public ReadOnly Property Quests() As Struct.QuestLog()
             Get
                 Return Me.m_quests
             End Get

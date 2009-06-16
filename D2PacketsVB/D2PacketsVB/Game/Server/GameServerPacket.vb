@@ -1,6 +1,6 @@
 ﻿Imports System
 
-Namespace D2Packets
+Namespace GameServer
 
     Public Enum GameServerPacket
 
@@ -118,5 +118,4 @@ Namespace D2Packets
         MercGainExperience = 3845
 
     End Enum
-
 End Namespace

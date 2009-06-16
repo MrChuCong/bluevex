@@ -1,6 +1,5 @@
 ﻿Imports System
-
-Namespace D2Packets
+Namespace RealmServer
 
     Public Enum RealmServerPacket As Byte
         RealmStartupResponse = 1
@@ -19,5 +18,4 @@ Namespace D2Packets
         Invalid = 48
         ' Probably 0x20, leaving some space for safety...
     End Enum
-
 End Namespace

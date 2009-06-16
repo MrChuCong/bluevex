@@ -3,7 +3,7 @@ Imports D2Data
 Imports ETUtils
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
-Imports D2PacketsVB.D2Packets
+Imports D2Packets
 Imports System.Net
 
 Namespace BnetServer
@@ -246,7 +246,7 @@ Namespace BnetServer
                                 length = (length + (ByteConverter.GetByteOffset(data, &H2C, length) + 1))
 
                                 If (((length <> -1) AndAlso (data.Length > length)) AndAlso ((data.Length - length) >= &H22)) Then
-                                    StatString.ParseD2StatString(data, length, (Me.clientVersion), (Me.characterType), (Me.characterLevel), (Me.characterFlags), (Me.characterAct), (Me.characterTitle))
+                                    Struct.StatString.ParseD2StatString(data, length, (Me.clientVersion), (Me.characterType), (Me.characterLevel), (Me.characterFlags), (Me.characterAct), (Me.characterTitle))
                                 End If
                             End If
                         End If
@@ -315,7 +315,7 @@ Namespace BnetServer
                 If (Me.client = BattleNetClient.Diablo2LoD) Then
                     Me.characterFlags = (Me.characterFlags Or characterFlags.Expansion)
                 End If
-                StatString.ParseD2StatString(data, startIndex, (Me.clientVersion), (Me.characterType), (Me.characterLevel), (Me.characterFlags), (Me.characterAct), (Me.characterTitle))
+                Struct.StatString.ParseD2StatString(data, startIndex, (Me.clientVersion), (Me.characterType), (Me.characterLevel), (Me.characterFlags), (Me.characterAct), (Me.characterTitle))
             End If
         End Sub
 
@@ -411,17 +411,17 @@ Namespace BnetServer
         ' Fields
 
         Public ReadOnly RealmsCount As UInteger
-        Public ReadOnly Realms As RealmInfo()
+        Public ReadOnly Realms As Struct.RealmInfo()
 
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
 
             Me.RealmsCount = BitConverter.ToUInt32(data, 8)
-            Me.realms = New RealmInfo(Me.count - 1) {}
+            Me.Realms = New Struct.RealmInfo(Me.Count - 1) {}
             Dim offset As Integer = 12
             Dim i As Integer
             For i = 0 To Me.count - 1
-                Me.realms(i) = New RealmInfo(data, offset)
+                Me.Realms(i) = New Struct.RealmInfo(data, offset)
                 offset = (offset + ((6 + Me.realms(i).Name.Length) + Me.realms(i).Description.Length))
             Next i
         End Sub

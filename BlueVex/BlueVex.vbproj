@@ -50,7 +50,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\BlueVex Testing\D2Data.dll</HintPath>
     </Reference>
-    <Reference Include="D2PacketsVB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="D2Packets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="ETUtils, Version=1.0.2610.21028, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\BlueVex Testing\ETUtils.dll</HintPath>

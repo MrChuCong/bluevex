@@ -1,5 +1,6 @@
 Imports System.Runtime.InteropServices
-Imports D2PacketsVB
+
+Imports D2Packets
 
 Public Class GameModuleHost
     Inherits IModuleHost
@@ -67,85 +68,86 @@ Public Class GameModuleHost
 
 #Region " Game Client Events "
 
-    Public Event OnAddBeltItem(ByVal Packet As GameClient.AddBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAddBeltItem
-    Public Event OnBuyItem(ByVal Packet As GameClient.BuyItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnBuyItem
-    Public Event OnCainIdentifyItems(ByVal Packet As GameClient.CainIdentifyItems, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCainIdentifyItems
-    Public Event OnCastLeftSkill(ByVal Packet As GameClient.CastLeftSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastLeftSkill
-    Public Event OnCastLeftSkillOnTarget(ByVal Packet As GameClient.CastLeftSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastLeftSkillOnTarget
-    Public Event OnCastLeftSkillOnTargetStopped(ByVal Packet As GameClient.CastLeftSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastLeftSkillOnTargetStopped
-    Public Event OnCastRightSkill(ByVal Packet As GameClient.CastRightSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastRightSkill
-    Public Event OnCastRightSkillOnTarget(ByVal Packet As GameClient.CastRightSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastRightSkillOnTarget
-    Public Event OnCastRightSkillOnTargetStopped(ByVal Packet As GameClient.CastRightSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastRightSkillOnTargetStopped
-    Public Event OnChangeMercEquipment(ByVal Packet As GameClient.ChangeMercEquipment, ByRef Flag As Packet.PacketFlag) Implements IGame.OnChangeMercEquipment
-    Public Event OnClickButton(ByVal Packet As GameClient.ClickButton, ByRef Flag As Packet.PacketFlag) Implements IGame.OnClickButton
-    Public Event OnCloseQuest(ByVal Packet As GameClient.CloseQuest, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCloseQuest
-    Public Event OnDisplayQuestMessage(ByVal Packet As GameClient.DisplayQuestMessage, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDisplayQuestMessage
-    Public Event OnDropGold(ByVal Packet As GameClient.DropGold, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDropGold
-    Public Event OnDropItem(ByVal Packet As GameClient.DropItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDropItem
-    Public Event OnDropItemToContainer(ByVal Packet As GameClient.DropItemToContainer, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDropItemToContainer
-    Public Event OnEmbedItem(ByVal Packet As GameClient.EmbedItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnEmbedItem
-    Public Event OnEnterGame(ByVal Packet As GameClient.EnterGame, ByRef Flag As Packet.PacketFlag) Implements IGame.OnEnterGame
-    Public Event OnEquipItem(ByVal Packet As GameClient.EquipItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnEquipItem
-    Public Event OnExitGame(ByVal Packet As GameClient.ExitGame, ByRef Flag As Packet.PacketFlag) Implements IGame.OnExitGame
-    Public Event OnGameLogonRequest(ByVal Packet As GameClient.GameLogonRequest, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGameLogonRequest
+    Public Event OnAddBeltItem(ByVal Packet As D2Packets.GameClient.AddBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAddBeltItem
+    Public Event OnBuyItem(ByVal Packet As D2Packets.GameClient.BuyItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnBuyItem
+    Public Event OnCainIdentifyItems(ByVal Packet As D2Packets.GameClient.CainIdentifyItems, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCainIdentifyItems
+    Public Event OnCastLeftSkill(ByVal Packet As D2Packets.GameClient.CastLeftSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastLeftSkill
+    Public Event OnCastLeftSkillOnTarget(ByVal Packet As D2Packets.GameClient.CastLeftSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastLeftSkillOnTarget
+    Public Event OnCastLeftSkillOnTargetStopped(ByVal Packet As D2Packets.GameClient.CastLeftSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastLeftSkillOnTargetStopped
+    Public Event OnCastRightSkill(ByVal Packet As D2Packets.GameClient.CastRightSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastRightSkill
+    Public Event OnCastRightSkillOnTarget(ByVal Packet As D2Packets.GameClient.CastRightSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastRightSkillOnTarget
+    Public Event OnCastRightSkillOnTargetStopped(ByVal Packet As D2Packets.GameClient.CastRightSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCastRightSkillOnTargetStopped
+    Public Event OnChangeMercEquipment(ByVal Packet As D2Packets.GameClient.ChangeMercEquipment, ByRef Flag As Packet.PacketFlag) Implements IGame.OnChangeMercEquipment
+    Public Event OnClickButton(ByVal Packet As D2Packets.GameClient.ClickButton, ByRef Flag As Packet.PacketFlag) Implements IGame.OnClickButton
+    Public Event OnCloseQuest(ByVal Packet As D2Packets.GameClient.CloseQuest, ByRef Flag As Packet.PacketFlag) Implements IGame.OnCloseQuest
+    Public Event OnDisplayQuestMessage(ByVal Packet As D2Packets.GameClient.DisplayQuestMessage, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDisplayQuestMessage
+    Public Event OnDropGold(ByVal Packet As D2Packets.GameClient.DropGold, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDropGold
+    Public Event OnDropItem(ByVal Packet As D2Packets.GameClient.DropItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDropItem
+    Public Event OnDropItemToContainer(ByVal Packet As D2Packets.GameClient.DropItemToContainer, ByRef Flag As Packet.PacketFlag) Implements IGame.OnDropItemToContainer
+    Public Event OnEmbedItem(ByVal Packet As D2Packets.GameClient.EmbedItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnEmbedItem
+    Public Event OnEnterGame(ByVal Packet As D2Packets.GameClient.EnterGame, ByRef Flag As Packet.PacketFlag) Implements IGame.OnEnterGame
+    Public Event OnEquipItem(ByVal Packet As D2Packets.GameClient.EquipItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnEquipItem
+    Public Event OnExitGame(ByVal Packet As D2Packets.GameClient.ExitGame, ByRef Flag As Packet.PacketFlag) Implements IGame.OnExitGame
+    Public Event OnGameLogonRequest(ByVal Packet As D2Packets.GameClient.GameLogonRequest, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGameLogonRequest
 
-    Public Event OnGoToLocation(ByVal Packet As GameClient.GoToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToLocation
-    Public Event OnGoToTarget(ByVal Packet As GameClient.GoToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToTarget
+    Public Event OnGoToLocation(ByVal Packet As D2Packets.GameClient.GoToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToLocation
+    Public Event OnGoToTarget(ByVal Packet As D2Packets.GameClient.GoToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToTarget
 
-    Public Event OnGoToTownFolk(ByVal Packet As GameClient.GoToTownFolk, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToTownFolk
-    Public Event OnHireMercenary(ByVal Packet As GameClient.HireMercenary, ByRef Flag As Packet.PacketFlag) Implements IGame.OnHireMercenary
-    Public Event OnHoverUnit(ByVal Packet As GameClient.HoverUnit, ByRef Flag As Packet.PacketFlag) Implements IGame.OnHoverUnit
-    Public Event OnIdentifyGambleItem(ByVal Packet As GameClient.IdentifyGambleItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIdentifyGambleItem
-    Public Event OnIdentifyItem(ByVal Packet As GameClient.IdentifyItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIdentifyItem
-    Public Event OnIncrementAttribute(ByVal Packet As GameClient.IncrementAttribute, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIncrementAttribute
-    Public Event OnIncrementSkill(ByVal Packet As GameClient.IncrementSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIncrementSkill
-    Public Event OnInventoryItemToBelt(ByVal Packet As GameClient.InventoryItemToBelt, ByRef Flag As Packet.PacketFlag) Implements IGame.OnInventoryItemToBelt
-    Public Event OnItemToCube(ByVal Packet As GameClient.ItemToCube, ByRef Flag As Packet.PacketFlag) Implements IGame.OnItemToCube
-    Public Event OnPartyRequest(ByVal Packet As GameClient.PartyRequest, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPartyRequest
-    Public Event OnPickItem(ByVal Packet As GameClient.PickItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPickItem
-    Public Event OnPickItemFromContainer(ByVal Packet As GameClient.PickItemFromContainer, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPickItemFromContainer
-    Public Event OnPing(ByVal Packet As GameClient.Ping, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPing
-    Public Event OnRecastLeftSkill(ByVal Packet As GameClient.RecastLeftSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastLeftSkill
-    Public Event OnRecastLeftSkillOnTarget(ByVal Packet As GameClient.RecastLeftSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastLeftSkillOnTarget
-    Public Event OnRecastLeftSkillOnTargetStopped(ByVal Packet As GameClient.RecastLeftSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastLeftSkillOnTargetStopped
-    Public Event OnRecastRightSkill(ByVal Packet As GameClient.RecastRightSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastRightSkill
-    Public Event OnRecastRightSkillOnTarget(ByVal Packet As GameClient.RecastRightSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastRightSkillOnTarget
-    Public Event OnRecastRightSkillOnTargetStopped(ByVal Packet As GameClient.RecastRightSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastRightSkillOnTargetStopped
-    Public Event OnRemoveBeltItem(ByVal Packet As GameClient.RemoveBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRemoveBeltItem
-    Public Event OnRequestQuestLog(ByVal Packet As GameClient.RequestQuestLog, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRequestQuestLog
-    Public Event OnRequestReassign(ByVal Packet As GameClient.RequestReassign, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRequestReassign
-    Public Event OnRespawn(ByVal Packet As GameClient.Respawn, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRespawn
-    Public Event OnResurrectMerc(ByVal Packet As GameClient.ResurrectMerc, ByRef Flag As Packet.PacketFlag) Implements IGame.OnResurrectMerc
-    Public Event OnRunToLocation(ByVal Packet As GameClient.RunToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRunToLocation
-    Public Event OnRunToTarget(ByVal Packet As GameClient.RunToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRunToTarget
-    Public Event OnSelectSkill(ByVal Packet As GameClient.SelectSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSelectSkill
-    Public Event OnSellItem(ByVal Packet As GameClient.SellItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSellItem
-    Public Event OnSendCharacterSpeech(ByVal Packet As GameClient.SendCharacterSpeech, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSendCharacterSpeech
-    Public Event OnSendMessage(ByVal Packet As GameClient.SendMessage, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSendMessage
-    Public Event OnSendOverheadMessage(ByVal Packet As GameClient.SendOverheadMessage, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSendOverheadMessage
-    Public Event OnSetPlayerRelation(ByVal Packet As GameClient.SetPlayerRelation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSetPlayerRelation
-    Public Event OnSetSkillHotkey(ByVal Packet As GameClient.SetSkillHotkey, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSetSkillHotkey
-    Public Event OnStackItems(ByVal Packet As GameClient.StackItems, ByRef Flag As Packet.PacketFlag) Implements IGame.OnStackItems
-    Public Event OnSwapBeltItem(ByVal Packet As GameClient.SwapBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwapBeltItem
-    Public Event OnSwapContainerItem(ByVal Packet As GameClient.SwapContainerItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwapContainerItem
-    Public Event OnSwapEquippedItem(ByVal Packet As GameClient.SwapEquippedItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwapEquippedItem
-    Public Event OnSwitchWeapons(ByVal Packet As GameClient.SwitchWeapons, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwitchWeapons
-    Public Event OnTownFolkCancelInteraction(ByVal Packet As GameClient.TownFolkCancelInteraction, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkCancelInteraction
-    Public Event OnTownFolkInteract(ByVal Packet As GameClient.TownFolkInteract, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkInteract
-    Public Event OnTownFolkMenuSelect(ByVal Packet As GameClient.TownFolkMenuSelect, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkMenuSelect
-    Public Event OnTownFolkRepair(ByVal Packet As GameClient.TownFolkRepair, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkRepair
-    Public Event OnUnequipItem(ByVal Packet As GameClient.UnequipItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUnequipItem
-    Public Event OnUnitInteract(ByVal Packet As GameClient.UnitInteract, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUnitInteract
-    Public Event OnUpdatePosition(ByVal Packet As GameClient.UpdatePosition, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUpdatePosition
-    Public Event OnUseBeltItem(ByVal Packet As GameClient.UseBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseBeltItem
-    Public Event OnUseInventoryItem(ByVal Packet As GameClient.UseInventoryItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseInventoryItem
+    Public Event OnGoToTownFolk(ByVal Packet As D2Packets.GameClient.GoToTownFolk, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToTownFolk
+    Public Event OnHireMercenary(ByVal Packet As D2Packets.GameClient.HireMercenary, ByRef Flag As Packet.PacketFlag) Implements IGame.OnHireMercenary
+    Public Event OnHoverUnit(ByVal Packet As D2Packets.GameClient.HoverUnit, ByRef Flag As Packet.PacketFlag) Implements IGame.OnHoverUnit
+    Public Event OnIdentifyGambleItem(ByVal Packet As D2Packets.GameClient.IdentifyGambleItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIdentifyGambleItem
+    Public Event OnIdentifyItem(ByVal Packet As D2Packets.GameClient.IdentifyItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIdentifyItem
+    Public Event OnIncrementAttribute(ByVal Packet As D2Packets.GameClient.IncrementAttribute, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIncrementAttribute
+    Public Event OnIncrementSkill(ByVal Packet As D2Packets.GameClient.IncrementSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnIncrementSkill
+    Public Event OnInventoryItemToBelt(ByVal Packet As D2Packets.GameClient.InventoryItemToBelt, ByRef Flag As Packet.PacketFlag) Implements IGame.OnInventoryItemToBelt
+    Public Event OnItemToCube(ByVal Packet As D2Packets.GameClient.ItemToCube, ByRef Flag As Packet.PacketFlag) Implements IGame.OnItemToCube
+    Public Event OnPartyRequest(ByVal Packet As D2Packets.GameClient.PartyRequest, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPartyRequest
+    Public Event OnPickItem(ByVal Packet As D2Packets.GameClient.PickItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPickItem
+    Public Event OnPickItemFromContainer(ByVal Packet As D2Packets.GameClient.PickItemFromContainer, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPickItemFromContainer
+    Public Event OnPing(ByVal Packet As D2Packets.GameClient.Ping, ByRef Flag As Packet.PacketFlag) Implements IGame.OnPing
+    Public Event OnRecastLeftSkill(ByVal Packet As D2Packets.GameClient.RecastLeftSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastLeftSkill
+    Public Event OnRecastLeftSkillOnTarget(ByVal Packet As D2Packets.GameClient.RecastLeftSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastLeftSkillOnTarget
+    Public Event OnRecastLeftSkillOnTargetStopped(ByVal Packet As D2Packets.GameClient.RecastLeftSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastLeftSkillOnTargetStopped
+    Public Event OnRecastRightSkill(ByVal Packet As D2Packets.GameClient.RecastRightSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastRightSkill
+    Public Event OnRecastRightSkillOnTarget(ByVal Packet As D2Packets.GameClient.RecastRightSkillOnTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastRightSkillOnTarget
+    Public Event OnRecastRightSkillOnTargetStopped(ByVal Packet As D2Packets.GameClient.RecastRightSkillOnTargetStopped, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRecastRightSkillOnTargetStopped
+    Public Event OnRemoveBeltItem(ByVal Packet As D2Packets.GameClient.RemoveBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRemoveBeltItem
+    Public Event OnRequestQuestLog(ByVal Packet As D2Packets.GameClient.RequestQuestLog, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRequestQuestLog
+    Public Event OnRequestReassign(ByVal Packet As D2Packets.GameClient.RequestReassign, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRequestReassign
+    Public Event OnRespawn(ByVal Packet As D2Packets.GameClient.Respawn, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRespawn
+    Public Event OnResurrectMerc(ByVal Packet As D2Packets.GameClient.ResurrectMerc, ByRef Flag As Packet.PacketFlag) Implements IGame.OnResurrectMerc
+    Public Event OnRunToLocation(ByVal Packet As D2Packets.GameClient.RunToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRunToLocation
+    Public Event OnRunToTarget(ByVal Packet As D2Packets.GameClient.RunToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnRunToTarget
+    Public Event OnSelectSkill(ByVal Packet As D2Packets.GameClient.SelectSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSelectSkill
+    Public Event OnSellItem(ByVal Packet As D2Packets.GameClient.SellItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSellItem
+    Public Event OnSendCharacterSpeech(ByVal Packet As D2Packets.GameClient.SendCharacterSpeech, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSendCharacterSpeech
+    Public Event OnSendMessage(ByVal Packet As D2Packets.GameClient.SendMessage, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSendMessage
+    Public Event OnSendOverheadMessage(ByVal Packet As D2Packets.GameClient.SendOverheadMessage, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSendOverheadMessage
+    Public Event OnSetPlayerRelation(ByVal Packet As D2Packets.GameClient.SetPlayerRelation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSetPlayerRelation
+    Public Event OnSetSkillHotkey(ByVal Packet As D2Packets.GameClient.SetSkillHotkey, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSetSkillHotkey
+    Public Event OnStackItems(ByVal Packet As D2Packets.GameClient.StackItems, ByRef Flag As Packet.PacketFlag) Implements IGame.OnStackItems
+    Public Event OnSwapBeltItem(ByVal Packet As D2Packets.GameClient.SwapBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwapBeltItem
+    Public Event OnSwapContainerItem(ByVal Packet As D2Packets.GameClient.SwapContainerItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwapContainerItem
+    Public Event OnSwapEquippedItem(ByVal Packet As D2Packets.GameClient.SwapEquippedItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwapEquippedItem
+    Public Event OnSwitchWeapons(ByVal Packet As D2Packets.GameClient.SwitchWeapons, ByRef Flag As Packet.PacketFlag) Implements IGame.OnSwitchWeapons
+    Public Event OnTownFolkCancelInteraction(ByVal Packet As D2Packets.GameClient.TownFolkCancelInteraction, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkCancelInteraction
+    Public Event OnTownFolkInteract(ByVal Packet As D2Packets.GameClient.TownFolkInteract, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkInteract
+    Public Event OnTownFolkMenuSelect(ByVal Packet As D2Packets.GameClient.TownFolkMenuSelect, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkMenuSelect
+    Public Event OnTownFolkRepair(ByVal Packet As D2Packets.GameClient.TownFolkRepair, ByRef Flag As Packet.PacketFlag) Implements IGame.OnTownFolkRepair
+    Public Event OnUnequipItem(ByVal Packet As D2Packets.GameClient.UnequipItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUnequipItem
+    Public Event OnUnitInteract(ByVal Packet As D2Packets.GameClient.UnitInteract, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUnitInteract
+    Public Event OnUpdatePosition(ByVal Packet As D2Packets.GameClient.UpdatePosition, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUpdatePosition
+    Public Event OnUseBeltItem(ByVal Packet As D2Packets.GameClient.UseBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseBeltItem
+    Public Event OnUseInventoryItem(ByVal Packet As D2Packets.GameClient.UseInventoryItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseInventoryItem
 
 
-    Public Event OnWalkToLocation(ByVal Packet As gameclient.walktolocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToLocation
-    Public Event OnWalkToTarget(ByVal Packet As GameClient.WalkToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToTarget
+    Public Event OnWalkToLocation(ByVal Packet As D2Packets.GameClient.WalkToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToLocation
+    Public Event OnWalkToTarget(ByVal Packet As D2Packets.GameClient.WalkToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToTarget
 
-    Public Event OnWardenResponse(ByVal Packet As GameClient.WardenResponse, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWardenResponse
-    Public Event OnWaypointInteract(ByVal Packet As GameClient.WaypointInteract, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWaypointInteract
+    Public Event OnWardenResponse(ByVal Packet As D2Packets.GameClient.WardenResponse, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWardenResponse
+    Public Event OnWaypointInteract(ByVal Packet As D2Packets.GameClient.WaypointInteract, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWaypointInteract
+
 
 #End Region
 
@@ -160,7 +162,7 @@ Public Class GameModuleHost
     Public Event OnAssignPlayer(ByVal Packet As GameServer.AssignPlayer, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignPlayer
     Public Event OnAssignPlayerCorpse(ByVal Packet As GameServer.AssignPlayerCorpse, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignPlayerCorpse
     Public Event OnAssignPlayerToParty(ByVal Packet As GameServer.AssignPlayerToParty, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignPlayerToParty
-    Public Event OnAssignSkill(ByVal Packet As GameServer.Assignskill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignSkill
+    Public Event OnAssignSkill(ByVal Packet As GameServer.AssignSkill, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignSkill
     Public Event OnAssignSkillHotkey(ByVal Packet As GameServer.AssignSkillHotkey, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignSkillHotkey
     Public Event OnAssignWarp(ByVal Packet As GameServer.AssignWarp, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAssignWarp
     Public Event OnAttributeNotification(ByVal Packet As GameServer.AttributeNotification, ByRef Flag As Packet.PacketFlag) Implements IGame.OnAttributeNotification
@@ -259,150 +261,150 @@ Public Class GameModuleHost
         Flag = Packet.Flag
 
         Select Case Packet.Data(0)
-            Case D2Packets.GameClientPacket.AddBeltItem
+            Case GameClient.GameClientPacket.AddBeltItem
                 RaiseEvent OnAddBeltItem(New GameClient.AddBeltItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.BuyItem
+            Case GameClient.GameClientPacket.BuyItem
                 RaiseEvent OnBuyItem(New GameClient.BuyItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CainIdentifyItems
+            Case GameClient.GameClientPacket.CainIdentifyItems
                 RaiseEvent OnCainIdentifyItems(New GameClient.CainIdentifyItems(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CastLeftSkill
+            Case GameClient.GameClientPacket.CastLeftSkill
                 RaiseEvent OnCastLeftSkill(New GameClient.CastLeftSkill(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CastLeftSkillOnTarget
+            Case GameClient.GameClientPacket.CastLeftSkillOnTarget
                 RaiseEvent OnCastLeftSkillOnTarget(New GameClient.CastLeftSkillOnTarget(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CastLeftSkillOnTargetStopped
+            Case GameClient.GameClientPacket.CastLeftSkillOnTargetStopped
                 RaiseEvent OnCastLeftSkillOnTargetStopped(New GameClient.CastLeftSkillOnTargetStopped(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CastRightSkill
+            Case GameClient.GameClientPacket.CastRightSkill
                 RaiseEvent OnCastRightSkill(New GameClient.CastRightSkill(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CastRightSkillOnTarget
+            Case GameClient.GameClientPacket.CastRightSkillOnTarget
                 RaiseEvent OnCastRightSkillOnTarget(New GameClient.CastRightSkillOnTarget(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CastRightSkillOnTargetStopped
+            Case GameClient.GameClientPacket.CastRightSkillOnTargetStopped
                 RaiseEvent OnCastRightSkillOnTargetStopped(New GameClient.CastRightSkillOnTargetStopped(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.ChangeMercEquipment
+            Case GameClient.GameClientPacket.ChangeMercEquipment
                 RaiseEvent OnChangeMercEquipment(New GameClient.ChangeMercEquipment(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.ClickButton
+            Case GameClient.GameClientPacket.ClickButton
                 RaiseEvent OnClickButton(New GameClient.ClickButton(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.CloseQuest
+            Case GameClient.GameClientPacket.CloseQuest
                 RaiseEvent OnCloseQuest(New GameClient.CloseQuest(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.DisplayQuestMessage
+            Case GameClient.GameClientPacket.DisplayQuestMessage
                 RaiseEvent OnDisplayQuestMessage(New GameClient.DisplayQuestMessage(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.DropGold
+            Case GameClient.GameClientPacket.DropGold
                 RaiseEvent OnDropGold(New GameClient.DropGold(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.DropItem
+            Case GameClient.GameClientPacket.DropItem
                 RaiseEvent OnDropItem(New GameClient.DropItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.DropItemToContainer
+            Case GameClient.GameClientPacket.DropItemToContainer
                 RaiseEvent OnDropItemToContainer(New GameClient.DropItemToContainer(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.EmbedItem
+            Case GameClient.GameClientPacket.EmbedItem
                 RaiseEvent OnEmbedItem(New GameClient.EmbedItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.EnterGame
+            Case GameClient.GameClientPacket.EnterGame
                 RaiseEvent OnEnterGame(New GameClient.EnterGame(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.EquipItem
+            Case GameClient.GameClientPacket.EquipItem
                 RaiseEvent OnEquipItem(New GameClient.EquipItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.ExitGame
+            Case GameClient.GameClientPacket.ExitGame
                 RaiseEvent OnExitGame(New GameClient.ExitGame(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.GameLogonRequest
+            Case GameClient.GameClientPacket.GameLogonRequest
                 RaiseEvent OnGameLogonRequest(New GameClient.GameLogonRequest(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.GoToTownFolk
+            Case GameClient.GameClientPacket.GoToTownFolk
                 RaiseEvent OnGoToTownFolk(New GameClient.GoToTownFolk(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.HireMercenary
+            Case GameClient.GameClientPacket.HireMercenary
                 RaiseEvent OnHireMercenary(New GameClient.HireMercenary(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.HoverUnit
+            Case GameClient.GameClientPacket.HoverUnit
                 RaiseEvent OnHoverUnit(New GameClient.HoverUnit(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.IdentifyGambleItem
+            Case GameClient.GameClientPacket.IdentifyGambleItem
                 RaiseEvent OnIdentifyGambleItem(New GameClient.IdentifyGambleItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.IdentifyItem
+            Case GameClient.GameClientPacket.IdentifyItem
                 RaiseEvent OnIdentifyItem(New GameClient.IdentifyItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.IncrementAttribute
+            Case GameClient.GameClientPacket.IncrementAttribute
                 RaiseEvent OnIncrementAttribute(New GameClient.IncrementAttribute(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.IncrementSkill
+            Case GameClient.GameClientPacket.IncrementSkill
                 RaiseEvent OnIncrementSkill(New GameClient.IncrementSkill(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.InventoryItemToBelt
+            Case GameClient.GameClientPacket.InventoryItemToBelt
                 RaiseEvent OnInventoryItemToBelt(New GameClient.InventoryItemToBelt(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.ItemToCube
+            Case GameClient.GameClientPacket.ItemToCube
                 RaiseEvent OnItemToCube(New GameClient.ItemToCube(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.PartyRequest
+            Case GameClient.GameClientPacket.PartyRequest
                 RaiseEvent OnPartyRequest(New GameClient.PartyRequest(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.PickItem
+            Case GameClient.GameClientPacket.PickItem
                 RaiseEvent OnPickItem(New GameClient.PickItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.PickItemFromContainer
+            Case GameClient.GameClientPacket.PickItemFromContainer
                 RaiseEvent OnPickItemFromContainer(New GameClient.PickItemFromContainer(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.Ping
+            Case GameClient.GameClientPacket.Ping
                 RaiseEvent OnPing(New GameClient.Ping(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RecastLeftSkill
+            Case GameClient.GameClientPacket.RecastLeftSkill
                 RaiseEvent OnRecastLeftSkill(New GameClient.RecastLeftSkill(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RecastLeftSkillOnTarget
+            Case GameClient.GameClientPacket.RecastLeftSkillOnTarget
                 RaiseEvent OnRecastLeftSkillOnTarget(New GameClient.RecastLeftSkillOnTarget(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RecastLeftSkillOnTargetStopped
+            Case GameClient.GameClientPacket.RecastLeftSkillOnTargetStopped
                 RaiseEvent OnRecastLeftSkillOnTargetStopped(New GameClient.RecastLeftSkillOnTargetStopped(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RecastRightSkill
+            Case GameClient.GameClientPacket.RecastRightSkill
                 RaiseEvent OnRecastRightSkill(New GameClient.RecastRightSkill(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RecastRightSkillOnTarget
+            Case GameClient.GameClientPacket.RecastRightSkillOnTarget
                 RaiseEvent OnRecastRightSkillOnTarget(New GameClient.RecastRightSkillOnTarget(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RecastRightSkillOnTargetStopped
+            Case GameClient.GameClientPacket.RecastRightSkillOnTargetStopped
                 RaiseEvent OnRecastRightSkillOnTargetStopped(New GameClient.RecastRightSkillOnTargetStopped(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RemoveBeltItem
+            Case GameClient.GameClientPacket.RemoveBeltItem
                 RaiseEvent OnRemoveBeltItem(New GameClient.RemoveBeltItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RequestQuestLog
+            Case GameClient.GameClientPacket.RequestQuestLog
                 RaiseEvent OnRequestQuestLog(New GameClient.RequestQuestLog(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RequestReassign
+            Case GameClient.GameClientPacket.RequestReassign
                 RaiseEvent OnRequestReassign(New GameClient.RequestReassign(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.Respawn
+            Case GameClient.GameClientPacket.Respawn
                 RaiseEvent OnRespawn(New GameClient.Respawn(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.ResurrectMerc
+            Case GameClient.GameClientPacket.ResurrectMerc
                 RaiseEvent OnResurrectMerc(New GameClient.ResurrectMerc(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RunToLocation
+            Case GameClient.GameClientPacket.RunToLocation
                 RaiseEvent OnRunToLocation(New GameClient.RunToLocation(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.RunToTarget
+            Case GameClient.GameClientPacket.RunToTarget
                 RaiseEvent OnRunToTarget(New GameClient.RunToTarget(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SelectSkill
+            Case GameClient.GameClientPacket.SelectSkill
                 RaiseEvent OnSelectSkill(New GameClient.SelectSkill(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SellItem
+            Case GameClient.GameClientPacket.SellItem
                 RaiseEvent OnSellItem(New GameClient.SellItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SendCharacterSpeech
+            Case GameClient.GameClientPacket.SendCharacterSpeech
                 RaiseEvent OnSendCharacterSpeech(New GameClient.SendCharacterSpeech(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SendMessage
+            Case GameClient.GameClientPacket.SendMessage
                 HandleSentMessagePacket(Packet)
                 RaiseEvent OnSendMessage(New GameClient.SendMessage(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SendOverheadMessage
+            Case GameClient.GameClientPacket.SendOverheadMessage
                 RaiseEvent OnSendOverheadMessage(New GameClient.SendOverheadMessage(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SetPlayerRelation
+            Case GameClient.GameClientPacket.SetPlayerRelation
                 RaiseEvent OnSetPlayerRelation(New GameClient.SetPlayerRelation(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SetSkillHotkey
+            Case GameClient.GameClientPacket.SetSkillHotkey
                 RaiseEvent OnSetSkillHotkey(New GameClient.SetSkillHotkey(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.StackItems
+            Case GameClient.GameClientPacket.StackItems
                 RaiseEvent OnStackItems(New GameClient.StackItems(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SwapBeltItem
+            Case GameClient.GameClientPacket.SwapBeltItem
                 RaiseEvent OnSwapBeltItem(New GameClient.SwapBeltItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SwapContainerItem
+            Case GameClient.GameClientPacket.SwapContainerItem
                 RaiseEvent OnSwapContainerItem(New GameClient.SwapContainerItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SwapEquippedItem
+            Case GameClient.GameClientPacket.SwapEquippedItem
                 RaiseEvent OnSwapEquippedItem(New GameClient.SwapEquippedItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.SwitchWeapons
+            Case GameClient.GameClientPacket.SwitchWeapons
                 RaiseEvent OnSwitchWeapons(New GameClient.SwitchWeapons(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.TownFolkCancelInteraction
+            Case GameClient.GameClientPacket.TownFolkCancelInteraction
                 RaiseEvent OnTownFolkCancelInteraction(New GameClient.TownFolkCancelInteraction(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.TownFolkInteract
+            Case GameClient.GameClientPacket.TownFolkInteract
                 RaiseEvent OnTownFolkInteract(New GameClient.TownFolkInteract(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.TownFolkMenuSelect
+            Case GameClient.GameClientPacket.TownFolkMenuSelect
                 RaiseEvent OnTownFolkMenuSelect(New GameClient.TownFolkMenuSelect(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.TownFolkRepair
+            Case GameClient.GameClientPacket.TownFolkRepair
                 RaiseEvent OnTownFolkRepair(New GameClient.TownFolkRepair(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.UnequipItem
+            Case GameClient.GameClientPacket.UnequipItem
                 RaiseEvent OnUnequipItem(New GameClient.UnequipItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.UnitInteract
+            Case GameClient.GameClientPacket.UnitInteract
                 RaiseEvent OnUnitInteract(New GameClient.UnitInteract(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.UpdatePosition
+            Case GameClient.GameClientPacket.UpdatePosition
                 RaiseEvent OnUpdatePosition(New GameClient.UpdatePosition(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.UseBeltItem
+            Case GameClient.GameClientPacket.UseBeltItem
                 RaiseEvent OnUseBeltItem(New GameClient.UseBeltItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.UseInventoryItem
+            Case GameClient.GameClientPacket.UseInventoryItem
                 RaiseEvent OnUseInventoryItem(New GameClient.UseInventoryItem(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.WalkToLocation
+            Case GameClient.GameClientPacket.WalkToLocation
                 RaiseEvent OnWalkToLocation(New GameClient.WalkToLocation(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.WalkToTarget
+            Case GameClient.GameClientPacket.WalkToTarget
                 RaiseEvent OnWalkToTarget(New GameClient.WalkToTarget(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.WardenResponse
+            Case GameClient.GameClientPacket.WardenResponse
                 RaiseEvent OnWardenResponse(New GameClient.WardenResponse(Packet.Data), Flag)
-            Case D2Packets.GameClientPacket.WaypointInteract
+            Case GameClient.GameClientPacket.WaypointInteract
                 RaiseEvent OnWaypointInteract(New GameClient.WaypointInteract(Packet.Data), Flag)
         End Select
         If Packet.Flag <> Flag Then
@@ -416,211 +418,211 @@ Public Class GameModuleHost
         Flag = Packet.Flag
 
         Select Case Packet.Data(0)
-            Case D2Packets.GameServerPacket.AboutPlayer
+            Case GameServer.GameServerPacket.AboutPlayer
                 RaiseEvent OnAboutPlayer(New GameServer.AboutPlayer(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AcceptTrade
+            Case GameServer.GameServerPacket.AcceptTrade
                 RaiseEvent OnAcceptTrade(New GameServer.AcceptTrade(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AddUnit
+            Case GameServer.GameServerPacket.AddUnit
                 RaiseEvent OnAddUnit(New GameServer.AddUnit(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignGameObject
+            Case GameServer.GameServerPacket.AssignGameObject
                 RaiseEvent OnAssignGameObject(New GameServer.AssignGameObject(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignMerc
+            Case GameServer.GameServerPacket.AssignMerc
                 RaiseEvent OnAssignMerc(New GameServer.AssignMerc(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignNPC
+            Case GameServer.GameServerPacket.AssignNPC
                 RaiseEvent OnAssignNPC(New GameServer.AssignNPC(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignPlayer
+            Case GameServer.GameServerPacket.AssignPlayer
                 RaiseEvent OnAssignPlayer(New GameServer.AssignPlayer(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignPlayerCorpse
+            Case GameServer.GameServerPacket.AssignPlayerCorpse
                 RaiseEvent OnAssignPlayerCorpse(New GameServer.AssignPlayerCorpse(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignPlayerToParty
+            Case GameServer.GameServerPacket.AssignPlayerToParty
                 RaiseEvent OnAssignPlayerToParty(New GameServer.AssignPlayerToParty(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.Assignskill
-                RaiseEvent OnAssignSkill(New GameServer.Assignskill(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignSkillHotkey
+            Case GameServer.GameServerPacket.AssignSkill
+                RaiseEvent OnAssignSkill(New GameServer.AssignSkill(Packet.Data), Flag)
+            Case GameServer.GameServerPacket.AssignSkillHotkey
                 RaiseEvent OnAssignSkillHotkey(New GameServer.AssignSkillHotkey(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AssignWarp
+            Case GameServer.GameServerPacket.AssignWarp
                 RaiseEvent OnAssignWarp(New GameServer.AssignWarp(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AttributeByte
+            Case GameServer.GameServerPacket.AttributeByte
                 RaiseEvent OnAttributeNotification(New GameServer.AttributeByte(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AttributeDWord
+            Case GameServer.GameServerPacket.AttributeDWord
                 RaiseEvent OnAttributeNotification(New GameServer.AttributeDWord(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.AttributeWord
+            Case GameServer.GameServerPacket.AttributeWord
                 RaiseEvent OnAttributeNotification(New GameServer.AttributeWord(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.ByteToExperience
+            Case GameServer.GameServerPacket.ByteToExperience
                 RaiseEvent OnGainExperience(New GameServer.ByteToExperience(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.DelayedState
+            Case GameServer.GameServerPacket.DelayedState
                 RaiseEvent OnDelayedState(New GameServer.DelayedState(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.DWordToExperience
+            Case GameServer.GameServerPacket.DWordToExperience
                 RaiseEvent OnGainExperience(New GameServer.DWordToExperience(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.EndState
+            Case GameServer.GameServerPacket.EndState
                 RaiseEvent OnEndState(New GameServer.EndState(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GameHandshake
+            Case GameServer.GameServerPacket.GameHandshake
                 RaiseEvent OnGameHandshake(New GameServer.GameHandshake(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GameLoading
+            Case GameServer.GameServerPacket.GameLoading
                 RaiseEvent OnGameLoading(New GameServer.GameLoading(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GameLogonReceipt
+            Case GameServer.GameServerPacket.GameLogonReceipt
                 RaiseEvent OnGameLogonReceipt(New GameServer.GameLogonReceipt(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GameLogonSuccess
+            Case GameServer.GameServerPacket.GameLogonSuccess
                 RaiseEvent OnGameLogonSuccess(New GameServer.GameLogonSuccess(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GameLogoutSuccess
+            Case GameServer.GameServerPacket.GameLogoutSuccess
                 RaiseEvent OnGameLogoutSuccess(New GameServer.GameLogoutSuccess(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GameMessage
+            Case GameServer.GameServerPacket.GameMessage
                 RaiseEvent OnReceiveMessage(New GameServer.GameMessage(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GameOver
+            Case GameServer.GameServerPacket.GameOver
                 RaiseEvent OnGameOver(New GameServer.GameOver(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.GoldTrade
+            Case GameServer.GameServerPacket.GoldTrade
                 RaiseEvent OnGoldTrade(New GameServer.GoldTrade(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.InformationMessage
+            Case GameServer.GameServerPacket.InformationMessage
                 RaiseEvent OnInformationMessage(New GameServer.InformationMessage(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.ItemTriggerSkill
+            Case GameServer.GameServerPacket.ItemTriggerSkill
                 RaiseEvent OnItemTriggerSkill(New GameServer.ItemTriggerSkill(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.LoadAct
+            Case GameServer.GameServerPacket.LoadAct
                 RaiseEvent OnLoadAct(New GameServer.LoadAct(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.LoadDone
+            Case GameServer.GameServerPacket.LoadDone
                 RaiseEvent OnLoadDone(New GameServer.LoadDone(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MapAdd
+            Case GameServer.GameServerPacket.MapAdd
                 RaiseEvent OnMapAdd(New GameServer.MapAdd(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MapRemove
+            Case GameServer.GameServerPacket.MapRemove
                 RaiseEvent OnMapRemove(New GameServer.MapRemove(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MercAttributeByte
+            Case GameServer.GameServerPacket.MercAttributeByte
                 RaiseEvent OnMercAttributeNotification(New GameServer.MercAttributeByte(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MercAttributeDWord
+            Case GameServer.GameServerPacket.MercAttributeDWord
                 RaiseEvent OnMercAttributeNotification(New GameServer.MercAttributeDWord(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MercAttributeWord
+            Case GameServer.GameServerPacket.MercAttributeWord
                 RaiseEvent OnMercAttributeNotification(New GameServer.MercAttributeWord(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MercByteToExperience
+            Case GameServer.GameServerPacket.MercByteToExperience
                 RaiseEvent OnMercGainExperience(New GameServer.MercByteToExperience(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MercForHire
+            Case GameServer.GameServerPacket.MercForHire
                 RaiseEvent OnMercForHire(New GameServer.MercForHire(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MercForHireListStart
+            Case GameServer.GameServerPacket.MercForHireListStart
                 RaiseEvent OnMercForHireListStart(New GameServer.MercForHireListStart(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MercWordToExperience
+            Case GameServer.GameServerPacket.MercWordToExperience
                 RaiseEvent OnMercGainExperience(New GameServer.MercWordToExperience(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.MonsterAttack
+            Case GameServer.GameServerPacket.MonsterAttack
                 RaiseEvent OnMonsterAttack(New GameServer.MonsterAttack(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCAction
+            Case GameServer.GameServerPacket.NPCAction
                 RaiseEvent OnNPCAction(New GameServer.NPCAction(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCGetHit
+            Case GameServer.GameServerPacket.NPCGetHit
                 RaiseEvent OnNPCGetHit(New GameServer.NPCGetHit(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCHeal
+            Case GameServer.GameServerPacket.NPCHeal
                 RaiseEvent OnNPCHeal(New GameServer.NPCHeal(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCInfo
+            Case GameServer.GameServerPacket.NPCInfo
                 RaiseEvent OnNPCInfo(New GameServer.NPCInfo(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCMove
+            Case GameServer.GameServerPacket.NPCMove
                 RaiseEvent OnNPCMove(New GameServer.NPCMove(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCMoveToTarget
+            Case GameServer.GameServerPacket.NPCMoveToTarget
                 RaiseEvent OnNPCMoveToTarget(New GameServer.NPCMoveToTarget(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCStop
+            Case GameServer.GameServerPacket.NPCStop
                 RaiseEvent OnNPCStop(New GameServer.NPCStop(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.NPCWantsInteract
+            Case GameServer.GameServerPacket.NPCWantsInteract
                 RaiseEvent OnNPCWantsInteract(New GameServer.NPCWantsInteract(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.OpenWaypoint
+            Case GameServer.GameServerPacket.OpenWaypoint
                 RaiseEvent OnOpenWaypoint(New GameServer.OpenWaypoint(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.OwnedItemAction
+            Case GameServer.GameServerPacket.OwnedItemAction
                 RaiseEvent OnOwnedItemAction(New GameServer.OwnedItemAction(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PartyMemberPulse
+            Case GameServer.GameServerPacket.PartyMemberPulse
                 RaiseEvent OnPartyMemberPulse(New GameServer.PartyMemberPulse(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PartyMemberUpdate
+            Case GameServer.GameServerPacket.PartyMemberUpdate
                 RaiseEvent OnPartyMemberUpdate(New GameServer.PartyMemberUpdate(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PartyRefresh
+            Case GameServer.GameServerPacket.PartyRefresh
                 RaiseEvent OnPartyRefresh(New GameServer.PartyRefresh(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerAttributeNotification
+            Case GameServer.GameServerPacket.PlayerAttributeNotification
                 RaiseEvent OnPlayerAttributeNotification(New GameServer.PlayerAttributeNotification(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerClearCursor
+            Case GameServer.GameServerPacket.PlayerClearCursor
                 RaiseEvent OnPlayerClearCursor(New GameServer.PlayerClearCursor(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerCorpseVisible
+            Case GameServer.GameServerPacket.PlayerCorpseVisible
                 RaiseEvent OnPlayerCorpseVisible(New GameServer.PlayerCorpseVisible(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerInGame
+            Case GameServer.GameServerPacket.PlayerInGame
                 RaiseEvent OnPlayerInGame(New GameServer.PlayerInGame(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerInSight
+            Case GameServer.GameServerPacket.PlayerInSight
                 RaiseEvent OnPlayerInSight(New GameServer.PlayerInSight(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerKillCount
+            Case GameServer.GameServerPacket.PlayerKillCount
                 RaiseEvent OnPlayerKillCount(New GameServer.PlayerKillCount(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerLeaveGame
+            Case GameServer.GameServerPacket.PlayerLeaveGame
                 RaiseEvent OnPlayerLeaveGame(New GameServer.PlayerLeaveGame(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerLifeManaChange
+            Case GameServer.GameServerPacket.PlayerLifeManaChange
                 RaiseEvent OnPlayerLifeManaChange(New GameServer.PlayerLifeManaChange(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerMove
+            Case GameServer.GameServerPacket.PlayerMove
                 RaiseEvent OnPlayerMove(New GameServer.PlayerMove(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerMoveToTarget
+            Case GameServer.GameServerPacket.PlayerMoveToTarget
                 RaiseEvent OnPlayerMoveToTarget(New GameServer.PlayerMoveToTarget(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerPartyRelationship
+            Case GameServer.GameServerPacket.PlayerPartyRelationship
                 RaiseEvent OnPlayerPartyRelationship(New GameServer.PlayerPartyRelationship(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerReassign
+            Case GameServer.GameServerPacket.PlayerReassign
                 RaiseEvent OnPlayerReassign(New GameServer.PlayerReassign(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerRelationship
+            Case GameServer.GameServerPacket.PlayerRelationship
                 RaiseEvent OnPlayerRelationship(New GameServer.PlayerRelationship(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlayerStop
+            Case GameServer.GameServerPacket.PlayerStop
                 RaiseEvent OnPlayerStop(New GameServer.PlayerStop(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PlaySound
+            Case GameServer.GameServerPacket.PlaySound
                 RaiseEvent OnPlaySound(New GameServer.PlaySound(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.Pong
+            Case GameServer.GameServerPacket.Pong
                 RaiseEvent OnPong(New GameServer.Pong(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PortalInfo
+            Case GameServer.GameServerPacket.PortalInfo
                 RaiseEvent OnPortalInfo(New GameServer.PortalInfo(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.PortalOwnership
+            Case GameServer.GameServerPacket.PortalOwnership
                 RaiseEvent OnPortalOwnership(New GameServer.PortalOwnership(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.QuestItemState
+            Case GameServer.GameServerPacket.QuestItemState
                 RaiseEvent OnQuestItemState(New GameServer.QuestItemState(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.Relator1
+            Case GameServer.GameServerPacket.Relator1
                 RaiseEvent OnRelator1(New GameServer.Relator1(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.Relator2
+            Case GameServer.GameServerPacket.Relator2
                 RaiseEvent OnRelator2(New GameServer.Relator2(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.RemoveGroundUnit
+            Case GameServer.GameServerPacket.RemoveGroundUnit
                 RaiseEvent OnRemoveGroundUnit(New GameServer.RemoveGroundUnit(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.ReportKill
+            Case GameServer.GameServerPacket.ReportKill
                 RaiseEvent OnReportKill(New GameServer.ReportKill(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.RequestLogonInfo
+            Case GameServer.GameServerPacket.RequestLogonInfo
                 RaiseEvent OnRequestLogonInfo(New GameServer.RequestLogonInfo(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SetGameObjectMode
+            Case GameServer.GameServerPacket.SetGameObjectMode
                 RaiseEvent OnSetGameObjectMode(New GameServer.SetGameObjectMode(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SetItemState
+            Case GameServer.GameServerPacket.SetItemState
                 RaiseEvent OnSetItemState(New GameServer.SetItemState(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SetNPCMode
+            Case GameServer.GameServerPacket.SetNPCMode
                 RaiseEvent OnSetNPCMode(New GameServer.SetNPCMode(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SetState
+            Case GameServer.GameServerPacket.SetState
                 RaiseEvent OnSetState(New GameServer.SetState(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SkillsLog
+            Case GameServer.GameServerPacket.SkillsLog
                 RaiseEvent OnSkillsLog(New GameServer.SkillsLog(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SmallGoldAdd
+            Case GameServer.GameServerPacket.SmallGoldAdd
                 RaiseEvent OnSmallGoldAdd(New GameServer.SmallGoldAdd(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SummonAction
+            Case GameServer.GameServerPacket.SummonAction
                 RaiseEvent OnSummonAction(New GameServer.SummonAction(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.SwitchWeaponSet
+            Case GameServer.GameServerPacket.SwitchWeaponSet
                 RaiseEvent OnSwitchWeaponSet(New GameServer.SwitchWeaponSet(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.TransactionComplete
+            Case GameServer.GameServerPacket.TransactionComplete
                 RaiseEvent OnTransactionComplete(New GameServer.TransactionComplete(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UnitUseSkill
+            Case GameServer.GameServerPacket.UnitUseSkill
                 RaiseEvent OnUnitUseSkill(New GameServer.UnitUseSkill(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UnitUseSkillOnTarget
+            Case GameServer.GameServerPacket.UnitUseSkillOnTarget
                 RaiseEvent OnUnitUseSkillOnTarget(New GameServer.UnitUseSkillOnTarget(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UnloadDone
+            Case GameServer.GameServerPacket.UnloadDone
                 RaiseEvent OnUnloadDone(New GameServer.UnloadDone(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UpdateGameQuestLog
+            Case GameServer.GameServerPacket.UpdateGameQuestLog
                 RaiseEvent OnUpdateGameQuestLog(New GameServer.UpdateGameQuestLog(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UpdateItemStats
+            Case GameServer.GameServerPacket.UpdateItemStats
                 RaiseEvent OnUpdateItemStats(New GameServer.UpdateItemStats(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UpdateItemUI
+            Case GameServer.GameServerPacket.UpdateItemUI
                 RaiseEvent OnUpdateItemUI(New GameServer.UpdateItemUI(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UpdatePlayerItemSkill
+            Case GameServer.GameServerPacket.UpdatePlayerItemSkill
                 RaiseEvent OnUpdatePlayerItemSkill(New GameServer.UpdatePlayerItemSkill(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UpdateQuestInfo
+            Case GameServer.GameServerPacket.UpdateQuestInfo
                 RaiseEvent OnUpdateQuestInfo(New GameServer.UpdateQuestInfo(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UpdateQuestLog
+            Case GameServer.GameServerPacket.UpdateQuestLog
                 RaiseEvent OnUpdateQuestLog(New GameServer.UpdateQuestLog(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UpdateSkill
+            Case GameServer.GameServerPacket.UpdateSkill
                 RaiseEvent OnUpdateSkill(New GameServer.UpdateSkill(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UseSpecialItem
+            Case GameServer.GameServerPacket.UseSpecialItem
                 RaiseEvent OnUseSpecialItem(New GameServer.UseSpecialItem(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.UseStackableItem
+            Case GameServer.GameServerPacket.UseStackableItem
                 RaiseEvent OnUseStackableItem(New GameServer.UseStackableItem(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.WalkVerify
+            Case GameServer.GameServerPacket.WalkVerify
                 RaiseEvent OnWalkVerify(New GameServer.WalkVerify(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.WardenCheck
+            Case GameServer.GameServerPacket.WardenCheck
                 RaiseEvent OnWardenCheck(New GameServer.WardenCheck(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.WordToExperience
+            Case GameServer.GameServerPacket.WordToExperience
                 RaiseEvent OnGainExperience(New GameServer.WordToExperience(Packet.Data), Flag)
-            Case D2Packets.GameServerPacket.WorldItemAction
+            Case GameServer.GameServerPacket.WorldItemAction
                 RaiseEvent OnWorldItemAction(New GameServer.WorldItemAction(Packet.Data), Flag)
         End Select
         If Packet.Flag <> Flag Then
@@ -653,7 +655,7 @@ Public Class GameModuleHost
         Dim PacketObject As New GameClient.SendMessage(Packet.Data)
 
         'Usefull function, I will leave it here.
-        If PacketObject.Message = ".Map" Then
+        If PacketObject.message = ".Map" Then
             Dim MapBitmap As New Memory.Pathing
             Dim MapInfo As Memory.Pathing.MapInfo_t
             Dim b As Bitmap

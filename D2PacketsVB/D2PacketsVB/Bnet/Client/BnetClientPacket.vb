@@ -1,5 +1,4 @@
-﻿Namespace D2Packets
-
+﻿Namespace BnetClient
     Public Enum BnetClientPacket
 
         KeepAlive = 0
@@ -26,5 +25,4 @@
         Invalid = 131
 
     End Enum
-
 End Namespace

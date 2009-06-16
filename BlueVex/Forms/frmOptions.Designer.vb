@@ -129,7 +129,7 @@ Partial Class frmOptions
         Me.butBrowse.Name = "butBrowse"
         Me.butBrowse.Size = New System.Drawing.Size(26, 21)
         Me.butBrowse.TabIndex = 4
-        Me.butBrowse.Text = "..."
+        Me.butBrowse.Text = ".."
         Me.butBrowse.UseVisualStyleBackColor = True
         '
         'txtDiabloPath

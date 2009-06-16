@@ -1,6 +1,6 @@
 ﻿Imports System
 Imports D2Data
-Imports D2PacketsVB.D2Packets
+Imports D2Packets
 Imports ETUtils
 
 Namespace RealmClient

@@ -1,6 +1,6 @@
 ﻿Imports System
 
-Namespace D2Packets
+Namespace RealmClient
 
     Public Enum RealmClientPacket As Byte
 

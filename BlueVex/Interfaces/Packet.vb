@@ -7,11 +7,11 @@ Public Class Packet
         PacketFlag_Virtual = 3
     End Enum
 
-    Public Data() As Byte
     Public Length As Integer
     Private _Flag As PacketFlag
     Private SetFlagDelegate As SetFlagDelegate
     Private Pointer As IntPtr
+    Public Data() As Byte
 
     Public Property Flag() As PacketFlag
         Get
@@ -53,20 +53,5 @@ Public Class Packet
         Return Result
     End Function
 
-    'Public Function ToBinary() As String
-    '    Dim Result As String = ""
-    '    For i As Integer = 0 To Data.Length - 1
-    '        Result += ReverseString(Convert.ToString(Data(i), 2))
-    '    Next
-    '    Return Result
-    'End Function
-
-    'Private Function ReverseString(ByVal text As String) As String
-    '    Dim strReversedText As String
-    '    Dim arrChar() As Char = text.ToCharArray()
-    '    Array.Reverse(arrChar)
-    '    strReversedText = arrChar
-    '    Return strReversedText
-    'End Function
 
 End Class
