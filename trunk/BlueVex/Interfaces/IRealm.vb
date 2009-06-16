@@ -1,3 +1,6 @@
+Imports D2PacketsVB
+Imports D2PacketsVB.D2Packets
+
 Public Interface IRealm
     Sub WriteToLog(ByVal Text As String)
 
@@ -5,10 +8,10 @@ Public Interface IRealm
 
     Sub ReceivePacket(ByRef bytes() As Byte)
     Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer)
-    Sub ReceivePacket(ByVal Packet As D2Packets.D2Packet)
+    Sub ReceivePacket(ByVal Packet As D2Packet)
     Sub SendPacket(ByRef bytes() As Byte)
     Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer)
-    Sub SendPacket(ByVal Packet As D2Packets.D2Packet)
+    Sub SendPacket(ByVal Packet As D2Packet)
     Event OnReceivePacket(ByRef Packet As Packet)
     Event OnSendPacket(ByRef Packet As Packet)
 

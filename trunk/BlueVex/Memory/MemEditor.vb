@@ -49,6 +49,8 @@ Namespace Memory
 
         Sub New(Optional ByVal DiabloPID As Integer = 0)
 
+            Process.EnterDebugMode()
+
             If DiabloPID <> 0 Then
 
                 Process.EnterDebugMode()
@@ -77,8 +79,6 @@ Namespace Memory
                         If Process.MainWindowHandle = D2HWND Then
                             'Get the PID
                             netProcHandle = Process.GetProcessById(Process.Id)
-
-
 
                             'Open It
                             hProc = Tools.OpenProcess(dwAllAccess, False, CInt(netProcHandle.Id))

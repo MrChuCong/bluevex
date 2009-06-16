@@ -1,4 +1,5 @@
 Imports System.Runtime.InteropServices
+Imports D2PacketsVB
 
 Public Class GameModuleHost
     Inherits IModuleHost
@@ -87,8 +88,10 @@ Public Class GameModuleHost
     Public Event OnEquipItem(ByVal Packet As GameClient.EquipItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnEquipItem
     Public Event OnExitGame(ByVal Packet As GameClient.ExitGame, ByRef Flag As Packet.PacketFlag) Implements IGame.OnExitGame
     Public Event OnGameLogonRequest(ByVal Packet As GameClient.GameLogonRequest, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGameLogonRequest
+
     Public Event OnGoToLocation(ByVal Packet As GameClient.GoToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToLocation
     Public Event OnGoToTarget(ByVal Packet As GameClient.GoToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToTarget
+
     Public Event OnGoToTownFolk(ByVal Packet As GameClient.GoToTownFolk, ByRef Flag As Packet.PacketFlag) Implements IGame.OnGoToTownFolk
     Public Event OnHireMercenary(ByVal Packet As GameClient.HireMercenary, ByRef Flag As Packet.PacketFlag) Implements IGame.OnHireMercenary
     Public Event OnHoverUnit(ByVal Packet As GameClient.HoverUnit, ByRef Flag As Packet.PacketFlag) Implements IGame.OnHoverUnit
@@ -136,7 +139,9 @@ Public Class GameModuleHost
     Public Event OnUpdatePosition(ByVal Packet As GameClient.UpdatePosition, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUpdatePosition
     Public Event OnUseBeltItem(ByVal Packet As GameClient.UseBeltItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseBeltItem
     Public Event OnUseInventoryItem(ByVal Packet As GameClient.UseInventoryItem, ByRef Flag As Packet.PacketFlag) Implements IGame.OnUseInventoryItem
-    Public Event OnWalkToLocation(ByVal Packet As GameClient.WalkToLocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToLocation
+
+
+    Public Event OnWalkToLocation(ByVal Packet As gameclient.walktolocation, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToLocation
     Public Event OnWalkToTarget(ByVal Packet As GameClient.WalkToTarget, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWalkToTarget
 
     Public Event OnWardenResponse(ByVal Packet As GameClient.WardenResponse, ByRef Flag As Packet.PacketFlag) Implements IGame.OnWardenResponse

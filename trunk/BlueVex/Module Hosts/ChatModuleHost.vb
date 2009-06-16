@@ -1,8 +1,10 @@
 Imports System.Runtime.InteropServices
+Imports D2PacketsVB
 
 Public Class ChatModuleHost
     Inherits IModuleHost
     Implements IChat
+
 
 #Region " Base Functions "
 
@@ -37,25 +39,6 @@ Public Class ChatModuleHost
 
     Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IChat.SendPacket
 
-        'Make the Header
-        '(Byte) 0xFF
-        '(Byte) Packet ID
-        '(Word) Packet Size
-        '  ...  Packet Core 
-        'Dim Bufbyte(length + 3) As Byte
-        'Bufbyte(0) = &HFF
-        ''PacketID
-        'Bufbyte(1) = bytes(0)
-        ''Packet Length
-        'Bufbyte = PutInArray(Bufbyte, 2, Bufbyte.Length)
-
-        ''Copy the Packet's core
-        'For i As Integer = 0 To bytes.Length - 2
-        '    Bufbyte(4 + i) = bytes(1 + i)
-        'Next
-
-        'RelayDataToServer(Bufbyte, Bufbyte.Length)
-
         RelayDataToServer(bytes, bytes.Length)
     End Sub
 
@@ -68,25 +51,6 @@ Public Class ChatModuleHost
     End Sub
 
     Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IChat.ReceivePacket
-
-        'Make the Header
-        '(Byte) 0xFF
-        '(Byte) Packet ID
-        '(Word) Packet Size
-        '  ...  Packet Core 
-        'Dim Bufbyte(length + 3) As Byte
-        'Bufbyte(0) = &HFF
-        ''PacketID
-        'Bufbyte(1) = bytes(0)
-        ''Packet Length
-        'Bufbyte = PutInArray(Bufbyte, 2, Bufbyte.Length)
-
-        ''Copy the Packet's core
-        'For i As Integer = 0 To bytes.Length - 2
-        '    Bufbyte(4 + i) = bytes(1 + i)
-        'Next
-
-        'RelayDataToClient(Bufbyte, Bufbyte.Length)
 
         RelayDataToClient(bytes, bytes.Length)
     End Sub
@@ -152,9 +116,8 @@ Public Class ChatModuleHost
 
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
-        Packet.Data = CutBytes(Packet.Data, 0, 1)
 
-        Select Case Packet.Data(0)
+        Select Case Packet.Data(1)
             Case D2Packets.BnetClientPacket.AdInfoRequest
                 RaiseEvent OnAdInfoRequest(New BnetClient.AdInfoRequest(Packet.Data), Flag)
             Case D2Packets.BnetClientPacket.BnetAuthRequest
@@ -206,8 +169,8 @@ Public Class ChatModuleHost
     Overrides Sub InterptetPacketToClient(ByRef Packet As Packet)
         Dim Flag As Packet.PacketFlag
         Flag = Packet.Flag
-        Packet.Data = CutBytes(Packet.Data, 0, 1)
-        Select Case Packet.Data(0)
+
+        Select Case Packet.Data(1)
             Case D2Packets.BnetServerPacket.AdInfo
                 RaiseEvent OnAdInfo(New BnetServer.AdInfo(Packet.Data), Flag)
             Case D2Packets.BnetServerPacket.BnetAuthResponse

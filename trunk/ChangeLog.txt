@@ -1,3 +1,10 @@
+Changelog V5.4
+-D2Packets is has been ported to VB.NET
+-The memory functions are not dependent of having d2loader anymore.
+-Also added lots of realm and chat packet functions. 
+-Fixed the data arriving in realm and chat being all messed up.
+
+
 Changelog V5.3
 
 

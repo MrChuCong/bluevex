@@ -1,3 +1,6 @@
+Imports D2PacketsVB
+Imports D2PacketsVB.D2Packets
+
 Public Interface IChat
     Sub WriteToLog(ByVal Text As String)
 
@@ -5,10 +8,11 @@ Public Interface IChat
 
     Sub ReceivePacket(ByRef bytes() As Byte)
     Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer)
-    Sub ReceivePacket(ByVal Packet As D2Packets.D2Packet)
+    Sub ReceivePacket(ByVal Packet As D2Packet)
+
     Sub SendPacket(ByRef bytes() As Byte)
     Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer)
-    Sub SendPacket(ByVal Packet As D2Packets.D2Packet)
+    Sub SendPacket(ByVal Packet As D2Packet)
     Event OnReceivePacket(ByRef Packet As Packet)
     Event OnSendPacket(ByRef Packet As Packet)
 
@@ -16,8 +20,8 @@ Public Interface IChat
 
 #Region " Chat Client "
 
-    Event OnAdInfoRequest(ByVal Packet As BnetClient.AdInfoRequest, ByRef Flag As Packet.PacketFlag)
-    Event OnBnetAuthRequest(ByVal Packet As BnetClient.BnetAuthRequest, ByRef Flag As Packet.PacketFlag)
+    Event OnAdInfoRequest(ByVal Packet As BnetClient.adinforequest, ByRef Flag As Packet.PacketFlag)
+    Event OnBnetAuthRequest(ByVal Packet As BnetClient.bnetauthrequest, ByRef Flag As Packet.PacketFlag)
     Event OnBnetConnectionRequest(ByVal Packet As BnetClient.BnetConnectionRequest, ByRef Flag As Packet.PacketFlag)
     Event OnBnetLogonRequest(ByVal Packet As BnetClient.BnetLogonRequest, ByRef Flag As Packet.PacketFlag)
     Event OnBnetPong(ByVal Packet As BnetClient.BnetPong, ByRef Flag As Packet.PacketFlag)
