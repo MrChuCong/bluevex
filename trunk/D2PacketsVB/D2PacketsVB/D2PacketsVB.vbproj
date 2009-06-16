@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F040A9F6-9E72-47B7-A4FC-43351626CFEC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>D2PacketsVB</RootNamespace>
+    <RootNamespace>D2Packets</RootNamespace>
     <AssemblyName>D2Packets</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

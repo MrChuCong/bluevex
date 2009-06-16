@@ -509,7 +509,7 @@ Namespace Memory
                             m_map.SetXY(i, j, P)
                             'If it's an invalid spot but divisible by 2
                             If m_map.GetAt(i, j) = "1024" Then
-                                'It's invalid...
+                                'It's invalid..
                                 m_map.SetXY(i, j, MAP_DATA_INVALID)
                             End If
                             P = MemEditor.ReadMemoryInt(pAddr)
@@ -794,7 +794,7 @@ Namespace Memory
             Public Sub Add(ByVal inScore As Int16, ByVal inX As Int16, ByVal inY As Int16)
 
                 '**We will be ignoring the (0) place in the heap array because
-                '**it's easier to handle the heap with a base of (1..?)
+                '**it's easier to handle the heap with a base of (1.?)
 
                 'Increment the array count
                 lSize += 1

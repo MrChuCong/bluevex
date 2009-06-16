@@ -1,4 +1,4 @@
-Imports D2PacketsVB
+Imports D2Packets
 
 Public Class RealmModuleHost
     Inherits IModuleHost
@@ -40,7 +40,7 @@ Public Class RealmModuleHost
         'Make Header and put 0 at the end
         '(Word) Packet Size
         '(Byte) Packet ID
-        ' ...   Packet Core
+        ' ..   Packet Core
         'Dim Bufbyte(bytes.Length + 2) As Byte
 
         'Bufbyte = PutInArray(Bufbyte, 0, Bufbyte.Length)
@@ -60,7 +60,7 @@ Public Class RealmModuleHost
         SendPacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub SendPacket(ByVal Packet As D2Packets.D2Packet) Implements IRealm.SendPacket
+    Public Sub SendPacket(ByVal Packet As D2Packet) Implements IRealm.SendPacket
         SendPacket(Packet.Data, Packet.Data.Length)
     End Sub
 
@@ -73,7 +73,7 @@ Public Class RealmModuleHost
         ReceivePacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub ReceivePacket(ByVal Packet As D2Packets.D2Packet) Implements IRealm.ReceivePacket
+    Public Sub ReceivePacket(ByVal Packet As D2Packet) Implements IRealm.ReceivePacket
         ReceivePacket(Packet.Data, Packet.Data.Length)
     End Sub
 
@@ -120,31 +120,31 @@ Public Class RealmModuleHost
         Flag = Packet.Flag
 
         Select Case Packet.Data(2)
-            Case D2Packets.RealmClientPacket.CancelGameCreation
+            Case RealmClient.RealmClientPacket.CancelGameCreation
                 RaiseEvent OnCancelGameCreation(New RealmClient.CancelGameCreation(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.CharacterCreationRequest
+            Case RealmClient.RealmClientPacket.CharacterCreationRequest
                 RaiseEvent OnCharacterCreationRequest(New RealmClient.CharacterCreationRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.CharacterDeletionRequest
+            Case RealmClient.RealmClientPacket.CharacterDeletionRequest
                 RaiseEvent OnCharacterDeletionRequest(New RealmClient.CharacterDeletionRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.CharacterListRequest
+            Case RealmClient.RealmClientPacket.CharacterListRequest
                 RaiseEvent OnCharacterListRequest(New RealmClient.CharacterListRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.CharacterLogonRequest
+            Case RealmClient.RealmClientPacket.CharacterLogonRequest
                 RaiseEvent OnCharacterLogonRequest(New RealmClient.CharacterLogonRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.CharacterUpgradeRequest
+            Case RealmClient.RealmClientPacket.CharacterUpgradeRequest
                 RaiseEvent OnCharacterUpgradeRequest(New RealmClient.CharacterUpgradeRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.CreateGameRequest
+            Case RealmClient.RealmClientPacket.CreateGameRequest
                 RaiseEvent OnCreateGameRequest(New RealmClient.CreateGameRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.GameInfoRequest
+            Case RealmClient.RealmClientPacket.GameInfoRequest
                 RaiseEvent OnGameInfoRequest(New RealmClient.GameInfoRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.GameListRequest
+            Case RealmClient.RealmClientPacket.GameListRequest
                 RaiseEvent OnGameListRequest(New RealmClient.GameListRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.JoinGameRequest
+            Case RealmClient.RealmClientPacket.JoinGameRequest
                 RaiseEvent OnJoinGameRequest(New RealmClient.JoinGameRequest(Packet.Data), Flag)
-            Case D2Packets.RealmClientPacket.MessageOfTheDayRequest
+            Case RealmClient.RealmClientPacket.MessageOfTheDayRequest
 
                 RaiseEvent OnMessageOfTheDayRequest(New RealmClient.MessageOfTheDayRequest(Packet.Data), Flag)
 
-            Case D2Packets.RealmClientPacket.RealmStartupRequest
+            Case RealmClient.RealmClientPacket.RealmStartupRequest
                 RaiseEvent OnRealmStartupRequest(New RealmClient.RealmStartupRequest(Packet.Data), Flag)
         End Select
 
@@ -160,29 +160,30 @@ Public Class RealmModuleHost
         Flag = Packet.Flag
 
         Select Case Packet.Data(2)
-            Case D2Packets.RealmServerPacket.CharacterCreationResponse
+
+            Case RealmServer.RealmServerPacket.CharacterCreationResponse
                 RaiseEvent OnCharacterCreationResponse(New RealmServer.CharacterCreationResponse(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.CharacterDeletionResponse
+            Case RealmServer.RealmServerPacket.CharacterDeletionResponse
                 RaiseEvent OnCharacterDeletionResponse(New RealmServer.CharacterDeletionResponse(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.CharacterList
+            Case RealmServer.RealmServerPacket.CharacterList
                 RaiseEvent OnCharacterList(New RealmServer.CharacterList(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.CharacterLogonResponse
+            Case RealmServer.RealmServerPacket.CharacterLogonResponse
                 RaiseEvent OnCharacterLogonResponse(New RealmServer.CharacterLogonResponse(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.CharacterUpgradeResponse
+            Case RealmServer.RealmServerPacket.CharacterUpgradeResponse
                 RaiseEvent OnCharacterUpgradeResponse(New RealmServer.CharacterUpgradeResponse(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.CreateGameResponse
+            Case RealmServer.RealmServerPacket.CreateGameResponse
                 RaiseEvent OnCreateGameResponse(New RealmServer.CreateGameResponse(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.GameCreationQueue
+            Case RealmServer.RealmServerPacket.GameCreationQueue
                 RaiseEvent OnGameCreationQueue(New RealmServer.GameCreationQueue(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.GameInfo
+            Case RealmServer.RealmServerPacket.GameInfo
                 RaiseEvent OnGameInfo(New RealmServer.GameInfo(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.GameList
+            Case RealmServer.RealmServerPacket.GameList
                 RaiseEvent OnGameList(New RealmServer.GameList(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.JoinGameResponse
+            Case RealmServer.RealmServerPacket.JoinGameResponse
                 RaiseEvent OnJoinGameResponse(New RealmServer.JoinGameResponse(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.MessageOfTheDay
+            Case RealmServer.RealmServerPacket.MessageOfTheDay
                 RaiseEvent OnMessageOfTheDay(New RealmServer.MessageOfTheDay(Packet.Data), Flag)
-            Case D2Packets.RealmServerPacket.RealmStartupResponse
+            Case RealmServer.RealmServerPacket.RealmStartupResponse
                 RaiseEvent OnRealmStartupResponse(New RealmServer.RealmStartupResponse(Packet.Data), Flag)
         End Select
 

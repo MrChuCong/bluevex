@@ -2,7 +2,7 @@
 Imports D2Data
 
 Imports ETUtils
-Imports D2PacketsVB.D2Packets
+Imports D2Packets
 Imports System.Globalization
 
 Namespace BnetClient
@@ -96,7 +96,7 @@ Namespace BnetClient
         Public ReadOnly gameInfo As String
         Public ReadOnly gameVersion As UInt32
         Public ReadOnly keyCount As UInt32
-        Public ReadOnly keys As CDKeyInfo()
+        Public ReadOnly keys As Struct.CDKeyInfo()
         Public ReadOnly ownerName As String
         Public ReadOnly useSpawn As Boolean
 
@@ -108,11 +108,11 @@ Namespace BnetClient
             Me.gameHash = BitConverter.ToUInt32(data, 11)
             Me.keyCount = BitConverter.ToUInt32(data, 15)
             Me.useSpawn = (BitConverter.ToUInt32(data, &H13) = 1)
-            Me.keys = New CDKeyInfo(Me.keyCount - 1) {}
+            Me.keys = New Struct.CDKeyInfo(Me.keyCount - 1) {}
             Dim offset As Integer = &H17
             Dim i As Integer
             For i = 0 To Me.keyCount - 1
-                Me.keys(i) = New CDKeyInfo(data, offset)
+                Me.keys(i) = New Struct.CDKeyInfo(data, offset)
                 offset = (offset + &H24)
             Next i
             Me.gameInfo = ByteConverter.GetNullString(data, offset)

@@ -1,5 +1,4 @@
-﻿
-Namespace D2Packets
+﻿Namespace GameClient
 
     Public Enum GameClientPacket
         WalkToLocation = 1
@@ -81,4 +80,5 @@ Namespace D2Packets
         GoToLocation = 3841
         GoToTarget = 3842
     End Enum
+
 End Namespace

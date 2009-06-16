@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports D2Data
 Imports ETUtils
-Imports D2PacketsVB.D2Packets
+Imports D2Packets
 
 Namespace GameClient
 
@@ -52,7 +52,7 @@ Namespace GameClient
             Me.m_y = BitConverter.ToUInt16(data, 3)
         End Sub
 
-        Public Sub New(ByVal Id As D2Packets.GameClientPacket)
+        Public Sub New(ByVal Id As GameClient.GameClientPacket)
             MyBase.New(GameClientPacket.IdentifyGambleItem)
         End Sub
 
@@ -83,7 +83,7 @@ Namespace GameClient
             m_uid = BitConverter.ToUInt32(data, 5)
         End Sub
 
-        Public Sub New(ByVal Id As D2Packets.GameClientPacket)
+        Public Sub New(ByVal Id As GameClient.GameClientPacket)
             MyBase.New(GameClientPacket.IdentifyGambleItem)
         End Sub
 
@@ -1202,7 +1202,7 @@ Namespace GameClient
 
         Public Sub New(ByVal unittype As UnitType, ByVal uid As UInteger)
 
-            MyBase.New(D2Packets.GameClientPacket.RunToTarget)
+            MyBase.New(GameClient.GameClientPacket.RunToTarget)
 
             InsertInt32(unittype)
             InsertUInt32(uid)

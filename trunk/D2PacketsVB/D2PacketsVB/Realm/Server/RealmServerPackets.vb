@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports D2Data
 Imports ETUtils
-Imports D2PacketsVB.D2Packets
+Imports D2Packets
 
 Namespace RealmServer
 
@@ -520,26 +520,26 @@ Namespace RealmServer
         Public ReadOnly Requested As UInteger
         Public ReadOnly Total As UInteger
         Public ReadOnly Listed As UInteger
-        Public ReadOnly Characters As D2Packets.CharacterInfo()
+        Public ReadOnly Characters As Struct.CharacterInfo()
 
         Public Sub New(ByVal PacketData As Byte())
             MyBase.New(PacketData)
             Me.Requested = BitConverter.ToUInt16(Data, 3)
             Me.Total = BitConverter.ToUInt32(Data, 5)
             Me.Listed = BitConverter.ToUInt16(Data, 9)
-            Me.Characters = New D2Packets.CharacterInfo(Me.Listed - 1) {}
+            Me.Characters = New Struct.CharacterInfo(Me.Listed - 1) {}
             Dim startIndex As Integer = 11
             Dim i As Integer = 0
 
             While (i < Me.Listed) AndAlso (startIndex < Data.Length)
-                Me.Characters(i) = New D2Packets.CharacterInfo()
+                Me.Characters(i) = New Struct.CharacterInfo()
                 Me.Characters(i).Expires = TimeUtils.ParseUnixTimeUtc(BitConverter.ToUInt32(Data, startIndex))
 
                 startIndex += 4
                 Me.Characters(i).Name = ByteConverter.GetNullString(Data, startIndex)
                 startIndex += Me.Characters(i).Name.Length + 1
 
-                StatString.ParseD2StatString(Data, startIndex, Me.Characters(i).ClientVersion, Me.Characters(i).[Class], Me.Characters(i).Level, Me.Characters(i).Flags, _
+                Struct.StatString.ParseD2StatString(Data, startIndex, Me.Characters(i).ClientVersion, Me.Characters(i).[Class], Me.Characters(i).Level, Me.Characters(i).Flags, _
                  Me.Characters(i).Act, Me.Characters(i).Title)
 
                 startIndex = ByteConverter.GetBytePosition(Data, 0, startIndex) + 1

@@ -340,7 +340,7 @@ Public Class Macro
 
         SendMessage(hWnd, btnDown, 0, LParam)
         SendMessage(hWnd, btnUp, 0, LParam)
-        'If it's a double Click... We send another click!!! w00t
+        'If it's a double Click.. We send another click!!! w00t
         If DoubleClick Then
             SendMessage(hWnd, btnDown, 0, LParam)
             SendMessage(hWnd, btnUp, 0, LParam)

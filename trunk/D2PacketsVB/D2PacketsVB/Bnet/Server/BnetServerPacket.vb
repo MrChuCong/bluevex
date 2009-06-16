@@ -1,5 +1,4 @@
-﻿
-Namespace D2Packets
+﻿Namespace BnetServer
 
     Public Enum BnetServerPacket
 
@@ -22,5 +21,4 @@ Namespace D2Packets
         Invalid = 131
 
     End Enum
-
 End Namespace

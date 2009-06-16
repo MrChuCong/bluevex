@@ -3,8 +3,6 @@ Imports ETUtils
 Imports D2Data
 Imports System.Runtime.InteropServices
 
-Namespace D2Packets
-
     ''' <summary>
     ''' Base class for Diablo II Packets
     ''' </summary>
@@ -14,6 +12,8 @@ Namespace D2Packets
         Public MustOverride ReadOnly Property Data() As Byte()
 
     End Class
+
+Namespace Struct
 
     Public Class StatString
 
@@ -165,4 +165,3 @@ Namespace D2Packets
     End Class
 
 End Namespace
-
