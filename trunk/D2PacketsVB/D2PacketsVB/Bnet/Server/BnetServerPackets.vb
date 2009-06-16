@@ -394,7 +394,7 @@ Namespace BnetServer
             Me.lastLogon = TimeUtils.ParseUnixTimeUtc(BitConverter.ToUInt32(data, 5))
             Me.oldestEntry = TimeUtils.ParseUnixTimeUtc(BitConverter.ToUInt32(data, 9))
             Me.newestEntry = TimeUtils.ParseUnixTimeUtc(BitConverter.ToUInt32(data, 13))
-            Me.entries = New NewsEntry(Me.count - 1) {}
+            Me.entries = New NewsEntry(Me.EntriesCount - 1) {}
             Dim offset As Integer = &H11
             Dim i As Integer
             For i = 0 To Me.entries.Length - 1

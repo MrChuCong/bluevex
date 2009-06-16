@@ -429,7 +429,7 @@ Namespace RealmServer
 
         Public Sub New(ByVal PacketData As Byte())
             MyBase.New(PacketData)
-            Me.Result = DirectCast(BitConverter.ToInt32(Data, 5), RealmCharacterActionResult)
+            Me.Result = BitConverter.ToInt16(Data, 5)
         End Sub
 
         Public Sub New(ByVal Result As RealmCharacterActionResult)
