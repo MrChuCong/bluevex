@@ -158,17 +158,17 @@ Namespace RealmClient
             Next
             InsertByte(0)
 
-            'If Password IsNot Nothing Then
-            InsertCString(Password)
-            'Else
-            'InsertByte(0)
-            'End If
+            If Password IsNot Nothing Then
+                InsertCString(Password)
+            Else
+                InsertByte(0)
+            End If
 
-            'If Description IsNot Nothing Then
-            InsertCString(Description)
-            'Else
-            'InsertByte(0)
-            'End If
+            If Description IsNot Nothing Then
+                InsertCString(Description)
+            Else
+                InsertByte(0)
+            End If
 
             Me.RequestID = RequestId
             Me.Difficulty = Difficulty
