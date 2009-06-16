@@ -40,12 +40,12 @@ D:\Truc J-F\D2\Development\Bluevex\Dbot Release\D2PacketsVB.xml
 D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\ResolveAssemblyReference.cache
 D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.Resources.resources
 D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.vbproj.GenerateResource.Cache
-D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.dll
-D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.xml
-D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2PacketsVB.pdb
 D:\Truc J-F\D2\Development\Bluevex\RedVex\D2PacketsVB.dll
 D:\Truc J-F\D2\Development\Bluevex\RedVex\D2PacketsVB.pdb
 D:\Truc J-F\D2\Development\Bluevex\RedVex\D2PacketsVB.xml
-D:\Truc J-F\D2\BlueVex Testing\D2PacketsVB.dll
-D:\Truc J-F\D2\BlueVex Testing\D2PacketsVB.pdb
-D:\Truc J-F\D2\BlueVex Testing\D2PacketsVB.xml
+D:\Truc J-F\D2\BlueVex Testing\D2Packets.dll
+D:\Truc J-F\D2\BlueVex Testing\D2Packets.pdb
+D:\Truc J-F\D2\BlueVex Testing\D2Packets.xml
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2Packets.dll
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2Packets.xml
+D:\Truc J-F\D2\Development\Bluevex\D2PacketsVB\D2PacketsVB\obj\Debug\D2Packets.pdb
