@@ -274,8 +274,6 @@ Namespace RealmServer
                 InsertCString(description)
             End If
 
-            InsertByte(0)
-
 
             Me.requestID = requestid
             Me.index = Index
