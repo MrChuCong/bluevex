@@ -1402,13 +1402,15 @@ Label_0056:
         SoJsSoldToMerchants = 17
     End Enum
 
+
     Public Class ItemAction
         Inherits GSPacket
+
         ' Fields
+        Protected charClass As CharacterClass
         Protected m_action As ItemActionType
         Protected m_baseItem As BaseItem
         Protected m_category As ItemCategory
-        Protected charClass As CharacterClass
         Protected m_color As Integer
         Protected m_container As ItemContainer
         Protected m_destination As ItemDestination
@@ -1430,7 +1432,7 @@ Label_0056:
         Protected m_stats As List(Of StatBase)
         Protected m_suffix As ItemAffix
         Protected m_superiorType As SuperiorItemType
-        Protected m_uid As UInteger
+        Protected m_uid As UInt32
         Protected m_uniqueItem As BaseUniqueItem
         Protected m_unknown1 As Integer
         Protected m_use As Integer
@@ -1449,67 +1451,68 @@ Label_0056:
             Me.m_use = -1
             Me.m_graphic = -1
             Me.m_color = -1
-            Me.m_stats = New List(Of StatBase)()
+            Me.m_stats = New List(Of StatBase)
             Me.m_unknown1 = -1
             Me.m_runewordID = -1
             Me.m_runewordParam = -1
             Dim br As New BitReader(data, 1)
-            Me.m_action = br.ReadByte()
+            Me.m_action = br.ReadByte
             br.SkipBytes(1)
-            Me.m_category = br.ReadByte()
-            Me.m_uid = br.ReadUInt32()
-            If data(0) = 157 Then
+            Me.m_category = br.ReadByte
+            Me.m_uid = br.ReadUInt32
+            If (data(0) = &H9D) Then
                 br.SkipBytes(5)
             End If
-            Me.m_flags = br.ReadUInt32()
-            Me.m_version = br.ReadByte()
+            Me.m_flags = br.ReadUInt32
+            Me.m_version = br.ReadByte
             Me.m_unknown1 = br.ReadByte(2)
             Me.m_destination = br.ReadByte(3)
-            If Me.m_destination = ItemDestination.Ground Then
-                Me.m_x = br.ReadUInt16()
-                Me.m_y = br.ReadUInt16()
+            If (Me.m_destination = ItemDestination.Ground) Then
+                Me.m_x = br.ReadUInt16
+                Me.m_y = br.ReadUInt16
             Else
                 Me.m_location = br.ReadByte(4)
                 Me.m_x = br.ReadByte(4)
                 Me.m_y = br.ReadByte(3)
                 Me.m_container = br.ReadByte(4)
             End If
-            If (Me.m_action = ItemActionType.AddToShop) OrElse (Me.m_action = ItemActionType.RemoveFromShop) Then
-                Dim num As Integer = CInt(Me.m_container) Or 128
-                If (num And 1) = 1 Then
+            If (IIf(((Me.m_action = ItemActionType.AddToShop) OrElse (Me.m_action = ItemActionType.RemoveFromShop)), 1, 0) <> 0) Then
+                Dim num As Integer = (CInt(Me.m_container) Or &H80)
+                If ((num And 1) = 1) Then
                     num -= 1
-                    Me.m_y += 8
+                    Me.m_y = (Me.m_y + 8)
                 End If
                 Me.m_container = DirectCast(num, ItemContainer)
-            ElseIf Me.m_container = ItemContainer.Unspecified Then
-                If Me.m_location = EquipmentLocation.NotApplicable Then
-                    If (Me.Flags And ItemFlags.InSocket) = ItemFlags.InSocket Then
+            ElseIf (Me.m_container = ItemContainer.Unspecified) Then
+                If (Me.m_location = EquipmentLocation.NotApplicable) Then
+                    If ((Me.Flags And ItemFlags.InSocket) = ItemFlags.InSocket) Then
                         Me.m_container = ItemContainer.Item
                         Me.m_y = -1
-                    ElseIf (Me.m_action = ItemActionType.PutInBelt) OrElse (Me.m_action = ItemActionType.RemoveFromBelt) Then
+                    ElseIf (IIf(((Me.m_action = ItemActionType.PutInBelt) OrElse (Me.m_action = ItemActionType.RemoveFromBelt)), 1, 0) <> 0) Then
                         Me.m_container = ItemContainer.Belt
-                        Me.m_y = Me.m_x / 4
-                        Me.m_x = Me.m_x Mod 4
+                        Me.m_y = CInt(Math.Round(CDbl((CDbl(Me.m_x) / 4))))
+                        Me.m_x = (Me.m_x Mod 4)
                     End If
                 Else
                     Me.m_x = -1
                     Me.m_y = -1
                 End If
             End If
-            If (Me.m_flags And ItemFlags.Ear) = ItemFlags.Ear Then
+            If ((Me.m_flags And ItemFlags.Ear) = ItemFlags.Ear) Then
                 Me.charClass = br.ReadByte(3)
                 Me.m_level = br.ReadByte(7)
-                Me.m_name = br.ReadString(7, Chr(0), 16)
-                Me.m_baseItem = BaseItem.[Get](ItemType.Ear)
+                Me.m_name = br.ReadString(7, ChrW(0), &H10)
+                Me.m_baseItem = BaseItem.Get(ItemType.Ear)
             Else
-                Me.m_baseItem = BaseItem.GetByID(Me.m_category, br.ReadUInt32())
-                If Me.m_baseItem.Type = ItemType.Gold Then
-                    Me.m_stats.Add(New SignedStat(BaseStat.[Get](StatType.Quantity), br.ReadInt32(IIf(br.ReadBoolean(1), 32, 12))))
+                Me.m_baseItem = BaseItem.GetByID(Me.m_category, br.ReadUInt32)
+                If (Me.m_baseItem.Type = ItemType.Gold) Then
+                    Me.m_stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(CInt(Interaction.IIf(br.ReadBoolean(1), &H20, 12)))))
                 Else
                     Me.m_usedSockets = br.ReadByte(3)
-                    If (Me.m_flags And (ItemFlags.Compact Or ItemFlags.Gamble)) = ItemFlags.None Then
-                        Dim stat As BaseStat
+                    If ((Me.m_flags And (ItemFlags.Compact Or ItemFlags.Gamble)) = ItemFlags.None) Then
                         Dim num2 As Integer
+                        Dim stat As BaseStat
+                        Dim num6 As Integer
                         Me.m_level = br.ReadByte(7)
                         Me.m_quality = br.ReadByte(4)
                         If br.ReadBoolean(1) Then
@@ -1518,144 +1521,148 @@ Label_0056:
                         If br.ReadBoolean(1) Then
                             Me.m_color = br.ReadInt32(11)
                         End If
-                        If (Me.m_flags And ItemFlags.Identified) = ItemFlags.Identified Then
-                            Select Case Me.m_quality
-                                Case ItemQuality.Inferior
+                        If ((Me.m_flags And ItemFlags.Identified) = ItemFlags.Identified) Then
+                            Select Case CInt(Me.m_quality)
+                                Case 1
                                     Me.m_prefix = New ItemAffix(ItemAffixType.InferiorPrefix, br.ReadByte(3))
                                     Exit Select
-                                Case ItemQuality.Superior
-
+                                Case 3
                                     Me.m_prefix = New ItemAffix(ItemAffixType.SuperiorPrefix, 0)
                                     Me.m_superiorType = br.ReadByte(3)
                                     Exit Select
-                                Case ItemQuality.Magic
-
+                                Case 4
                                     Me.m_prefix = New ItemAffix(ItemAffixType.MagicPrefix, br.ReadUInt16(11))
                                     Me.m_suffix = New ItemAffix(ItemAffixType.MagicSuffix, br.ReadUInt16(11))
                                     Exit Select
-                                Case ItemQuality.[Set]
-
-                                    Me.m_setItem = BaseSetItem.[Get](br.ReadUInt16(12))
+                                Case 5
+                                    Me.m_setItem = BaseSetItem.Get(br.ReadUInt16(12))
                                     Exit Select
-                                Case ItemQuality.Rare, ItemQuality.Crafted
-
+                                Case 6, 8
                                     Me.m_prefix = New ItemAffix(ItemAffixType.RarePrefix, br.ReadByte(8))
                                     Me.m_suffix = New ItemAffix(ItemAffixType.RareSuffix, br.ReadByte(8))
                                     Exit Select
-                                Case ItemQuality.Unique
-
-                                    If Me.m_baseItem.Code <> "std" Then
+                                Case 7
+                                    If (Me.m_baseItem.Code <> "std") Then
                                         Try
-                                            Me.m_uniqueItem = BaseUniqueItem.[Get](br.ReadUInt16(12))
-                                        Catch
+                                            Me.m_uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12))
+                                        Catch exception1 As Exception
+                                            'ProjectData.SetProjectError(exception1)
+                                            'ProjectData.ClearProjectError()
                                         End Try
                                     End If
                                     Exit Select
                             End Select
                         End If
-                        If (Me.m_quality = ItemQuality.Rare) OrElse (Me.m_quality = ItemQuality.Crafted) Then
-                            Me.m_magicPrefixes = New List(Of MagicPrefixType)()
-                            Me.m_magicSuffixes = New List(Of MagicSuffixType)()
-                            For i As Integer = 0 To 2
+                        If (IIf(((Me.m_quality = ItemQuality.Rare) OrElse (Me.m_quality = ItemQuality.Crafted)), 1, 0) <> 0) Then
+                            Me.m_magicPrefixes = New List(Of MagicPrefixType)
+                            Me.m_magicSuffixes = New List(Of MagicSuffixType)
+                            Dim num3 As Integer = 0
+                            Do
                                 If br.ReadBoolean(1) Then
                                     Me.m_magicPrefixes.Add(br.ReadUInt16(11))
                                 End If
                                 If br.ReadBoolean(1) Then
                                     Me.m_magicSuffixes.Add(br.ReadUInt16(11))
                                 End If
-                            Next
+                                num3 += 1
+                                num6 = 2
+                            Loop While (num3 <= num6)
                         End If
-                        If (Me.Flags And ItemFlags.Runeword) = ItemFlags.Runeword Then
+                        If ((Me.Flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
                             Me.m_runewordID = br.ReadUInt16(12)
                             Me.m_runewordParam = br.ReadUInt16(4)
                             num2 = -1
-                            If Me.m_runewordParam = 5 Then
-                                num2 = Me.m_runewordID - (Me.m_runewordParam * 5)
-                                If num2 < 100 Then
+                            If (Me.m_runewordParam = 5) Then
+                                num2 = (Me.m_runewordID - (Me.m_runewordParam * 5))
+                                If (num2 < 100) Then
                                     num2 -= 1
                                 End If
-                            ElseIf Me.m_runewordParam = 2 Then
-                                num2 = ((Me.m_runewordID And 1023) >> 5) + 2
+                            ElseIf (Me.m_runewordParam = 2) Then
+                                num2 = (((Me.m_runewordID And &H3FF) >> 5) + 2)
                             End If
-                            br.ByteOffset -= 2
-                            Me.m_runewordParam = br.ReadUInt16()
+                            Dim reader2 As BitReader = br
+                            reader2.ByteOffset = (reader2.ByteOffset - 2)
+                            Me.m_runewordParam = br.ReadUInt16
                             Me.m_runewordID = num2
-                            If num2 = -1 Then
-                                Throw New Exception("Unknown Runeword: " + Me.m_runewordParam)
+                            If (num2 = -1) Then
+                                Throw New Exception(CStr(CDbl((CDbl("Unknown Runeword: ") + Me.m_runewordParam))))
                             End If
-                            Me.m_runeword = BaseRuneword.[Get](num2)
+                            Me.m_runeword = BaseRuneword.Get(num2)
                         End If
-                        If (Me.Flags And ItemFlags.Personalized) = ItemFlags.Personalized Then
-                            Me.m_name = br.ReadString(7, Chr(0), 16)
+                        If ((Me.Flags And ItemFlags.Personalized) = ItemFlags.Personalized) Then
+                            Me.m_name = br.ReadString(7, ChrW(0), &H10)
                         End If
                         If TypeOf Me.m_baseItem Is BaseArmor Then
-                            stat = BaseStat.[Get](StatType.ArmorClass)
-                            Me.m_stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits) - stat.SaveAdd))
+                            stat = BaseStat.Get(StatType.ArmorClass)
+                            Me.m_stats.Add(New SignedStat(stat, (br.ReadInt32(stat.SaveBits) - stat.SaveAdd)))
                         End If
-                        If (TypeOf Me.m_baseItem Is BaseArmor) OrElse (TypeOf Me.m_baseItem Is BaseWeapon) Then
-                            stat = BaseStat.[Get](StatType.MaxDurability)
+                        If (IIf((TypeOf Me.m_baseItem Is BaseArmor OrElse TypeOf Me.m_baseItem Is BaseWeapon), 1, 0) <> 0) Then
+                            stat = BaseStat.Get(StatType.MaxDurability)
                             num2 = br.ReadInt32(stat.SaveBits)
                             Me.m_stats.Add(New SignedStat(stat, num2))
-                            If num2 > 0 Then
-                                stat = BaseStat.[Get](StatType.Durability)
+                            If (num2 > 0) Then
+                                stat = BaseStat.Get(StatType.Durability)
                                 Me.m_stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
                             End If
                         End If
-                        If (Me.Flags And (ItemFlags.None Or ItemFlags.Socketed)) = (ItemFlags.None Or ItemFlags.Socketed) Then
-                            stat = BaseStat.[Get](StatType.Sockets)
+                        If ((Me.Flags And (ItemFlags.None Or ItemFlags.Socketed)) = (ItemFlags.None Or ItemFlags.Socketed)) Then
+                            stat = BaseStat.Get(StatType.Sockets)
                             Me.m_stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
                         End If
                         If Me.m_baseItem.Stackable Then
                             If Me.m_baseItem.Useable Then
                                 Me.m_use = br.ReadByte(5)
                             End If
-                            Me.m_stats.Add(New SignedStat(BaseStat.[Get](StatType.Quantity), br.ReadInt32(9)))
+                            Me.m_stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(9)))
                         End If
-                        If (Me.Flags And ItemFlags.Identified) = ItemFlags.Identified Then
+                        If ((Me.Flags And ItemFlags.Identified) = ItemFlags.Identified) Then
                             Dim base2 As StatBase
-                            Dim num4 As Integer = IIf((Me.Quality = ItemQuality.[Set]), br.ReadByte(5), -1)
-                            Me.m_mods = New List(Of StatBase)()
+                            Dim num4 As Integer = CInt(Interaction.IIf((Me.Quality = ItemQuality.Set), br.ReadByte(5), -1))
+                            Me.m_mods = New List(Of StatBase)
+                            Do While True
 
-                            While True
+                                base2 = Nothing
                                 Try
-                                    base2 = ReadStat(br)
-                                Catch ex As Exception
+                                    base2 = ItemAction.ReadStat(br)
+                                Catch exception2 As Exception
+                                    'ProjectData.SetProjectError(exception2)
+                                    'Dim exception As Exception = exception2
+                                    'ProjectData.ClearProjectError()
                                 End Try
-
-                                If base2 IsNot Nothing Then
+                                If (Not base2 Is Nothing) Then
                                     Me.m_mods.Add(base2)
                                 Else
-                                    Exit While
+                                    Exit Do
                                 End If
-                            End While
-
-                            If (Me.m_flags And ItemFlags.Runeword) = ItemFlags.Runeword Then
-                                While True
-                                    base2 = ReadStat(br)
-                                    If base2 IsNot Nothing Then
+                            Loop
+                            If ((Me.m_flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
+                                Do While True
+                                    base2 = ItemAction.ReadStat(br)
+                                    If (Not base2 Is Nothing) Then
                                         Me.m_mods.Add(base2)
                                     Else
-                                        Exit While
+                                        Exit Do
                                     End If
-                                End While
+                                Loop
                             End If
-                            If num4 > 0 Then
-                                Me.m_setBonuses = New List(Of StatBase)(4) {}
-                                For j As Integer = 0 To 4
-                                    If (num4 And (CInt(1) << j)) <> 0 Then
-                                        Me.m_setBonuses(j) = New List(Of StatBase)()
-
-                                        While True
-                                            base2 = ReadStat(br)
-                                            If base2 IsNot Nothing Then
-                                                Me.m_setBonuses(j).Add(base2)
+                            If (num4 > 0) Then
+                                Me.m_setBonuses = New List(Of StatBase)(5 - 1) {}
+                                Dim index As Integer = 0
+                                Do
+                                    If ((num4 And (CInt(1) << index)) <> 0) Then
+                                        Me.m_setBonuses(index) = New List(Of StatBase)
+                                        Do While True
+                                            base2 = ItemAction.ReadStat(br)
+                                            If (Not base2 Is Nothing) Then
+                                                Me.m_setBonuses(index).Add(base2)
                                             Else
-                                                Exit While
+                                                Exit Do
                                             End If
-                                        End While
-
+                                        Loop
                                     End If
-                                Next
+                                    index += 1
+                                    num6 = 4
+                                Loop While (index <= num6)
                             End If
                         End If
                     End If
@@ -1665,78 +1672,80 @@ Label_0056:
 
         Private Shared Function ReadStat(ByVal br As BitReader) As StatBase
             Dim index As Integer = br.ReadInt32(9)
-            If index = 511 Then
+            If (index = &H1FF) Then
                 Return Nothing
             End If
-            Dim stat As BaseStat = BaseStat.[Get](index)
-            If stat.SaveParamBits = -1 Then
-                If stat.OpBase = StatType.Level Then
+            Dim stat As BaseStat = BaseStat.Get(index)
+            If (stat.SaveParamBits = -1) Then
+                If (stat.OpBase = StatType.Level) Then
                     Return New PerLevelStat(stat, br.ReadInt32(stat.SaveBits))
                 End If
-                Select Case stat.Type
-                    Case StatType.MaxDamagePercent, StatType.MinDamagePercent
-                        Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(stat.SaveBits))
-                    Case StatType.FireMinDamage, StatType.LightMinDamage, StatType.MagicMinDamage
-
-                        Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.[Get](CInt((stat.Index + 1))).SaveBits))
-                    Case StatType.FireMaxDamage, StatType.LightMaxDamage, StatType.MagicMaxDamage
-
-                        GoTo Label_0350
-                    Case StatType.ColdMinDamage
-
-                        Return New ColdDamageStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.[Get](StatType.ColdMaxDamage).SaveBits), br.ReadInt32(BaseStat.[Get](StatType.ColdLength).SaveBits))
-                    Case StatType.ReplenishDurability, StatType.ReplenishQuantity
-
-                        Return New ReplenishStat(stat, br.ReadInt32(stat.SaveBits))
-                    Case StatType.PoisonMinDamage
-
-                        Return New PoisonDamageStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.[Get](StatType.PoisonMaxDamage).SaveBits), br.ReadInt32(BaseStat.[Get](StatType.PoisonLength).SaveBits))
-                End Select
-            Else
-                Select Case stat.Type
-                    Case StatType.SingleSkill, StatType.NonClassSkill
-                        Return New SkillBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                    Case StatType.ElementalSkillBonus
-
-                        Return New ElementalSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                    Case StatType.ClassSkillsBonus
-
-                        Return New ClassSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                    Case StatType.Aura
-
-                        Return New AuraStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                    Case StatType.Reanimate
-
-                        Return New ReanimateStat(stat, br.ReadUInt32(stat.SaveParamBits), br.ReadUInt32(stat.SaveBits))
-                    Case StatType.SkillOnAttack, StatType.SkillOnKill, StatType.SkillOnDeath, StatType.SkillOnStriking, StatType.SkillOnLevelUp, StatType.SkillOnGetHit
-
-                        Return New SkillOnEventStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
-                    Case StatType.ChargedSkill
-
-                        Return New ChargedSkillStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(8), br.ReadInt32(8))
-                    Case StatType.SkillTabBonus
-
-                        Return New SkillTabBonusStat(stat, br.ReadInt32(3), br.ReadInt32(3), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
-                End Select
-                Throw New Exception("Invalid stat: " + stat.Index.ToString())
-            End If
-Label_0350:
-            If stat.Signed Then
-                Dim num2 As Integer = br.ReadInt32(stat.SaveBits)
-                If stat.SaveAdd > 0 Then
-                    num2 -= stat.SaveAdd
+                Dim type As StatType = stat.Type
+                If (IIf(((type = StatType.MaxDamagePercent) OrElse (type = StatType.MinDamagePercent)), 1, 0) <> 0) Then
+                    Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(stat.SaveBits))
                 End If
-                Return New SignedStat(stat, num2)
+                If ((type = StatType.FireMinDamage) OrElse (type = StatType.LightMinDamage)) Then
+                End If
+                If (IIf((type = StatType.MagicMinDamage), 1, 0) <> 0) Then
+                    Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.Get(CInt((stat.Index + 1))).SaveBits))
+                End If
+                If ((type = StatType.FireMaxDamage) OrElse (type = StatType.LightMaxDamage)) Then
+                End If
+                If (IIf((type = StatType.MagicMaxDamage), 1, 0) = 0) Then
+                    If (type = StatType.ColdMinDamage) Then
+                        Return New ColdDamageStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.Get(StatType.ColdMaxDamage).SaveBits), br.ReadInt32(BaseStat.Get(StatType.ColdLength).SaveBits))
+                    End If
+                    If (IIf(((type = StatType.ReplenishDurability) OrElse (type = StatType.ReplenishQuantity)), 1, 0) <> 0) Then
+                        Return New ReplenishStat(stat, br.ReadInt32(stat.SaveBits))
+                    End If
+                    If (type = StatType.PoisonMinDamage) Then
+                        Return New PoisonDamageStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.Get(StatType.PoisonMaxDamage).SaveBits), br.ReadInt32(BaseStat.Get(StatType.PoisonLength).SaveBits))
+                    End If
+                End If
+            Else
+                Dim type2 As StatType = stat.Type
+                If (IIf(((type2 = StatType.SingleSkill) OrElse (type2 = StatType.NonClassSkill)), 1, 0) <> 0) Then
+                    Return New SkillBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                End If
+                If (type2 = StatType.ElementalSkillBonus) Then
+                    Return New ElementalSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                End If
+                If (type2 = StatType.ClassSkillsBonus) Then
+                    Return New ClassSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                End If
+                If (type2 = StatType.Aura) Then
+                    Return New AuraStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                End If
+                If (type2 = StatType.Reanimate) Then
+                    Return New ReanimateStat(stat, br.ReadUInt32(stat.SaveParamBits), br.ReadUInt32(stat.SaveBits))
+                End If
+                If ((((type2 <> StatType.SkillOnAttack) AndAlso (type2 <> StatType.SkillOnKill)) AndAlso (type2 <> StatType.SkillOnDeath)) AndAlso ((type2 <> StatType.SkillOnStriking) AndAlso (type2 = StatType.SkillOnLevelUp))) Then
+                End If
+                If (IIf((type2 = StatType.SkillOnGetHit), 1, 0) <> 0) Then
+                    Return New SkillOnEventStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
+                End If
+                If (type2 = StatType.ChargedSkill) Then
+                    Return New ChargedSkillStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(8), br.ReadInt32(8))
+                End If
+                If (type2 <> StatType.SkillTabBonus) Then
+                    Throw New Exception(("Invalid stat: " & stat.Index.ToString))
+                End If
+                Return New SkillTabBonusStat(stat, br.ReadInt32(3), br.ReadInt32(3), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
             End If
-
-            Dim val As UInteger = br.ReadUInt32(stat.SaveBits)
-
-            If stat.SaveAdd > 0 Then
-                val -= CInt(stat.SaveAdd)
+            If stat.Signed Then
+                Dim num3 As Integer = br.ReadInt32(stat.SaveBits)
+                If (stat.SaveAdd > 0) Then
+                    num3 = (num3 - stat.SaveAdd)
+                End If
+                Return New SignedStat(stat, num3)
             End If
-
-            Return New UnsignedStat(stat, Val)
+            Dim val As UInt32 = br.ReadUInt32(stat.SaveBits)
+            If (stat.SaveAdd > 0) Then
+                val = (val - stat.SaveAdd)
+            End If
+            Return New UnsignedStat(stat, val)
         End Function
+
 
         ' Properties
         Public ReadOnly Property Action() As ItemActionType
@@ -1889,7 +1898,7 @@ Label_0350:
             End Get
         End Property
 
-        Public ReadOnly Property UID() As UInteger
+        Public ReadOnly Property UID() As UInt32
             Get
                 Return Me.m_uid
             End Get
@@ -1903,7 +1912,7 @@ Label_0350:
 
         Public ReadOnly Property Unknown1() As Integer
             Get
-                If Me.m_unknown1 <> 0 Then
+                If (Me.m_unknown1 <> 0) Then
                     Return Me.m_unknown1
                 End If
                 Return -1
@@ -1918,7 +1927,7 @@ Label_0350:
 
         Public ReadOnly Property UsedSockets() As Integer
             Get
-                If (Me.m_usedSockets = 0) AndAlso ((Me.m_flags And (ItemFlags.None Or ItemFlags.Socketed)) <> (ItemFlags.None Or ItemFlags.Socketed)) Then
+                If (IIf(((Me.m_usedSockets = 0) AndAlso ((Me.m_flags And (ItemFlags.None Or ItemFlags.Socketed)) <> (ItemFlags.None Or ItemFlags.Socketed))), 1, 0) <> 0) Then
                     Return -1
                 End If
                 Return Me.m_usedSockets
@@ -1943,6 +1952,9 @@ Label_0350:
             End Get
         End Property
     End Class
+
+
+
 
     Public Enum ItemEventCause
         Target
