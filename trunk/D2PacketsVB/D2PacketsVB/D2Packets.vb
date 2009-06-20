@@ -7,7 +7,7 @@ Imports System.Runtime.InteropServices
     ''' Base class for Diablo II Packets
     ''' </summary>
     Public MustInherit Class D2Packet
-        Inherits DataBuffer
+    Inherits DataBuffer
 
         Public MustOverride ReadOnly Property Data() As Byte()
 

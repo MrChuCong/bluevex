@@ -1546,8 +1546,7 @@ Label_0056:
                                         Try
                                             Me.m_uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12))
                                         Catch exception1 As Exception
-                                            'ProjectData.SetProjectError(exception1)
-                                            'ProjectData.ClearProjectError()
+                                            Throw exception1
                                         End Try
                                     End If
                                     Exit Select
@@ -1625,9 +1624,7 @@ Label_0056:
                                 Try
                                     base2 = ItemAction.ReadStat(br)
                                 Catch exception2 As Exception
-                                    'ProjectData.SetProjectError(exception2)
-                                    'Dim exception As Exception = exception2
-                                    'ProjectData.ClearProjectError()
+                                    'Throw exception2
                                 End Try
                                 If (Not base2 Is Nothing) Then
                                     Me.m_mods.Add(base2)
@@ -1672,7 +1669,7 @@ Label_0056:
 
         Private Shared Function ReadStat(ByVal br As BitReader) As StatBase
             Dim index As Integer = br.ReadInt32(9)
-            If (index = &H1FF) Then
+            If (index = &H1FF Or index > BaseStat.ItemCount) Then
                 Return Nothing
             End If
             Dim stat As BaseStat = BaseStat.Get(index)

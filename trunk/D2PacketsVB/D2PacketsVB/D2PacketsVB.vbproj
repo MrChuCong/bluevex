@@ -43,6 +43,7 @@
     <Reference Include="ETUtils, Version=1.0.2610.21028, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RedVex\ETUtils.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

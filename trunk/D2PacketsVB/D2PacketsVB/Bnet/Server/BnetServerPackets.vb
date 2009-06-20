@@ -3,8 +3,9 @@ Imports D2Data
 Imports ETUtils
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
-Imports D2Packets
 Imports System.Net
+Imports D2Packets
+
 
 Namespace BnetServer
 
@@ -180,82 +181,165 @@ Namespace BnetServer
     Public Class ChatEvent
         Inherits BsPacket
 
+
+
         ' Fields
-        Public ReadOnly account As String
-        Public ReadOnly characterAct As Integer
-        Public ReadOnly characterFlags As CharacterFlags
-        Public ReadOnly characterLevel As Integer
-        Public ReadOnly characterTitle As CharacterTitle
-        Public ReadOnly characterType As BattleNetCharacter
-        Public ReadOnly client As BattleNetClient
-        Public ReadOnly clientVersion As Integer
-        Public ReadOnly eventType As ChatEventType
-        Public ReadOnly flags As UInteger
-        Public ReadOnly message As String
-        Public ReadOnly name As String
+        Protected m_account As String
+        Protected m_characterAct As Integer
+        Protected m_characterFlags As CharacterFlags
+        Protected m_characterLevel As Integer
+        Protected m_characterTitle As CharacterTitle
+        Protected m_characterType As BattleNetCharacter
+        Protected m_client As BattleNetClient
+        Protected m_clientVersion As Integer
+        Protected m_eventType As ChatEventType
+        Protected m_flags As UInt32
+        Protected m_message As String
+        Protected m_name As String
+        Protected m_ping As UInt32
+        Protected m_realm As String
 
-        Public Shared ReadOnly NULL_Int32 As Integer = -1
-        Public Shared ReadOnly NULL_UInt32 As Integer = 0
-
-        Public ReadOnly ping As UInteger
-        Public ReadOnly realm As String
-
+        ' Methods
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.clientVersion = -1
-            Me.characterType = BattleNetCharacter.Unknown
-            Me.characterLevel = -1
-            Me.characterAct = -1
-            Me.characterTitle = CharacterTitle.None
-            Me.eventType = DirectCast(BitConverter.ToUInt32(data, 4), ChatEventType)
-            Me.flags = BitConverter.ToUInt32(data, 8)
-            Me.ping = BitConverter.ToUInt32(data, 12)
-            Dim length As Integer = ByteConverter.GetByteOffset(data, 0, 28)
+            Me.m_clientVersion = -1
+            Me.m_characterType = BattleNetCharacter.Unknown
+            Me.m_characterLevel = -1
+            Me.m_characterAct = -1
+            Me.m_characterTitle = CharacterTitle.None
 
+            Me.m_eventType = DirectCast(BitConverter.ToUInt32(data, 4), ChatEventType)
+
+            Me.m_flags = BitConverter.ToUInt32(data, 8)
+            Me.m_ping = BitConverter.ToUInt32(data, 12)
+
+            Dim length As Integer = ByteConverter.GetByteOffset(data, 0, 28)
             Dim num2 As Integer = ByteConverter.GetByteOffset(data, 42, 28, length)
+
             If (num2 > 0) Then
-                Me.name = ByteConverter.GetString(data, 28, num2)
+                Me.m_name = ByteConverter.GetString(data, 28, num2)
                 length = (length - (num2 + 1))
                 num2 = (num2 + 29)
             ElseIf (num2 = 0) Then
                 num2 = 29
                 length -= 1
-                Me.characterType = BattleNetCharacter.OpenCharacter
+                Me.m_characterType = BattleNetCharacter.OpenCharacter
             Else
                 num2 = 28
             End If
-            Me.account = ByteConverter.GetString(data, num2, length)
+            Me.m_account = ByteConverter.GetString(data, num2, length)
             length = (length + (num2 + 1))
-            If (Me.eventType <> ChatEventType.ChannelLeave) Then
-                If ((Me.eventType = ChatEventType.ChannelJoin) OrElse (Me.eventType = ChatEventType.ChannelUser)) Then
-                    If ((data.Length - length) > 4) Then
-                        Me.client = DirectCast(BitConverter.ToUInt32(data, length), BattleNetClient)
-                        'Check: Maybe Increment to 5. 
+            If (Me.m_eventType <> ChatEventType.ChannelLeave) Then
+                If ((Me.m_eventType = ChatEventType.ChannelJoin) OrElse (Me.m_eventType = ChatEventType.ChannelUser)) Then
+                    If ((data.Length - length) > 3) Then
+                        Me.m_client = DirectCast(BitConverter.ToUInt32(data, length), BattleNetClient)
                         length = (length + 4)
                     End If
-                    If ((((Me.client <> BattleNetClient.StarcraftShareware) AndAlso (Me.client <> BattleNetClient.Starcraft)) AndAlso (Me.client <> BattleNetClient.StarcraftBroodWar)) AndAlso ((Me.client = BattleNetClient.Diablo2) OrElse (Me.client = BattleNetClient.Diablo2LoD))) Then
-                        If (Me.client = BattleNetClient.Diablo2LoD) Then
-                            Me.characterFlags = (Me.characterFlags Or CharacterFlags.Expansion)
+                    If ((((Me.Client <> BattleNetClient.StarcraftShareware) AndAlso (Me.Client <> BattleNetClient.Starcraft)) AndAlso (Me.Client <> BattleNetClient.StarcraftBroodWar)) AndAlso ((Me.Client = BattleNetClient.Diablo2) OrElse (Me.Client = BattleNetClient.Diablo2LoD))) Then
+                        If (Me.Client = BattleNetClient.Diablo2LoD) Then
+                            Me.m_characterFlags = (Me.CharacterFlags Or CharacterFlags.Expansion)
                         End If
-
-                        'Check: Maybe Increment to 5.
                         If ((data.Length - length) >= 4) Then
-                            Me.realm = ByteConverter.GetString(data, length, -1, &H2C)
-                            length = (length + (Me.realm.Length + 1))
+                            Me.m_realm = ByteConverter.GetString(data, length, -1, 44)
+                            length = (length + (Me.Realm.Length + 1))
                             If (data.Length >= length) Then
-                                length = (length + (ByteConverter.GetByteOffset(data, &H2C, length) + 1))
-
-                                If (((length <> -1) AndAlso (data.Length > length)) AndAlso ((data.Length - length) >= &H22)) Then
-                                    Struct.StatString.ParseD2StatString(data, length, (Me.clientVersion), (Me.characterType), (Me.characterLevel), (Me.characterFlags), (Me.characterAct), (Me.characterTitle))
+                                length = (length + (ByteConverter.GetByteOffset(data, 44, length) + 1))
+                                If (((length <> -1) AndAlso (data.Length > length)) AndAlso ((data.Length - length) >= 33)) Then
+                                    Struct.StatString.ParseD2StatString(data, length, Me.m_clientVersion, Me.m_characterType, Me.m_characterLevel, Me.m_characterFlags, Me.m_characterAct, Me.m_characterTitle)
                                 End If
                             End If
                         End If
                     End If
                 Else
-                    Me.message = ByteConverter.GetNullString(data, length)
+                    Me.m_message = ByteConverter.GetNullString(data, length)
                 End If
             End If
         End Sub
+
+        ' Properties
+        Public ReadOnly Property Account() As String
+            Get
+                Return Me.m_account
+            End Get
+        End Property
+
+        Public ReadOnly Property CharacterAct() As Integer
+            Get
+                Return Me.m_characterAct
+            End Get
+        End Property
+
+        Public ReadOnly Property CharacterFlags() As CharacterFlags
+            Get
+                Return Me.m_characterFlags
+            End Get
+        End Property
+
+        Public ReadOnly Property CharacterLevel() As Integer
+            Get
+                Return Me.m_characterLevel
+            End Get
+        End Property
+
+        Public ReadOnly Property CharacterTitle() As CharacterTitle
+            Get
+                Return Me.m_characterTitle
+            End Get
+        End Property
+
+        Public ReadOnly Property CharacterType() As BattleNetCharacter
+            Get
+                Return Me.m_characterType
+            End Get
+        End Property
+
+        Public ReadOnly Property Client() As BattleNetClient
+            Get
+                Return Me.m_client
+            End Get
+        End Property
+
+        Public ReadOnly Property ClientVersion() As Integer
+            Get
+                Return Me.m_clientVersion
+            End Get
+        End Property
+
+        Public ReadOnly Property [Event]() As ChatEventType
+            Get
+                Return Me.m_eventType
+            End Get
+        End Property
+
+        Public ReadOnly Property Flags() As UInt32
+            Get
+                Return Me.m_flags
+            End Get
+        End Property
+
+        Public ReadOnly Property Message() As String
+            Get
+                Return Me.m_message
+            End Get
+        End Property
+
+        Public ReadOnly Property Name() As String
+            Get
+                Return Me.m_name
+            End Get
+        End Property
+
+        Public ReadOnly Property Ping() As UInt32
+            Get
+                Return Me.m_ping
+            End Get
+        End Property
+
+        Public ReadOnly Property Realm() As String
+            Get
+                Return Me.m_realm
+            End Get
+        End Property
 
     End Class
 
@@ -298,7 +382,7 @@ Namespace BnetServer
             Me.characterType = BattleNetCharacter.Unknown
             Me.characterLevel = -1
             Me.characterAct = -1
-            Me.characterTitle = CharacterTitle.None
+            Me.characterTitle = characterTitle.None
             Me.username = ByteConverter.GetNullString(data, 4)
             Dim startIndex As Integer = (5 + Me.username.Length)
             Me.client = DirectCast(BitConverter.ToUInt32(data, startIndex), BattleNetClient)
@@ -372,7 +456,7 @@ Namespace BnetServer
         End Sub
 
         Public Overloads Overrides Function ToString() As String
-            Return String.Format("Timestamp: {0}, Content: {1}", Me.Timestamp, Me.Content)
+            Return String.Format("Timestamp: {0}, Content: {1}", Me.timestamp, Me.content)
         End Function
 
     End Structure
@@ -399,7 +483,7 @@ Namespace BnetServer
             Dim i As Integer
             For i = 0 To Me.entries.Length - 1
                 Me.entries(i) = New NewsEntry(data, offset)
-                offset = (offset + (5 + Me.entries(i).Content.Length))
+                offset = (offset + (5 + Me.entries(i).content.Length))
             Next i
         End Sub
 
@@ -420,9 +504,9 @@ Namespace BnetServer
             Me.Realms = New Struct.RealmInfo(Me.Count - 1) {}
             Dim offset As Integer = 12
             Dim i As Integer
-            For i = 0 To Me.count - 1
+            For i = 0 To Me.Count - 1
                 Me.Realms(i) = New Struct.RealmInfo(data, offset)
-                offset = (offset + ((6 + Me.realms(i).Name.Length) + Me.realms(i).Description.Length))
+                offset = (offset + ((6 + Me.Realms(i).Name.Length) + Me.Realms(i).Description.Length))
             Next i
         End Sub
 
@@ -456,7 +540,7 @@ Namespace BnetServer
 
         Public ReadOnly Property StartupData() As Byte()
             Get
-                If (Me.Result <> RealmLogonResult.Success) Then
+                If (Me.result <> RealmLogonResult.Success) Then
                     Return Nothing
                 End If
                 Dim destinationArray As Byte() = New Byte(64 - 1) {}
