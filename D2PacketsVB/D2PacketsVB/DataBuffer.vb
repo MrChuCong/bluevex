@@ -1,7 +1,6 @@
 ﻿Imports System.Text
 Imports System.IO
 
-
 Public MustInherit Class DataBuffer
     Implements IDisposable
 
@@ -178,9 +177,9 @@ Public MustInherit Class DataBuffer
 
     Public Sub InsertBoolean(ByVal b As Boolean)
         If b Then
-            Me.Insert(1)
+            Me.InsertByte(1)
         Else
-            Me.Insert(0)
+            Me.InsertByte(0)
         End If
     End Sub
 
