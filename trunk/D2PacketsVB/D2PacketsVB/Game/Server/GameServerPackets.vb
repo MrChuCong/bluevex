@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Text
-Imports D2Data
 Imports D2Packets
+Imports D2Data
 Imports ETUtils
 Imports System.Collections.Generic
 
@@ -168,7 +168,7 @@ Namespace GameServer
             Me.m_unitType = DirectCast(data(1), UnitType)
             Me.m_uid = BitConverter.ToUInt32(data, 2)
             Me.m_states = New List(Of NPCState)()
-            Dim reader As New BitReader(data, 7)
+            Dim reader As New ETUtils.BitReader(data, 7)
 Label_0030:
             num = reader.ReadInt32(8)
             If num = 255 Then
@@ -1403,263 +1403,214 @@ Label_0056:
     End Enum
 
 
+
     Public Class ItemAction
         Inherits GSPacket
-
-        ' Fields
-        Protected charClass As CharacterClass
-        Protected m_action As ItemActionType
-        Protected m_baseItem As BaseItem
-        Protected m_category As ItemCategory
-        Protected m_color As Integer
-        Protected m_container As ItemContainer
-        Protected m_destination As ItemDestination
-        Protected m_flags As ItemFlags
-        Protected m_graphic As Integer
-        Protected m_level As Integer
-        Protected m_location As EquipmentLocation
-        Protected m_magicPrefixes As List(Of MagicPrefixType)
-        Protected m_magicSuffixes As List(Of MagicSuffixType)
-        Protected m_mods As List(Of StatBase)
-        Protected m_name As String
-        Protected m_prefix As ItemAffix
-        Protected m_quality As ItemQuality
-        Protected m_runeword As BaseRuneword
-        Protected m_runewordID As Integer
-        Protected m_runewordParam As Integer
-        Protected m_setBonuses As List(Of StatBase)()
-        Protected m_setItem As BaseSetItem
-        Protected m_stats As List(Of StatBase)
-        Protected m_suffix As ItemAffix
-        Protected m_superiorType As SuperiorItemType
-        Protected m_uid As UInt32
-        Protected m_uniqueItem As BaseUniqueItem
-        Protected m_unknown1 As Integer
-        Protected m_use As Integer
-        Protected m_usedSockets As Integer
-        Protected m_version As ItemVersion
-        Protected m_x As Integer
-        Protected m_y As Integer
-
         ' Methods
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.m_superiorType = SuperiorItemType.NotApplicable
+            Me.superiorType = SuperiorItemType.NotApplicable
             Me.charClass = CharacterClass.NotApplicable
-            Me.m_level = -1
+            Me.level = -1
             Me.m_usedSockets = -1
-            Me.m_use = -1
-            Me.m_graphic = -1
-            Me.m_color = -1
-            Me.m_stats = New List(Of StatBase)
+            Me.use = -1
+            Me.graphic = -1
+            Me.color = -1
+            Me.stats = New List(Of StatBase)
             Me.m_unknown1 = -1
-            Me.m_runewordID = -1
-            Me.m_runewordParam = -1
-            Dim br As New BitReader(data, 1)
-            Me.m_action = br.ReadByte
+            Me.runewordID = -1
+            Me.runewordParam = -1
+
+            Dim br As New ETUtils.BitReader(data, 1)
+
+            Me.action = br.ReadByte
             br.SkipBytes(1)
-            Me.m_category = br.ReadByte
-            Me.m_uid = br.ReadUInt32
-            If (data(0) = &H9D) Then
+            Me.category = br.ReadByte
+            Me.uid = br.ReadUInt32
+            If (data(0) = 157) Then
                 br.SkipBytes(5)
             End If
-            Me.m_flags = br.ReadUInt32
-            Me.m_version = br.ReadByte
+            Me.flags = DirectCast(br.ReadUInt32, ItemFlags)
+            Me.version = br.ReadByte
             Me.m_unknown1 = br.ReadByte(2)
-            Me.m_destination = br.ReadByte(3)
-            If (Me.m_destination = ItemDestination.Ground) Then
-                Me.m_x = br.ReadUInt16
-                Me.m_y = br.ReadUInt16
+            Me.destination = br.ReadByte(3)
+            If (Me.destination = ItemDestination.Ground) Then
+                Me.x = br.ReadUInt16
+                Me.y = br.ReadUInt16
             Else
-                Me.m_location = br.ReadByte(4)
-                Me.m_x = br.ReadByte(4)
-                Me.m_y = br.ReadByte(3)
-                Me.m_container = br.ReadByte(4)
+                Me.location = br.ReadByte(4)
+                Me.x = br.ReadByte(4)
+                Me.y = br.ReadByte(3)
+                Me.container = br.ReadByte(4)
             End If
-            If (IIf(((Me.m_action = ItemActionType.AddToShop) OrElse (Me.m_action = ItemActionType.RemoveFromShop)), 1, 0) <> 0) Then
-                Dim num As Integer = (CInt(Me.m_container) Or &H80)
+            If ((Me.action = ItemActionType.AddToShop) OrElse (Me.action = ItemActionType.RemoveFromShop)) Then
+                Dim num As Integer = (CInt(Me.container) Or 128)
                 If ((num And 1) = 1) Then
                     num -= 1
-                    Me.m_y = (Me.m_y + 8)
+                    Me.y = (Me.y + 8)
                 End If
-                Me.m_container = DirectCast(num, ItemContainer)
-            ElseIf (Me.m_container = ItemContainer.Unspecified) Then
-                If (Me.m_location = EquipmentLocation.NotApplicable) Then
+                Me.container = DirectCast(num, ItemContainer)
+            ElseIf (Me.container = ItemContainer.Unspecified) Then
+                If (Me.location = EquipmentLocation.NotApplicable) Then
                     If ((Me.Flags And ItemFlags.InSocket) = ItemFlags.InSocket) Then
-                        Me.m_container = ItemContainer.Item
-                        Me.m_y = -1
-                    ElseIf (IIf(((Me.m_action = ItemActionType.PutInBelt) OrElse (Me.m_action = ItemActionType.RemoveFromBelt)), 1, 0) <> 0) Then
-                        Me.m_container = ItemContainer.Belt
-                        Me.m_y = CInt(Math.Round(CDbl((CDbl(Me.m_x) / 4))))
-                        Me.m_x = (Me.m_x Mod 4)
+                        Me.container = ItemContainer.Item
+                        Me.y = -1
+                    ElseIf ((Me.action = ItemActionType.PutInBelt) OrElse (Me.action = ItemActionType.RemoveFromBelt)) Then
+                        Me.container = ItemContainer.Belt
+                        Me.y = (Me.x / 4)
+                        Me.x = (Me.x Mod 4)
                     End If
                 Else
-                    Me.m_x = -1
-                    Me.m_y = -1
+                    Me.x = -1
+                    Me.y = -1
                 End If
             End If
-            If ((Me.m_flags And ItemFlags.Ear) = ItemFlags.Ear) Then
+            If ((Me.flags And ItemFlags.Ear) = ItemFlags.Ear) Then
                 Me.charClass = br.ReadByte(3)
-                Me.m_level = br.ReadByte(7)
-                Me.m_name = br.ReadString(7, ChrW(0), &H10)
-                Me.m_baseItem = BaseItem.Get(ItemType.Ear)
+                Me.level = br.ReadByte(7)
+                Me.name = br.ReadString(7, ChrW(0), 16)
+                Me.baseItem = BaseItem.Get(ItemType.Ear)
             Else
-                Me.m_baseItem = BaseItem.GetByID(Me.m_category, br.ReadUInt32)
-                If (Me.m_baseItem.Type = ItemType.Gold) Then
-                    Me.m_stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(CInt(Interaction.IIf(br.ReadBoolean(1), &H20, 12)))))
+                Me.baseItem = BaseItem.GetByID(Me.category, br.ReadUInt32)
+                If (Me.baseItem.Type = ItemType.Gold) Then
+                    Me.stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(IIf(br.ReadBoolean(1), 32, 12))))
                 Else
                     Me.m_usedSockets = br.ReadByte(3)
-                    If ((Me.m_flags And (ItemFlags.Compact Or ItemFlags.Gamble)) = ItemFlags.None) Then
-                        Dim num2 As Integer
+                    If ((Me.flags And (ItemFlags.Compact Or ItemFlags.Gamble)) = ItemFlags.None) Then
                         Dim stat As BaseStat
-                        Dim num6 As Integer
-                        Me.m_level = br.ReadByte(7)
-                        Me.m_quality = br.ReadByte(4)
+                        Dim num2 As Integer
+                        Me.level = br.ReadByte(7)
+                        Me.quality = br.ReadByte(4)
                         If br.ReadBoolean(1) Then
-                            Me.m_graphic = br.ReadByte(3)
+                            Me.graphic = br.ReadByte(3)
                         End If
                         If br.ReadBoolean(1) Then
-                            Me.m_color = br.ReadInt32(11)
+                            Me.color = br.ReadInt32(11)
                         End If
-                        If ((Me.m_flags And ItemFlags.Identified) = ItemFlags.Identified) Then
-                            Select Case CInt(Me.m_quality)
-                                Case 1
-                                    Me.m_prefix = New ItemAffix(ItemAffixType.InferiorPrefix, br.ReadByte(3))
+                        If ((Me.flags And ItemFlags.Identified) = ItemFlags.Identified) Then
+                            Select Case Me.quality
+                                Case ItemQuality.Inferior
+                                    Me.prefix = New ItemAffix(ItemAffixType.InferiorPrefix, br.ReadByte(3))
                                     Exit Select
-                                Case 3
-                                    Me.m_prefix = New ItemAffix(ItemAffixType.SuperiorPrefix, 0)
-                                    Me.m_superiorType = br.ReadByte(3)
+                                Case ItemQuality.Superior
+                                    Me.prefix = New ItemAffix(ItemAffixType.SuperiorPrefix, 0)
+                                    Me.superiorType = br.ReadByte(3)
                                     Exit Select
-                                Case 4
-                                    Me.m_prefix = New ItemAffix(ItemAffixType.MagicPrefix, br.ReadUInt16(11))
-                                    Me.m_suffix = New ItemAffix(ItemAffixType.MagicSuffix, br.ReadUInt16(11))
+                                Case ItemQuality.Magic
+                                    Me.prefix = New ItemAffix(ItemAffixType.MagicPrefix, br.ReadUInt16(11))
+                                    Me.suffix = New ItemAffix(ItemAffixType.MagicSuffix, br.ReadUInt16(11))
                                     Exit Select
-                                Case 5
-                                    Me.m_setItem = BaseSetItem.Get(br.ReadUInt16(12))
+                                Case ItemQuality.Set
+                                    Me.setItem = BaseSetItem.Get(br.ReadUInt16(12))
                                     Exit Select
-                                Case 6, 8
-                                    Me.m_prefix = New ItemAffix(ItemAffixType.RarePrefix, br.ReadByte(8))
-                                    Me.m_suffix = New ItemAffix(ItemAffixType.RareSuffix, br.ReadByte(8))
+                                Case ItemQuality.Rare, ItemQuality.Crafted
+                                    Me.prefix = New ItemAffix(ItemAffixType.RarePrefix, br.ReadByte(8))
+                                    Me.suffix = New ItemAffix(ItemAffixType.RareSuffix, br.ReadByte(8))
                                     Exit Select
-                                Case 7
-                                    If (Me.m_baseItem.Code <> "std") Then
-                                        Try
-                                            Me.m_uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12))
-                                        Catch exception1 As Exception
-                                            Throw exception1
-                                        End Try
+                                Case ItemQuality.Unique
+                                    If (Me.baseItem.Code <> "std") Then
+                                        Me.uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12))
                                     End If
                                     Exit Select
                             End Select
                         End If
-                        If (IIf(((Me.m_quality = ItemQuality.Rare) OrElse (Me.m_quality = ItemQuality.Crafted)), 1, 0) <> 0) Then
-                            Me.m_magicPrefixes = New List(Of MagicPrefixType)
-                            Me.m_magicSuffixes = New List(Of MagicSuffixType)
-                            Dim num3 As Integer = 0
-                            Do
+                        If ((Me.quality = ItemQuality.Rare) OrElse (Me.quality = ItemQuality.Crafted)) Then
+                            Me.magicPrefixes = New List(Of MagicPrefixType)
+                            Me.magicSuffixes = New List(Of MagicSuffixType)
+                            Dim i As Integer
+                            For i = 0 To 3 - 1
                                 If br.ReadBoolean(1) Then
-                                    Me.m_magicPrefixes.Add(br.ReadUInt16(11))
+                                    Me.magicPrefixes.Add(br.ReadUInt16(11))
                                 End If
                                 If br.ReadBoolean(1) Then
-                                    Me.m_magicSuffixes.Add(br.ReadUInt16(11))
+                                    Me.magicSuffixes.Add(br.ReadUInt16(11))
                                 End If
-                                num3 += 1
-                                num6 = 2
-                            Loop While (num3 <= num6)
+                            Next i
                         End If
                         If ((Me.Flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
-                            Me.m_runewordID = br.ReadUInt16(12)
-                            Me.m_runewordParam = br.ReadUInt16(4)
+                            Me.runewordID = br.ReadUInt16(12)
+                            Me.runewordParam = br.ReadUInt16(4)
                             num2 = -1
-                            If (Me.m_runewordParam = 5) Then
-                                num2 = (Me.m_runewordID - (Me.m_runewordParam * 5))
+                            If (Me.runewordParam = 5) Then
+                                num2 = (Me.runewordID - (Me.runewordParam * 5))
                                 If (num2 < 100) Then
                                     num2 -= 1
                                 End If
-                            ElseIf (Me.m_runewordParam = 2) Then
-                                num2 = (((Me.m_runewordID And &H3FF) >> 5) + 2)
+                            ElseIf (Me.runewordParam = 2) Then
+                                num2 = (((Me.runewordID And 1023) >> 5) + 2)
                             End If
-                            Dim reader2 As BitReader = br
-                            reader2.ByteOffset = (reader2.ByteOffset - 2)
-                            Me.m_runewordParam = br.ReadUInt16
-                            Me.m_runewordID = num2
+                            br.ByteOffset = (br.ByteOffset - 2)
+                            Me.runewordParam = br.ReadUInt16
+                            Me.runewordID = num2
                             If (num2 = -1) Then
-                                Throw New Exception(CStr(CDbl((CDbl("Unknown Runeword: ") + Me.m_runewordParam))))
+                                Throw New Exception(("Unknown Runeword: " & Me.runewordParam))
                             End If
-                            Me.m_runeword = BaseRuneword.Get(num2)
+                            Me.runeword = BaseRuneword.Get(num2)
                         End If
                         If ((Me.Flags And ItemFlags.Personalized) = ItemFlags.Personalized) Then
-                            Me.m_name = br.ReadString(7, ChrW(0), &H10)
+                            Me.name = br.ReadString(7, ChrW(0), 16)
                         End If
-                        If TypeOf Me.m_baseItem Is BaseArmor Then
+                        If TypeOf Me.baseItem Is BaseArmor Then
                             stat = BaseStat.Get(StatType.ArmorClass)
-                            Me.m_stats.Add(New SignedStat(stat, (br.ReadInt32(stat.SaveBits) - stat.SaveAdd)))
+                            Me.stats.Add(New SignedStat(stat, (br.ReadInt32(stat.SaveBits) - stat.SaveAdd)))
                         End If
-                        If (IIf((TypeOf Me.m_baseItem Is BaseArmor OrElse TypeOf Me.m_baseItem Is BaseWeapon), 1, 0) <> 0) Then
+                        If (TypeOf Me.baseItem Is BaseArmor OrElse TypeOf Me.baseItem Is BaseWeapon) Then
                             stat = BaseStat.Get(StatType.MaxDurability)
                             num2 = br.ReadInt32(stat.SaveBits)
-                            Me.m_stats.Add(New SignedStat(stat, num2))
+                            Me.stats.Add(New SignedStat(stat, num2))
                             If (num2 > 0) Then
                                 stat = BaseStat.Get(StatType.Durability)
-                                Me.m_stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
+                                Me.stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
                             End If
                         End If
                         If ((Me.Flags And (ItemFlags.None Or ItemFlags.Socketed)) = (ItemFlags.None Or ItemFlags.Socketed)) Then
                             stat = BaseStat.Get(StatType.Sockets)
-                            Me.m_stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
+                            Me.stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
                         End If
-                        If Me.m_baseItem.Stackable Then
-                            If Me.m_baseItem.Useable Then
-                                Me.m_use = br.ReadByte(5)
+                        If Me.baseItem.Stackable Then
+                            If Me.baseItem.Useable Then
+                                Me.use = br.ReadByte(5)
                             End If
-                            Me.m_stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(9)))
+                            Me.stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(9)))
                         End If
                         If ((Me.Flags And ItemFlags.Identified) = ItemFlags.Identified) Then
                             Dim base2 As StatBase
-                            Dim num4 As Integer = CInt(Interaction.IIf((Me.Quality = ItemQuality.Set), br.ReadByte(5), -1))
-                            Me.m_mods = New List(Of StatBase)
-                            Do While True
+                            Dim num4 As Integer = IIf((Me.Quality = ItemQuality.Set), br.ReadByte(5), -1)
+                            Me.mods = New List(Of StatBase)
 
-                                base2 = Nothing
-                                Try
-                                    base2 = ItemAction.ReadStat(br)
-                                Catch exception2 As Exception
-                                    'Throw exception2
-                                End Try
-                                If (Not base2 Is Nothing) Then
-                                    Me.m_mods.Add(base2)
-                                Else
-                                    Exit Do
+
+                            Do While True
+                                base2 = ItemAction.ReadStat(br)
+                                If Not base2 Is Nothing Then
+                                    Me.mods.Add(base2)
+                                Else : Exit Do
                                 End If
                             Loop
-                            If ((Me.m_flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
+
+                            If ((Me.flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
                                 Do While True
                                     base2 = ItemAction.ReadStat(br)
-                                    If (Not base2 Is Nothing) Then
-                                        Me.m_mods.Add(base2)
-                                    Else
-                                        Exit Do
+                                    If Not base2 Is Nothing Then
+                                        Me.mods.Add(base2)
+                                    Else : Exit Do
                                     End If
                                 Loop
                             End If
                             If (num4 > 0) Then
-                                Me.m_setBonuses = New List(Of StatBase)(5 - 1) {}
-                                Dim index As Integer = 0
-                                Do
-                                    If ((num4 And (CInt(1) << index)) <> 0) Then
-                                        Me.m_setBonuses(index) = New List(Of StatBase)
+                                Me.setBonuses = New List(Of StatBase)(5 - 1) {}
+                                Dim j As Integer
+                                For j = 0 To 5 - 1
+                                    If ((num4 And (CInt(1) << j)) <> 0) Then
+                                        Me.setBonuses(j) = New List(Of StatBase)
                                         Do While True
                                             base2 = ItemAction.ReadStat(br)
-                                            If (Not base2 Is Nothing) Then
-                                                Me.m_setBonuses(index).Add(base2)
-                                            Else
-                                                Exit Do
+                                            If Not base2 Is Nothing Then
+                                                Me.setBonuses(j).Add(base2)
+                                            Else : Exit Do
                                             End If
                                         Loop
                                     End If
-                                    index += 1
-                                    num6 = 4
-                                Loop While (index <= num6)
+                                Next j
                             End If
                         End If
                     End If
@@ -1667,9 +1618,9 @@ Label_0056:
             End If
         End Sub
 
-        Private Shared Function ReadStat(ByVal br As BitReader) As StatBase
+        Private Shared Function ReadStat(ByVal br As ETUtils.BitReader) As D2Data.StatBase
             Dim index As Integer = br.ReadInt32(9)
-            If (index = &H1FF Or index > BaseStat.ItemCount) Then
+            If (index = &H1FF) Then
                 Return Nothing
             End If
             Dim stat As BaseStat = BaseStat.Get(index)
@@ -1677,235 +1628,57 @@ Label_0056:
                 If (stat.OpBase = StatType.Level) Then
                     Return New PerLevelStat(stat, br.ReadInt32(stat.SaveBits))
                 End If
-                Dim type As StatType = stat.Type
-                If (IIf(((type = StatType.MaxDamagePercent) OrElse (type = StatType.MinDamagePercent)), 1, 0) <> 0) Then
-                    Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(stat.SaveBits))
-                End If
-                If ((type = StatType.FireMinDamage) OrElse (type = StatType.LightMinDamage)) Then
-                End If
-                If (IIf((type = StatType.MagicMinDamage), 1, 0) <> 0) Then
-                    Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.Get(CInt((stat.Index + 1))).SaveBits))
-                End If
-                If ((type = StatType.FireMaxDamage) OrElse (type = StatType.LightMaxDamage)) Then
-                End If
-                If (IIf((type = StatType.MagicMaxDamage), 1, 0) = 0) Then
-                    If (type = StatType.ColdMinDamage) Then
+                Select Case stat.Type
+                    Case StatType.MaxDamagePercent, StatType.MinDamagePercent
+                        Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(stat.SaveBits))
+                    Case StatType.FireMinDamage, StatType.LightMinDamage, StatType.MagicMinDamage
+                        Return New DamageRangeStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.Get(CInt((stat.Index + 1))).SaveBits))
+                    Case StatType.FireMaxDamage, StatType.LightMaxDamage, StatType.MagicMaxDamage
+                        GoTo Label_0350
+                    Case StatType.ColdMinDamage
                         Return New ColdDamageStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.Get(StatType.ColdMaxDamage).SaveBits), br.ReadInt32(BaseStat.Get(StatType.ColdLength).SaveBits))
-                    End If
-                    If (IIf(((type = StatType.ReplenishDurability) OrElse (type = StatType.ReplenishQuantity)), 1, 0) <> 0) Then
+                    Case StatType.ReplenishDurability, StatType.ReplenishQuantity
                         Return New ReplenishStat(stat, br.ReadInt32(stat.SaveBits))
-                    End If
-                    If (type = StatType.PoisonMinDamage) Then
+                    Case StatType.PoisonMinDamage
                         Return New PoisonDamageStat(stat, br.ReadInt32(stat.SaveBits), br.ReadInt32(BaseStat.Get(StatType.PoisonMaxDamage).SaveBits), br.ReadInt32(BaseStat.Get(StatType.PoisonLength).SaveBits))
-                    End If
-                End If
+                End Select
             Else
-                Dim type2 As StatType = stat.Type
-                If (IIf(((type2 = StatType.SingleSkill) OrElse (type2 = StatType.NonClassSkill)), 1, 0) <> 0) Then
-                    Return New SkillBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                End If
-                If (type2 = StatType.ElementalSkillBonus) Then
-                    Return New ElementalSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                End If
-                If (type2 = StatType.ClassSkillsBonus) Then
-                    Return New ClassSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                End If
-                If (type2 = StatType.Aura) Then
-                    Return New AuraStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
-                End If
-                If (type2 = StatType.Reanimate) Then
-                    Return New ReanimateStat(stat, br.ReadUInt32(stat.SaveParamBits), br.ReadUInt32(stat.SaveBits))
-                End If
-                If ((((type2 <> StatType.SkillOnAttack) AndAlso (type2 <> StatType.SkillOnKill)) AndAlso (type2 <> StatType.SkillOnDeath)) AndAlso ((type2 <> StatType.SkillOnStriking) AndAlso (type2 = StatType.SkillOnLevelUp))) Then
-                End If
-                If (IIf((type2 = StatType.SkillOnGetHit), 1, 0) <> 0) Then
-                    Return New SkillOnEventStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
-                End If
-                If (type2 = StatType.ChargedSkill) Then
-                    Return New ChargedSkillStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(8), br.ReadInt32(8))
-                End If
-                If (type2 <> StatType.SkillTabBonus) Then
-                    Throw New Exception(("Invalid stat: " & stat.Index.ToString))
-                End If
-                Return New SkillTabBonusStat(stat, br.ReadInt32(3), br.ReadInt32(3), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
+                Select Case stat.Type
+                    Case StatType.SingleSkill, StatType.NonClassSkill
+                        Return New SkillBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                    Case StatType.ElementalSkillBonus
+                        Return New ElementalSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                    Case StatType.ClassSkillsBonus
+                        Return New ClassSkillsBonusStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                    Case StatType.Aura
+                        Return New AuraStat(stat, br.ReadInt32(stat.SaveParamBits), br.ReadInt32(stat.SaveBits))
+                    Case StatType.Reanimate
+                        Return New ReanimateStat(stat, br.ReadUInt32(stat.SaveParamBits), br.ReadUInt32(stat.SaveBits))
+                    Case StatType.SkillOnAttack, StatType.SkillOnKill, StatType.SkillOnDeath, StatType.SkillOnStriking, StatType.SkillOnLevelUp, StatType.SkillOnGetHit
+                        Return New SkillOnEventStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
+                    Case StatType.ChargedSkill
+                        Return New ChargedSkillStat(stat, br.ReadInt32(6), br.ReadInt32(10), br.ReadInt32(8), br.ReadInt32(8))
+                    Case StatType.SkillTabBonus
+                        Return New SkillTabBonusStat(stat, br.ReadInt32(3), br.ReadInt32(3), br.ReadInt32(10), br.ReadInt32(stat.SaveBits))
+                End Select
+                Throw New Exception(("Invalid stat: " & stat.Index.ToString))
             End If
+Label_0350:
             If stat.Signed Then
-                Dim num3 As Integer = br.ReadInt32(stat.SaveBits)
+                Dim num2 As Integer = br.ReadInt32(stat.SaveBits)
                 If (stat.SaveAdd > 0) Then
-                    num3 = (num3 - stat.SaveAdd)
+                    num2 = (num2 - stat.SaveAdd)
                 End If
-                Return New SignedStat(stat, num3)
+                Return New SignedStat(stat, num2)
             End If
+
             Dim val As UInt32 = br.ReadUInt32(stat.SaveBits)
+
             If (stat.SaveAdd > 0) Then
                 val = (val - stat.SaveAdd)
             End If
             Return New UnsignedStat(stat, val)
         End Function
-
-
-        ' Properties
-        Public ReadOnly Property Action() As ItemActionType
-            Get
-                Return Me.m_action
-            End Get
-        End Property
-
-        Public ReadOnly Property BaseItem() As BaseItem
-            Get
-                Return Me.m_baseItem
-            End Get
-        End Property
-
-        Public ReadOnly Property Category() As ItemCategory
-            Get
-                Return Me.m_category
-            End Get
-        End Property
-
-        Public ReadOnly Property [Class]() As CharacterClass
-            Get
-                Return Me.charClass
-            End Get
-        End Property
-
-        Public ReadOnly Property Color() As Integer
-            Get
-                Return Me.m_color
-            End Get
-        End Property
-
-        Public ReadOnly Property Container() As ItemContainer
-            Get
-                Return Me.m_container
-            End Get
-        End Property
-
-        Public ReadOnly Property Destination() As ItemDestination
-            Get
-                Return Me.m_destination
-            End Get
-        End Property
-
-        Public ReadOnly Property Flags() As ItemFlags
-            Get
-                Return Me.m_flags
-            End Get
-        End Property
-
-        Public ReadOnly Property Graphic() As Integer
-            Get
-                Return Me.m_graphic
-            End Get
-        End Property
-
-        Public ReadOnly Property Level() As Integer
-            Get
-                Return Me.m_level
-            End Get
-        End Property
-
-        Public ReadOnly Property Location() As EquipmentLocation
-            Get
-                Return Me.m_location
-            End Get
-        End Property
-
-        Public ReadOnly Property MagicPrefixes() As List(Of MagicPrefixType)
-            Get
-                Return Me.m_magicPrefixes
-            End Get
-        End Property
-
-        Public ReadOnly Property MagicSuffixes() As List(Of MagicSuffixType)
-            Get
-                Return Me.m_magicSuffixes
-            End Get
-        End Property
-
-        Public ReadOnly Property Mods() As List(Of StatBase)
-            Get
-                Return Me.m_mods
-            End Get
-        End Property
-
-        Public ReadOnly Property Name() As String
-            Get
-                Return Me.m_name
-            End Get
-        End Property
-
-        Public ReadOnly Property Prefix() As ItemAffix
-            Get
-                Return Me.m_prefix
-            End Get
-        End Property
-
-        Public ReadOnly Property Quality() As ItemQuality
-            Get
-                Return Me.m_quality
-            End Get
-        End Property
-
-        Public ReadOnly Property Runeword() As BaseRuneword
-            Get
-                Return Me.m_runeword
-            End Get
-        End Property
-
-        Public ReadOnly Property RunewordID() As Integer
-            Get
-                Return Me.m_runewordID
-            End Get
-        End Property
-
-        Public ReadOnly Property RunewordParam() As Integer
-            Get
-                Return Me.m_runewordParam
-            End Get
-        End Property
-
-        Public ReadOnly Property SetBonuses() As List(Of StatBase)()
-            Get
-                Return Me.m_setBonuses
-            End Get
-        End Property
-
-        Public ReadOnly Property SetItem() As BaseSetItem
-            Get
-                Return Me.m_setItem
-            End Get
-        End Property
-
-        Public ReadOnly Property Stats() As List(Of StatBase)
-            Get
-                Return Me.m_stats
-            End Get
-        End Property
-
-        Public ReadOnly Property Suffix() As ItemAffix
-            Get
-                Return Me.m_suffix
-            End Get
-        End Property
-
-        Public ReadOnly Property SuperiorType() As SuperiorItemType
-            Get
-                Return Me.m_superiorType
-            End Get
-        End Property
-
-        Public ReadOnly Property UID() As UInt32
-            Get
-                Return Me.m_uid
-            End Get
-        End Property
-
-        Public ReadOnly Property UniqueItem() As BaseUniqueItem
-            Get
-                Return Me.m_uniqueItem
-            End Get
-        End Property
 
         Public ReadOnly Property Unknown1() As Integer
             Get
@@ -1916,39 +1689,55 @@ Label_0056:
             End Get
         End Property
 
-        Public ReadOnly Property Use() As Integer
-            Get
-                Return Me.m_use
-            End Get
-        End Property
-
         Public ReadOnly Property UsedSockets() As Integer
             Get
-                If (IIf(((Me.m_usedSockets = 0) AndAlso ((Me.m_flags And (ItemFlags.None Or ItemFlags.Socketed)) <> (ItemFlags.None Or ItemFlags.Socketed))), 1, 0) <> 0) Then
+                If ((Me.m_usedSockets = 0) AndAlso ((Me.flags And (ItemFlags.None Or ItemFlags.Socketed)) <> (ItemFlags.None Or ItemFlags.Socketed))) Then
                     Return -1
                 End If
                 Return Me.m_usedSockets
             End Get
         End Property
 
-        Public ReadOnly Property Version() As ItemVersion
-            Get
-                Return Me.m_version
-            End Get
-        End Property
+        ' Fields
+        Public ReadOnly action As ItemActionType
+        Public ReadOnly baseItem As BaseItem
+        Public ReadOnly category As ItemCategory
+        Public ReadOnly charClass As CharacterClass
+        Public ReadOnly color As Integer
+        Public ReadOnly container As ItemContainer
+        Public ReadOnly destination As ItemDestination
+        Public ReadOnly flags As ItemFlags
+        Public ReadOnly graphic As Integer
+        Public ReadOnly level As Integer
+        Public ReadOnly location As EquipmentLocation
+        Public ReadOnly magicPrefixes As List(Of MagicPrefixType)
+        Public ReadOnly magicSuffixes As List(Of MagicSuffixType)
+        Public ReadOnly mods As List(Of StatBase)
+        Public ReadOnly name As String
+        Public ReadOnly prefix As ItemAffix
+        Public ReadOnly quality As ItemQuality
+        Public ReadOnly runeword As BaseRuneword
+        Public ReadOnly runewordID As Integer
+        Public ReadOnly runewordParam As Integer
+        Public ReadOnly setBonuses As List(Of StatBase)()
+        Public ReadOnly setItem As BaseSetItem
+        Public ReadOnly stats As List(Of StatBase)
+        Public ReadOnly suffix As ItemAffix
+        Public ReadOnly superiorType As SuperiorItemType
+        Public ReadOnly uid As UInt32
+        Public ReadOnly uniqueItem As BaseUniqueItem
 
-        Public ReadOnly Property X() As Integer
-            Get
-                Return Me.m_x
-            End Get
-        End Property
+        Public ReadOnly m_unknown1 As Integer
 
-        Public ReadOnly Property Y() As Integer
-            Get
-                Return Me.m_y
-            End Get
-        End Property
+        Public ReadOnly use As Integer
+        Public ReadOnly m_usedSockets As Integer
+        Public ReadOnly version As ItemVersion
+        Public ReadOnly x As Integer
+        Public ReadOnly y As Integer
+
     End Class
+
+
 
 
 
@@ -3375,7 +3164,7 @@ Label_0056:
         ' Methods
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Dim reader As New BitReader(data, 1)
+            Dim reader As New ETUtils.BitReader(data, 1)
             Me.m_life = reader.ReadInt32(15)
             Me.m_mana = reader.ReadInt32(15)
             Me.m_stamina = reader.ReadInt32(15)
@@ -4372,7 +4161,7 @@ Label_0056:
             Me.m_uid = BitConverter.ToUInt32(data, 2)
             Me.m_state = BaseState.[Get](data(7))
             Me.m_stats = New List(Of StatBase)()
-            Dim reader As New BitReader(data, 8)
+            Dim reader As New ETUtils.BitReader(data, 8)
 Label_003E:
             num = reader.ReadInt32(9)
             If num <> 511 Then
@@ -4825,7 +4614,7 @@ Label_003E:
             Me.m_stats = New List(Of StatBase)()
             Me.m_unknown61b = -1
             Me.m_unknown78b = -1
-            Dim reader As New BitReader(data, 1)
+            Dim reader As New ETUtils.BitReader(data, 1)
             Me.m_unknown8b = reader.ReadInt32(10)
             Me.m_uid = reader.ReadUInt32()
             While reader.ReadBoolean(1)
@@ -5184,7 +4973,7 @@ Label_003E:
         ' Methods
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Dim reader As New BitReader(data, 1)
+            Dim reader As New ETUtils.BitReader(data, 1)
             Me.m_stamina = reader.ReadInt32(15)
             Me.m_x = reader.ReadInt32(16)
             Me.m_y = reader.ReadInt32(16)
