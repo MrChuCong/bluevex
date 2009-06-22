@@ -1469,9 +1469,9 @@ Label_0056:
                 Me.charClass = br.ReadByte(3)
                 Me.level = br.ReadByte(7)
                 Me.name = br.ReadString(7, ChrW(0), 16)
-                Me.baseItem = BaseItem.Get(ItemType.Ear)
+                Me.baseItem = baseItem.Get(ItemType.Ear)
             Else
-                Me.baseItem = BaseItem.GetByID(Me.category, br.ReadUInt32)
+                Me.baseItem = baseItem.GetByID(Me.category, br.ReadUInt32)
                 If (Me.baseItem.Type = ItemType.Gold) Then
                     Me.stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(IIf(br.ReadBoolean(1), 32, 12))))
                 Else
@@ -1527,7 +1527,7 @@ Label_0056:
                                 End If
                             Next i
                         End If
-                        If ((Me.Flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
+                        If ((Me.flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
                             Me.runewordID = br.ReadUInt16(12)
                             Me.runewordParam = br.ReadUInt16(4)
                             num2 = -1
@@ -1547,7 +1547,7 @@ Label_0056:
                             End If
                             Me.runeword = BaseRuneword.Get(num2)
                         End If
-                        If ((Me.Flags And ItemFlags.Personalized) = ItemFlags.Personalized) Then
+                        If ((Me.flags And ItemFlags.Personalized) = ItemFlags.Personalized) Then
                             Me.name = br.ReadString(7, ChrW(0), 16)
                         End If
                         If TypeOf Me.baseItem Is BaseArmor Then
@@ -1563,7 +1563,7 @@ Label_0056:
                                 Me.stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
                             End If
                         End If
-                        If ((Me.Flags And (ItemFlags.None Or ItemFlags.Socketed)) = (ItemFlags.None Or ItemFlags.Socketed)) Then
+                        If ((Me.flags And (ItemFlags.None Or ItemFlags.Socketed)) = (ItemFlags.None Or ItemFlags.Socketed)) Then
                             stat = BaseStat.Get(StatType.Sockets)
                             Me.stats.Add(New SignedStat(stat, br.ReadInt32(stat.SaveBits)))
                         End If
@@ -1573,15 +1573,23 @@ Label_0056:
                             End If
                             Me.stats.Add(New SignedStat(BaseStat.Get(StatType.Quantity), br.ReadInt32(9)))
                         End If
-                        If ((Me.Flags And ItemFlags.Identified) = ItemFlags.Identified) Then
+                        If ((Me.flags And ItemFlags.Identified) = ItemFlags.Identified) Then
                             Dim base2 As StatBase
-                            Dim num4 As Integer = IIf((Me.Quality = ItemQuality.Set), br.ReadByte(5), -1)
+
+                            Dim num4 As Integer
+
+                            If Me.quality = ItemQuality.Set Then
+                                num4 = br.ReadByte(5)
+                            Else
+                                num4 = -1
+                            End If
+
                             Me.mods = New List(Of StatBase)
 
 
                             Do While True
                                 base2 = ItemAction.ReadStat(br)
-                                If Not base2 Is Nothing Then
+                                If base2 IsNot Nothing Then
                                     Me.mods.Add(base2)
                                 Else : Exit Do
                                 End If
@@ -1590,7 +1598,7 @@ Label_0056:
                             If ((Me.flags And ItemFlags.Runeword) = ItemFlags.Runeword) Then
                                 Do While True
                                     base2 = ItemAction.ReadStat(br)
-                                    If Not base2 Is Nothing Then
+                                    If base2 IsNot Nothing Then
                                         Me.mods.Add(base2)
                                     Else : Exit Do
                                     End If
@@ -5047,9 +5055,6 @@ Label_003E:
 
     Public Class WorldItemAction
         Inherits ItemAction
-        ' Fields
-        Public Shared ReadOnly NULL_Int32 As Integer = -1
-        Public Shared ReadOnly WRAPPED As Boolean = True
 
         ' Methods
         Public Sub New(ByVal data As Byte())
