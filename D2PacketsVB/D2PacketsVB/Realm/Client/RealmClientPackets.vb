@@ -71,11 +71,14 @@ Namespace RealmClient
             MyBase.New(data)
 
             Dim destinationArray As Byte() = New Byte(64 - 1) {}
-            Array.Copy(data, 1, destinationArray, 0, 16)
-            Array.Copy(data, 25, destinationArray, 16, 48)
+            'Array.Copy(data, 1, destinationArray, 0, 16)
+            'Array.Copy(data, 25, destinationArray, 16, 48)
+
+            Array.Copy(data, 3, destinationArray, 0, 16)
+            Array.Copy(data, 27, destinationArray, 16, 48)
             Me.StartupData = destinationArray
 
-            Me.UserName = ByteConverter.GetNullString(data, &H41)
+            Me.UserName = ByteConverter.GetNullString(data, &H43)
 
         End Sub
 
@@ -114,9 +117,9 @@ Namespace RealmClient
         Sub New(ByVal Data As Byte())
             MyBase.New(Data)
 
-            Me.Class = BitConverter.ToInt32(Data, 1)
-            Me.Flags = BitConverter.ToInt16(Data, 5)
-            Me.CharacterName = ByteConverter.GetNullString(Data, 7)
+            Me.Class = BitConverter.ToInt32(Data, 3)
+            Me.Flags = BitConverter.ToInt16(Data, 7)
+            Me.CharacterName = ByteConverter.GetNullString(Data, 9)
 
         End Sub
 
@@ -183,20 +186,20 @@ Namespace RealmClient
             MyBase.New(data)
             Me.Password = Nothing
             Me.Description = Nothing
-            Me.RequestID = BitConverter.ToUInt16(data, 1)
+            Me.RequestID = BitConverter.ToUInt16(data, 3)
 
-            Me.Difficulty = (data(4) >> 4)
+            Me.Difficulty = (data(6) >> 4)
 
-            Me.LevelRestriction = CSByte(data(8))
-            Me.MaxPlayers = data(9)
+            Me.LevelRestriction = CSByte(data(10))
+            Me.MaxPlayers = data(11)
 
-            Me.GameName = ByteConverter.GetNullString(data, 10)
+            Me.GameName = ByteConverter.GetNullString(data, 12)
 
-            If (data.Length > (13 + Me.GameName.Length)) Then
-                Me.Password = ByteConverter.GetNullString(data, (11 + Me.GameName.Length))
+            If (data.Length > (15 + Me.GameName.Length)) Then
+                Me.Password = ByteConverter.GetNullString(data, (13 + Me.GameName.Length))
             End If
-            If (data.Length > ((13 + Me.GameName.Length) + IIf((Me.Password Is Nothing), 0, Me.Password.Length))) Then
-                Me.Description = ByteConverter.GetNullString(data, ((12 + Me.GameName.Length) + IIf((Me.Password Is Nothing), 0, Me.Password.Length)))
+            If (data.Length > ((15 + Me.GameName.Length) + IIf((Me.Password Is Nothing), 0, Me.Password.Length))) Then
+                Me.Description = ByteConverter.GetNullString(data, ((14 + Me.GameName.Length) + IIf((Me.Password Is Nothing), 0, Me.Password.Length)))
             End If
         End Sub
 
@@ -234,10 +237,10 @@ Namespace RealmClient
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
             Me.Password = Nothing
-            Me.RequestID = BitConverter.ToUInt16(data, 1)
-            Me.GameName = ByteConverter.GetNullString(data, 3)
-            If (data.Length > (5 + Me.GameName.Length)) Then
-                Me.Password = ByteConverter.GetNullString(data, (4 + Me.GameName.Length))
+            Me.RequestID = BitConverter.ToUInt16(data, 3)
+            Me.GameName = ByteConverter.GetNullString(data, 5)
+            If (data.Length > (7 + Me.GameName.Length)) Then
+                Me.Password = ByteConverter.GetNullString(data, (6 + Me.GameName.Length))
             End If
         End Sub
 
@@ -264,7 +267,7 @@ Namespace RealmClient
 
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.RequestID = BitConverter.ToUInt16(data, 1)
+            Me.RequestID = BitConverter.ToUInt16(data, 3)
         End Sub
 
     End Class
@@ -296,8 +299,8 @@ Namespace RealmClient
 
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.RequestID = BitConverter.ToUInt16(data, 1)
-            Me.GameName = ByteConverter.GetNullString(data, 3)
+            Me.RequestID = BitConverter.ToUInt16(data, 3)
+            Me.GameName = ByteConverter.GetNullString(data, 5)
         End Sub
 
     End Class
@@ -318,7 +321,7 @@ Namespace RealmClient
 
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.Charname = ByteConverter.GetNullString(data, 1)
+            Me.Charname = ByteConverter.GetNullString(data, 3)
         End Sub
 
 
@@ -343,8 +346,8 @@ Namespace RealmClient
 
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.Cookie = BitConverter.ToUInt16(data, 1)
-            Me.Charname = ByteConverter.GetNullString(data, 3)
+            Me.Cookie = BitConverter.ToUInt16(data, 3)
+            Me.Charname = ByteConverter.GetNullString(data, 5)
         End Sub
 
     End Class
@@ -393,7 +396,7 @@ Namespace RealmClient
 
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.CharName = ByteConverter.GetNullString(data, 1)
+            Me.CharName = ByteConverter.GetNullString(data, 3)
         End Sub
 
 
@@ -417,7 +420,7 @@ Namespace RealmClient
 
         Public Sub New(ByVal data As Byte())
             MyBase.New(data)
-            Me.Number = BitConverter.ToInt32(data, 1)
+            Me.Number = BitConverter.ToInt32(data, 3)
         End Sub
 
     End Class
