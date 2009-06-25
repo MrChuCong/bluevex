@@ -1680,7 +1680,7 @@ Label_0350:
                 Return New SignedStat(stat, num2)
             End If
 
-            Dim val As UInt32 = br.ReadUInt32(stat.SaveBits)
+            Dim val As Int32 = br.ReadUInt32(stat.SaveBits)
 
             If (stat.SaveAdd > 0) Then
                 val = (val - stat.SaveAdd)
