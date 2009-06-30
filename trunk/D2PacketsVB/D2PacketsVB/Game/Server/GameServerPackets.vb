@@ -13,22 +13,26 @@ Namespace GameServer
 
         Public ReadOnly PacketID As GameServerPacket
 
-        Public Sub New(ByVal Id As GameClient.GameClientPacket)
+        Public Sub New(ByVal Id As GameServer.GameServerPacket)
             Me.PacketID = Id
         End Sub
 
         Public Sub New(ByVal Data() As Byte)
+
             Me.PacketID = Data(0)
 
             Dim packetData(Data.Length - 1) As Byte
             Buffer.BlockCopy(Data, 1, packetData, 0, Data.Length - 1)
 
             MyBase.InsertByteArray(packetData)
+
         End Sub
 
         Public Overrides ReadOnly Property Data() As Byte()
             Get
                 Dim BaseData As Byte() = MyBase.GetData
+
+
                 Dim PacketBuf(BaseData.Length) As Byte
 
                 PacketBuf(0) = CByte(PacketID)
@@ -338,13 +342,13 @@ Label_0056:
 
         Public ReadOnly Property Unknown1() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 1, 1)
+                Return ByteConverter.ToHexString(MyBase.Data, 1, 1)
             End Get
         End Property
 
         Public ReadOnly Property Unknown5() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 12, 8)
+                Return ByteConverter.ToHexString(MyBase.Data, 12, 8)
             End Get
         End Property
     End Class
@@ -370,7 +374,7 @@ Label_0056:
 
         Public ReadOnly Property Unknown13() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 13)
+                Return ByteConverter.ToHexString(MyBase.Data, 13)
             End Get
         End Property
 
@@ -1190,7 +1194,7 @@ Label_0056:
         Public ReadOnly Property Unknown3() As String
             Get
                 If Me.m_messageType <> GameMessageType.OverheadMessage Then
-                    Return ByteConverter.ToHexString(MyBase.GetData, 3, 7)
+                    Return ByteConverter.ToHexString(MyBase.Data, 3, 7)
                 End If
                 Return Nothing
             End Get
@@ -1424,8 +1428,10 @@ Label_0056:
             Dim br As New ETUtils.BitReader(data, 1)
 
             Me.action = br.ReadByte
+
             br.SkipBytes(1)
             Me.category = br.ReadByte
+
             Me.uid = br.ReadUInt32
             If (data(0) = 157) Then
                 br.SkipBytes(5)
@@ -1509,7 +1515,13 @@ Label_0056:
                                     Exit Select
                                 Case ItemQuality.Unique
                                     If (Me.baseItem.Code <> "std") Then
-                                        Me.uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12))
+
+                                        Try
+                                            'TODO: This causes an "Index Out of Range" when dropping Horadric Malus.
+                                            Me.uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12))
+                                        Catch ex As Exception
+
+                                        End Try
                                     End If
                                     Exit Select
                             End Select
@@ -1685,6 +1697,7 @@ Label_0350:
             If (stat.SaveAdd > 0) Then
                 val = (val - stat.SaveAdd)
             End If
+            'If val is negative, returns stack Overflow 
             Return New UnsignedStat(stat, val)
         End Function
 
@@ -1863,7 +1876,7 @@ Label_0350:
 
         Public ReadOnly Property Unknown8() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 8, 4)
+                Return ByteConverter.ToHexString(MyBase.Data, 8, 4)
             End Get
 
         End Property
@@ -2091,7 +2104,7 @@ Label_0350:
 
         Public ReadOnly Property Unknown3() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 3, 4)
+                Return ByteConverter.ToHexString(MyBase.Data, 3, 4)
             End Get
         End Property
     End Class
@@ -2385,7 +2398,7 @@ Label_0350:
 
         Public ReadOnly Property Unknown6() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 6, 34)
+                Return ByteConverter.ToHexString(MyBase.Data, 6, 34)
             End Get
         End Property
     End Class
@@ -2428,13 +2441,13 @@ Label_0350:
 
         Public ReadOnly Property Unknown10() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 10, 2)
+                Return ByteConverter.ToHexString(MyBase.Data, 10, 2)
             End Get
         End Property
 
         Public ReadOnly Property Unknown12() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 12, 4)
+                Return ByteConverter.ToHexString(MyBase.Data, 12, 4)
             End Get
         End Property
 
@@ -2519,13 +2532,13 @@ Label_0350:
 
         Public ReadOnly Property Unknown15() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 15, 2)
+                Return ByteConverter.ToHexString(MyBase.Data, 15, 2)
             End Get
         End Property
 
         Public ReadOnly Property Unknown17() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 17, 4)
+                Return ByteConverter.ToHexString(MyBase.Data, 17, 4)
             End Get
         End Property
     End Class
@@ -3056,7 +3069,7 @@ Label_0350:
 
         Public ReadOnly Property Unknown2() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 28)
+                Return ByteConverter.ToHexString(MyBase.Data, 28)
             End Get
         End Property
     End Class
@@ -3721,9 +3734,6 @@ Label_0350:
         QuestLog = 6
     End Enum
 
-
-
-
     Public Class QuestItemState
         Inherits GSPacket
         ' Methods
@@ -3734,11 +3744,21 @@ Label_0350:
         ' Properties
         Public ReadOnly Property Unknown1() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 1)
+                Return ByteConverter.ToHexString(MyBase.Data, 1)
             End Get
         End Property
     End Class
 
+    Public Class QuestComplete
+        Inherits GSPacket
+        Public ReadOnly QuestUID As UInteger
+
+        Public Sub New(ByVal Data As Byte())
+            MyBase.New(Data)
+            QuestUID = BitConverter.ToUInt32(Data, 1)
+        End Sub
+
+    End Class
 
 
 
@@ -4167,13 +4187,13 @@ Label_0350:
             Dim num As Integer
             Me.m_unitType = DirectCast(data(1), UnitType)
             Me.m_uid = BitConverter.ToUInt32(data, 2)
-            Me.m_state = BaseState.[Get](data(7))
-            Me.m_stats = New List(Of StatBase)()
+            Me.m_state = BaseState.Get(data(7))
+            Me.m_stats = New List(Of StatBase)
             Dim reader As New ETUtils.BitReader(data, 8)
 Label_003E:
             num = reader.ReadInt32(9)
             If num <> 511 Then
-                Dim stat As BaseStat = BaseStat.[Get](num)
+                Dim stat As BaseStat = BaseStat.Get(num)
                 Dim val As Integer = reader.ReadInt32(stat.SendBits)
                 If stat.SendParamBits > 0 Then
                     Dim param As Integer = reader.ReadInt32(stat.SendParamBits)
@@ -4422,7 +4442,7 @@ Label_003E:
 
         Public ReadOnly Property Unknown2() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 2, 5)
+                Return ByteConverter.ToHexString(MyBase.Data, 2, 5)
             End Get
         End Property
     End Class
@@ -4479,13 +4499,13 @@ Label_003E:
 
         Public ReadOnly Property Unknown10() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 10, 1)
+                Return ByteConverter.ToHexString(MyBase.Data, 10, 1)
             End Get
         End Property
 
         Public ReadOnly Property Unknown15() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 15, 2)
+                Return ByteConverter.ToHexString(MyBase.Data, 15, 2)
             End Get
         End Property
 
@@ -4547,13 +4567,13 @@ Label_003E:
 
         Public ReadOnly Property Unknown14() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 14, 2)
+                Return ByteConverter.ToHexString(MyBase.Data, 14, 2)
             End Get
         End Property
 
         Public ReadOnly Property Unknown8() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 8, 2)
+                Return ByteConverter.ToHexString(MyBase.Data, 8, 2)
             End Get
         End Property
     End Class
@@ -4598,7 +4618,7 @@ Label_003E:
 
         Public ReadOnly Property Unknown82() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 83)
+                Return ByteConverter.ToHexString(MyBase.Data, 83)
             End Get
         End Property
     End Class
@@ -4814,7 +4834,7 @@ Label_003E:
 
         Public ReadOnly Property Unknown88() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 88)
+                Return ByteConverter.ToHexString(MyBase.Data, 88)
             End Get
         End Property
     End Class
@@ -4893,7 +4913,7 @@ Label_003E:
 
         Public ReadOnly Property Unknown11() As String
             Get
-                Return ByteConverter.ToHexString(MyBase.GetData, 11, 1)
+                Return ByteConverter.ToHexString(MyBase.Data, 11, 1)
             End Get
         End Property
     End Class
@@ -5025,6 +5045,12 @@ Label_003E:
             Me.m_dataLength = BitConverter.ToUInt16(data, 1)
         End Sub
 
+        Public Sub New(ByVal WardenData As Byte(), ByVal Datalength As Int16)
+            MyBase.New(GameServerPacket.WardenCheck)
+            Me.InsertUInt16(Datalength)
+            Me.InsertByteArray(WardenData)
+        End Sub
+
         ' Properties
         Public ReadOnly Property DataLength() As Integer
             Get
@@ -5035,7 +5061,7 @@ Label_003E:
         Public ReadOnly Property WardenData() As Byte()
             Get
                 Dim destinationArray As Byte() = New Byte(Me.m_dataLength - 1) {}
-                Array.Copy(MyBase.GetData, 3, destinationArray, 0, Me.m_dataLength)
+                Array.Copy(MyBase.Data, 3, destinationArray, 0, Me.m_dataLength)
                 Return destinationArray
             End Get
         End Property

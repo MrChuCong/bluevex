@@ -40,6 +40,7 @@ Namespace GameServer
         UpdateGameQuestLog = 41
         TransactionComplete = 42
         PlaySound = 44
+        QuestComplete = 58
         UpdateItemStats = 62
         UseStackableItem = 63
         PlayerClearCursor = 66
