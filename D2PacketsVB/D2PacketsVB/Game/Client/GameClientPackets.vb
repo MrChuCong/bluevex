@@ -1854,7 +1854,7 @@ Namespace GameClient
         Public ReadOnly Property WardenData() As Byte()
             Get
                 Dim destinationArray As Byte() = New Byte(Me.dataLength - 1) {}
-                Array.Copy(MyBase.GetData, 3, destinationArray, 0, Me.dataLength)
+                Array.Copy(MyBase.Data, 3, destinationArray, 0, Me.dataLength)
                 Return destinationArray
             End Get
         End Property
