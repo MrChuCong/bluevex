@@ -1517,7 +1517,7 @@ Label_0056:
                                     If (Me.baseItem.Code <> "std") Then
 
                                         Try
-                                            'TODO: This causes an "Index Out of Range" when dropping Horadric Malus.
+                                            '*** This causes an "Index Out of Range" when dropping Horadric Malus.
                                             Me.uniqueItem = BaseUniqueItem.Get(br.ReadUInt16(12))
                                         Catch ex As Exception
 
@@ -1692,12 +1692,11 @@ Label_0350:
                 Return New SignedStat(stat, num2)
             End If
 
-            Dim val As Int32 = br.ReadUInt32(stat.SaveBits)
+            Dim val As UInt32 = br.ReadUInt32(stat.SaveBits)
 
             If (stat.SaveAdd > 0) Then
                 val = (val - stat.SaveAdd)
             End If
-            'If val is negative, returns stack Overflow 
             Return New UnsignedStat(stat, val)
         End Function
 
@@ -4194,7 +4193,8 @@ Label_003E:
             num = reader.ReadInt32(9)
             If num <> 511 Then
                 Dim stat As BaseStat = BaseStat.Get(num)
-                Dim val As Integer = reader.ReadInt32(stat.SendBits)
+                'Change Val to Uinteger
+                Dim val As UInteger = reader.ReaduInt32(stat.SendBits)
                 If stat.SendParamBits > 0 Then
                     Dim param As Integer = reader.ReadInt32(stat.SendParamBits)
                     If stat.Signed Then
@@ -4203,9 +4203,9 @@ Label_003E:
                         Me.m_stats.Add(New UnsignedStatParam(stat, CInt(val), CInt(param)))
                     End If
                 ElseIf stat.Signed Then
-                    Me.m_stats.Add(New SignedStat(stat, val))
+                    Me.m_stats.Add(New SignedStat(stat, CInt(val)))
                 Else
-                    Me.m_stats.Add(New UnsignedStat(stat, CInt(val)))
+                    Me.m_stats.Add(New UnsignedStat(stat, val))
                 End If
                 GoTo Label_003E
             End If

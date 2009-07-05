@@ -249,7 +249,12 @@ Namespace BnetClient
         ' Methods
         Public Sub New(ByVal Message As String)
             MyBase.New(BnetClientPacket.ChatCommand)
-            InsertCString(Message, System.Text.Encoding.UTF8)
+
+            'InsertCString Function does not include all chars
+            For i = 0 To Message.Length - 1
+                InsertByte(System.Convert.ToByte(Message(i)))
+            Next
+            InsertByte(0)
         End Sub
 
         Public Sub New(ByVal data As Byte())
@@ -338,13 +343,13 @@ Namespace BnetClient
 
     End Class
 
-
     Public Enum JoinChannelFlags
         ' Fields
         AutoJoin = 5
         Create = 2
         NormalJoin = 0
     End Enum
+
     Public Class JoinChannel
         Inherits BcPacket
 
@@ -436,7 +441,13 @@ Namespace BnetClient
 
             InsertUInt32(Client)
             InsertUInt32(Version)
-            InsertCString(GameName)
+
+            'InsertCString Function does not include all chars
+            For i = 0 To GameName.Length - 1
+                InsertByte(System.Convert.ToByte(GameName(i)))
+            Next
+            InsertByte(0)
+
             InsertCString(GamePassword)
 
         End Sub
