@@ -816,7 +816,6 @@ Namespace Memory
                         Dim unit As Structures.UnitAny = Reader.ReadMemoryStruct(room1.pUnitFirst, GetType(Structures.UnitAny))
                         While True
                             If unit.dwTxtFileNo = code Then
-                                'If DirectCast(unit.dwTxtFileNo, NPCCode) = code Then
                                 tempList.Add(unit)
                             End If
 
