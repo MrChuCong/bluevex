@@ -40,27 +40,27 @@ Public Class GameModuleHost
     Public Event OnSendPacket(ByRef Packet As Packet) Implements IGame.OnSendPacket
     Public Event OnReceivePacket(ByRef Packet As Packet) Implements IGame.OnReceivePacket
 
-    Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IGame.SendPacket
-        RelayDataToServer(bytes, bytes.Length)
+    Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IGame.SendPacket
+        RelayDataToServer(bytes, bytes.Length, Flag)
     End Sub
 
-    Public Sub SendPacket(ByRef bytes() As Byte) Implements IGame.SendPacket
+    Public Sub SendPacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IGame.SendPacket
         SendPacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub SendPacket(ByVal Packet As D2Packets.D2Packet) Implements IGame.SendPacket
+    Public Sub SendPacket(ByVal Packet As D2Packets.D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IGame.SendPacket
         SendPacket(Packet.Data, Packet.Data.Length)
     End Sub
 
-    Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IGame.ReceivePacket
-        RelayDataToClient(bytes, bytes.Length)
+    Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IGame.ReceivePacket
+        RelayDataToClient(bytes, bytes.Length, Flag)
     End Sub
 
-    Public Sub ReceivePacket(ByRef bytes() As Byte) Implements IGame.ReceivePacket
+    Public Sub ReceivePacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IGame.ReceivePacket
         ReceivePacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub ReceivePacket(ByVal Packet As D2Packets.D2Packet) Implements IGame.ReceivePacket
+    Public Sub ReceivePacket(ByVal Packet As D2Packets.D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IGame.ReceivePacket
         ReceivePacket(Packet.Data, Packet.Data.Length)
     End Sub
 

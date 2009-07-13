@@ -5,13 +5,13 @@ Public Interface IChat
 
 #Region " Packet Methods "
 
-    Sub ReceivePacket(ByRef bytes() As Byte)
-    Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer)
-    Sub ReceivePacket(ByVal Packet As D2Packet)
+    Sub ReceivePacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden)
+    Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden)
+    Sub ReceivePacket(ByVal Packet As D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden)
 
-    Sub SendPacket(ByRef bytes() As Byte)
-    Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer)
-    Sub SendPacket(ByVal Packet As D2Packet)
+    Sub SendPacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden)
+    Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden)
+    Sub SendPacket(ByVal Packet As D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden)
     Event OnReceivePacket(ByRef Packet As Packet)
     Event OnSendPacket(ByRef Packet As Packet)
 

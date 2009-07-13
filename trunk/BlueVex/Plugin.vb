@@ -58,7 +58,7 @@ Public Module MainModule
         Public Controler As IntPtr
     End Structure
 
-    Public Delegate Sub RelayDelegate(ByVal bytes() As Byte, ByVal length As Integer, ByVal ProxyPointer As IntPtr, ByVal ModulePointer As IntPtr)
+    Public Delegate Sub RelayDelegate(ByVal bytes() As Byte, ByVal length As Integer, ByVal ProxyPointer As IntPtr, ByVal ModulePointer As IntPtr, ByVal Flag As Packet.PacketFlag)
     
     <Serializable(), StructLayout(LayoutKind.Sequential)> _
     Public Structure FunctionInfo

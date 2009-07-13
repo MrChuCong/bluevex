@@ -136,7 +136,7 @@ Namespace GameServer
             buffer(19) = CByte((uid >> 16))
             buffer(20) = CByte((uid >> 24))
             For i As Integer = 0 To name.Length - 1
-                buffer(1 + i) = AscW(name(i))
+                buffer(1 + i) = System.Convert.ToByte(name(i))
             Next
             Return buffer
         End Function
@@ -1079,12 +1079,12 @@ Label_0056:
             buffer(3) = 2
             buffer(9) = charFlags
             For i As Integer = 0 To charName.Length - 1
-                buffer(10 + i) = AscW(charName(i))
+                buffer(10 + i) = System.Convert.ToByte(charName(i))
             Next
             Dim num2 As Integer = 0
             Dim num3 As Integer = 11 + charName.Length
             While num2 < message.Length
-                buffer(num3 + num2) = AscW(message(num2))
+                buffer(num3 + num2) = System.Convert.ToByte(message(num2))
                 num2 += 1
             End While
             Return buffer
@@ -1102,12 +1102,12 @@ Label_0056:
             buffer(3) = 2
             buffer(9) = 5
             For i As Integer = 0 To charName.Length - 1
-                buffer(10 + i) = AscW(charName(i))
+                buffer(10 + i) = System.Convert.ToByte(charName(i))
             Next
             Dim num2 As Integer = 0
             Dim num3 As Integer = 11 + charName.Length
             While num2 < message.Length
-                buffer(num3 + num2) = AscW(message(num2))
+                buffer(num3 + num2) = System.Convert.ToByte(message(num2))
                 num2 += 1
             End While
             Return buffer
@@ -1127,7 +1127,7 @@ Label_0056:
             Dim num3 As Integer = 11
 
             While (num2 < message.Length)
-                Buffer(num3 + num2) = AscW(message(num2))
+                Buffer(num3 + num2) = System.Convert.ToByte(message(num2))
                 num2 += 1
             End While
 
@@ -1149,7 +1149,7 @@ Label_0056:
             buffer(8) = CByte(random)
             buffer(9) = CByte((random >> 8))
             For i As Integer = 0 To message.Length - 1
-                buffer(11 + i) = AscW(message(i))
+                buffer(11 + i) = System.Convert.ToByte(message(i))
             Next
             Return buffer
         End Function
@@ -3030,7 +3030,7 @@ Label_0350:
             buffer(26) = CByte(partyID)
             buffer(27) = CByte((partyID >> 8))
             For i As Integer = 0 To name.Length - 1
-                buffer(8 + i) = AscW(name(i))
+                buffer(8 + i) = System.Convert.ToByte(name(i))
             Next
             Return buffer
         End Function

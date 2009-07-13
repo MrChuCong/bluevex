@@ -54,15 +54,15 @@ Public MustInherit Class IModuleHost
         InterptetPacketToClient(Packet)
     End Sub
 
-    Sub RelayDataToClient(ByVal bytes() As Byte, ByVal length As Integer)
+    Sub RelayDataToClient(ByVal bytes() As Byte, ByVal length As Integer, ByVal Flag As Packet.PacketFlag)
         If Not Functions.Equals(Nothing) Then
-            Functions.RelayToClientDelegate.Invoke(bytes, length, Functions.ProxyPointer, Functions.ModulePointer)
+            Functions.RelayToClientDelegate.Invoke(bytes, length, Functions.ProxyPointer, Functions.ModulePointer, Flag)
         End If
     End Sub
 
-    Sub RelayDataToServer(ByVal bytes() As Byte, ByVal length As Integer)
+    Sub RelayDataToServer(ByVal bytes() As Byte, ByVal length As Integer, ByVal Flag As Packet.PacketFlag)
         If Not Functions.Equals(Nothing) Then
-            Functions.RelayToServerDelegate.Invoke(bytes, length, Functions.ProxyPointer, Functions.ModulePointer)
+            Functions.RelayToServerDelegate.Invoke(bytes, length, Functions.ProxyPointer, Functions.ModulePointer, Flag)
         End If
     End Sub
 
