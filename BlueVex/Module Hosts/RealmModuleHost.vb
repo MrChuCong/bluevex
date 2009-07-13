@@ -35,45 +35,27 @@ Public Class RealmModuleHost
     Public Event OnSendPacket(ByRef Packet As Packet) Implements IRealm.OnSendPacket
     Public Event OnReceivePacket(ByRef Packet As Packet) Implements IRealm.OnReceivePacket
 
-    Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IRealm.SendPacket
-
-        'Make Header and put 0 at the end
-        '(Word) Packet Size
-        '(Byte) Packet ID
-        ' ..   Packet Core
-        'Dim Bufbyte(bytes.Length + 2) As Byte
-
-        'Bufbyte = PutInArray(Bufbyte, 0, Bufbyte.Length)
-
-
-
-        'For i As Integer = 0 To bytes.Length - 1
-        '    Bufbyte(i + 2) = bytes(i)
-        'Next
-
-        'RelayDataToServer(Bufbyte, Bufbyte.Length)
-
-        RelayDataToServer(bytes, bytes.Length)
+    Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IRealm.SendPacket
+        RelayDataToServer(bytes, bytes.Length, Flag)
     End Sub
 
-    Public Sub SendPacket(ByRef bytes() As Byte) Implements IRealm.SendPacket
+    Public Sub SendPacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IRealm.SendPacket
         SendPacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub SendPacket(ByVal Packet As D2Packet) Implements IRealm.SendPacket
+    Public Sub SendPacket(ByVal Packet As D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IRealm.SendPacket
         SendPacket(Packet.Data, Packet.Data.Length)
     End Sub
 
-    Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IRealm.ReceivePacket
-
-        RelayDataToClient(bytes, bytes.Length)
+    Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IRealm.ReceivePacket
+        RelayDataToClient(bytes, bytes.Length, Flag)
     End Sub
 
-    Public Sub ReceivePacket(ByRef bytes() As Byte) Implements IRealm.ReceivePacket
+    Public Sub ReceivePacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IRealm.ReceivePacket
         ReceivePacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub ReceivePacket(ByVal Packet As D2Packet) Implements IRealm.ReceivePacket
+    Public Sub ReceivePacket(ByVal Packet As D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IRealm.ReceivePacket
         ReceivePacket(Packet.Data, Packet.Data.Length)
     End Sub
 

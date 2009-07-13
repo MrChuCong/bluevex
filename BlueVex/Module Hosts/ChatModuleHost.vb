@@ -37,29 +37,28 @@ Public Class ChatModuleHost
     Public Event OnSendPacket(ByRef Packet As Packet) Implements IChat.OnSendPacket
     Public Event OnReceivePacket(ByRef Packet As Packet) Implements IChat.OnReceivePacket
 
-    Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IChat.SendPacket
-
-        RelayDataToServer(bytes, bytes.Length)
+    Public Sub SendPacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IChat.SendPacket
+        RelayDataToServer(bytes, bytes.Length, Flag)
     End Sub
 
-    Public Sub SendPacket(ByRef bytes() As Byte) Implements IChat.SendPacket
+    Public Sub SendPacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IChat.SendPacket
         SendPacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub SendPacket(ByVal Packet As D2Packets.D2Packet) Implements IChat.SendPacket
+    Public Sub SendPacket(ByVal Packet As D2Packets.D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IChat.SendPacket
         SendPacket(Packet.Data, Packet.Data.Length)
     End Sub
 
-    Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer) Implements IChat.ReceivePacket
+    Public Sub ReceivePacket(ByRef bytes() As Byte, ByVal length As Integer, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IChat.ReceivePacket
 
-        RelayDataToClient(bytes, bytes.Length)
+        RelayDataToClient(bytes, bytes.Length, Flag)
     End Sub
 
-    Public Sub ReceivePacket(ByRef bytes() As Byte) Implements IChat.ReceivePacket
+    Public Sub ReceivePacket(ByRef bytes() As Byte, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IChat.ReceivePacket
         ReceivePacket(bytes, bytes.Length)
     End Sub
 
-    Public Sub ReceivePacket(ByVal Packet As D2Packets.D2Packet) Implements IChat.ReceivePacket
+    Public Sub ReceivePacket(ByVal Packet As D2Packets.D2Packet, Optional ByVal Flag As Packet.PacketFlag = Packet.PacketFlag.PacketFlag_Hidden) Implements IChat.ReceivePacket
         ReceivePacket(Packet.Data, Packet.Data.Length)
     End Sub
 

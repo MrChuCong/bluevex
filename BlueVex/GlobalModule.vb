@@ -121,7 +121,13 @@ Public Module Geometry
 End Module
 
 Public Module GameHelpers
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="AreaID"> </param>
+    ''' <param name="ObjectType">Returns, 1 = level, 2= Object, 3 = NPC</param>
+    ''' <returns>Returns the next AreaID, ObjectID, NPCID</returns>
+    ''' <remarks></remarks>
     Public Function GetNextlevel(ByVal AreaID As D2Data.AreaLevel, ByRef ObjectType As Integer) As Integer
         '1 =Level, 2 = Object, 3 = NPC
         ObjectType = 1
@@ -309,6 +315,14 @@ Public Module GameHelpers
             Case Else : Return Nothing
         End Select
     End Function
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="AreaID"> </param>
+    ''' <param name="ObjectType">Returns, 1 = level, 2= Object, 3 = NPC</param>
+    ''' <returns>Returns the next AreaID, ObjectID, NPCID</returns>
+    ''' <remarks></remarks>
     Public Function GetNextQuest(ByVal AreaID As D2Data.AreaLevel, ByRef ObjectType As Integer) As Integer
         '1 =Level, 2 = Object, 3 = NPC
         ObjectType = 1
